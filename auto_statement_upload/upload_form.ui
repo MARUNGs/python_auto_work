@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>934</width>
+    <width>1483</width>
     <height>1000</height>
    </rect>
   </property>
@@ -144,6 +144,16 @@ p, li { white-space: pre-wrap; }
        <height>31</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton:hover {
+	background-color: rgb(222, 222, 222);
+}
+
+QPushButton:pressed {
+	background-color: rgb(180, 180, 180);
+	
+}</string>
+     </property>
      <property name="text">
       <string>파일찾기</string>
      </property>
@@ -211,11 +221,24 @@ p, li { white-space: pre-wrap; }
      <property name="toolTip">
       <string>실행버튼을 누르면 자동화가 실행되며 더이상 마우스, 키보드 작업이 어렵습니다.</string>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton:hover {
+	background-color: rgb(222, 222, 222);
+}
+
+QPushButton:pressed {
+	background-color: rgb(180, 180, 180);
+	
+}</string>
+     </property>
      <property name="text">
       <string>실행(ctrl + 1)</string>
      </property>
      <property name="shortcut">
       <string>Ctrl+1</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QPushButton" name="stop_btn">
@@ -229,6 +252,16 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="toolTip">
       <string>중지버튼을 누르면 자동화작업을 이어서 진행할 수 없습니다.</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton:hover {
+	background-color: rgb(222, 222, 222);
+}
+
+QPushButton:pressed {
+	background-color: rgb(180, 180, 180);
+	
+}</string>
      </property>
      <property name="text">
       <string>중지(ctrl + 9)</string>
@@ -254,7 +287,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QLabel" name="status_text">
     <property name="geometry">
      <rect>
-      <x>870</x>
+      <x>1410</x>
       <y>930</y>
       <width>51</width>
       <height>20</height>
@@ -273,7 +306,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>850</x>
+      <x>1390</x>
       <y>930</y>
       <width>31</width>
       <height>20</height>
@@ -283,13 +316,69 @@ p, li { white-space: pre-wrap; }
      <string>상태 :</string>
     </property>
    </widget>
+   <widget class="QGroupBox" name="groupBox_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>360</y>
+      <width>1461</width>
+      <height>561</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>첨부파일 내역</string>
+    </property>
+    <widget class="QTableWidget" name="excel_tb">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>1331</width>
+       <height>531</height>
+      </rect>
+     </property>
+     <property name="rowCount">
+      <number>0</number>
+     </property>
+     <property name="columnCount">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="status_tb">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>97</width>
+       <height>531</height>
+      </rect>
+     </property>
+     <property name="rowCount">
+      <number>0</number>
+     </property>
+     <property name="columnCount">
+      <number>1</number>
+     </property>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>56</number>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>상태</string>
+      </property>
+     </column>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>934</width>
+     <width>1483</width>
      <height>21</height>
     </rect>
    </property>

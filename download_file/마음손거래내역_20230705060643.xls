@@ -1,0 +1,102 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+	<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+	<meta name=ProgId content=Excel.Sheet>
+	<meta name=Generator content="Microsoft Excel 11">
+	<title>거래내역</title>
+	<style>
+		* { margin: 0; padding: 0; }
+		html { height: 100%; width: 100%; }
+
+		input, select { color: #666666; font-family: "Malgun Gothic",Tahoma,Georgia; font-size: 12px; line-height: 120%; border: 0 none; }
+		h1, h2, h3, h4, h5, h6 { text-align: left; }
+		img, fieldset, iframe { border: 0 none; }
+		li { list-style: none; }
+		a { color: #fff; text-decoration: none; }
+			a:hover { color: #8c8c8c; text-decoration: none; }
+		em, address { font-style: normal; }
+		button, label { cursor: pointer; }
+			button * { position: relative; }
+			button img { left: -3px; }
+		textarea { overflow: auto; color: #333333; font-family: "Malgun Gothic",Tahoma,Georgia; font-size: 11px; line-height: 1.5em; }
+		option { padding-right: 6px; }
+		legend { font-size: 0; line-height: 0; margin-top: -1px; text-align: left; }
+		p { margin: 0; padding: 0; }
+		table { border-spacing: 0; border: 0 none; }
+
+		body { padding: 10px; }
+		table { border: none; border-collapse: collapse; border-spacing: 0px; table-layout: fixed; width: 100%; font-size: 12px; }
+			table thead th { font-weight: bold; text-align: center; border: 1px solid #d3d3d3; word-wrap: break-word; word-break: break-all; line-height: 20px; }
+			table thead th { color: #000000; padding: 1px 4px; background: #F6F6F6; }
+			table tbody td { font-weight: normal; text-align: center; border: 1px solid #d3d3d3; word-wrap: break-word; word-break: break-all; line-height: 20px; color: #000000; padding: 1px 4px; background: #FFFFFF; }
+	</style>
+</head>
+<body>
+	<style>
+		td { padding: 4px; }
+		body { width: 635px; }
+	</style>
+	<table>
+	    <colgroup>
+	        <col style="width: 4%;">
+	        <col style="width: 10%;">
+	        <col style="width: 5%;">
+	        <col style="width: 7%;">
+	        <col style="width: 7%;">
+	        <col style="width: 7%;">
+	        <col style="width: 7%;">
+	        <col style="width: 7%;">
+	        <col style="width: 41%;">
+	        <col style="width: 5%;">
+	        <col style="width: 10%">
+	        <col style="width: 10%">
+	    </colgroup>
+	    <thead>
+	        <tr>
+	            <th scope="col">구분</th>
+	            <th scope="col">반납구분</th>
+				<th scope="col">거래일자</th>
+				<th scope="col">계정과목</th>
+				<th scope="col">적요</th>
+				<th scope="col">수입금액</th>
+				<th scope="col">지출금액</th>
+				<th scope="col">자금원천</th>
+				<th scope="col">상대계정</th>
+				<th scope="col">결의번호</th>
+				<th scope="col">사업구분</th>
+				<th scope="col">계좌명</th>
+	        </tr>
+	    </thead>
+	    <tbody class="uidItemCheckListWrap">
+	        <tr>
+	            	<td>수입</td>
+		            	<td>정상</td>
+		            	<td>2023-05-04</td>
+					<td>본인부담금수입</td>
+					<td>전화이체/산곡동</td>
+					<td>745,500</td><!-- 수입금액 -->
+							<td>0</td> <!-- 지출금액 -->
+		            	<td>자부담</td>
+	            		<td></td>
+					<td>2023-05-04-10914</td>
+					<td>방문요양2023</td>
+					<td>운영비(국민)[24793704003060]</td>
+	            </tr>
+	        <tr>
+	            	<td>지출</td>
+		            	<td>정상</td>
+		            	<td>2023-07-01</td>
+					<td>급여(직접비)</td>
+					<td>급여통장으로</td>
+					<td>0</td><!-- 수입금액 -->
+							<td>5,000,000</td> <!-- 지출금액 -->
+		            	<td>시군구비</td>
+	            		<td>본인부담금수입</td>
+					<td>2023-07-01-10821</td>
+					<td>방문요양2023</td>
+					<td>오늘[453]</td>
+	            </tr>
+	        </tbody>
+	</table>
+</body>
+</html>
