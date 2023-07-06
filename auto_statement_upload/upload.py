@@ -174,15 +174,15 @@ def startAuto(self):
     if excelWindow.isActive == False: excelWindow.activate() # 파일 활성화
 
     # Action
-    makeTable(self) # 조회한 엑셀 데이터를 가지고 테이블 생성
-    autoSave(self) # 결의서/전표 자동저장 작업
-    ending(self) # 다 끝나면 종료
+    makeTable(self) #1 조회한 엑셀 데이터를 가지고 테이블 생성
+    autoSave(self)  #2 결의서/전표 자동저장 작업
+    ending(self)    #3 다 끝나면 종료
     
 # def startAuto(self) End #
 
 
 
-# 테이블 생성
+#1 테이블 생성
 def makeTable(self):
     try:
         wb = openpyxl.load_workbook(self.file_path.toPlainText())
@@ -257,13 +257,15 @@ def makeTable(self):
 # def makeTable(self) End
 
 
-# 결의서/전표 자동저장 작업
+#2 결의서/전표 자동저장 작업
 def autoSave(self):
     try:
+        
         print('auto save')
     except Exception as e:
         print(e) 
 # def autoSave End #
+
 
 
 
