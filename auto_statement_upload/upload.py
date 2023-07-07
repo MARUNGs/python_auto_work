@@ -1,14 +1,5 @@
 # 주제: 마음손 전표정보 업로드 자동화
 
-# [ 작업순서 ]
-# 1. 업로드할 파일명은 미리 복사하여 입력창에 작성해두어야 한다.
-# 2. 입력한 파일명을 기준으로 파일을 검색한다.
-# 3. 검색된 파일명이 맞으면 enter 키 입력을 수행한다.
-# 4. 파일명에 존재하는 확장자를 추출하여 xlsx인지 xls인지 확인한다.
-# 5. xls인 경우, 호환성 여부 안내창을 인식한다.
-
-
-
 ########## import list ##############################################################################
 ##### Library import 
 import os        # 운영체제 정보
@@ -20,9 +11,11 @@ from PyQt5.QAxContainer import *
 from PyQt5.QtGui import *
 import psycopg2 as pg # PostgreSQL 연동
 import re # 정규식 표현
-import time
+import time 
 import openpyxl # 엑셀 
 import win32com.client as win32 # 윈도우 앱을 활용할 수 있게 해주는 모듈
+import logging # 로그
+import pyperclip # 데이터 복사 및 붙여넣기 
 
 
 
@@ -38,9 +31,11 @@ import win32com.client as win32 # 윈도우 앱을 활용할 수 있게 해주�
 
 ########### 전역처리 ########################################################################################
 mainUi = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[0] # 파일경로
-
-
-
+logging.basicConfig( # 로그설정
+    level = logging.DEBUG,
+    format = '%(asctime)s [%(levelname)s] %(message)s'
+    # filename = 'upload.log'
+)
 
 
 ########### class function ##############################################################################
@@ -53,6 +48,9 @@ class window__base__setting(QMainWindow, mainUi) :
         self.find_btn.clicked.connect(self.findFn)
         self.start_btn.clicked.connect(self.startFn)
         self.stop_btn.clicked.connect(self.stopFn)
+
+        # 테스트 기능(운영 배포시 삭제)
+        self.refresh_btn.clicked.connect(self.refresh)
     # def __init__ End #
 
 
@@ -67,30 +65,27 @@ class window__base__setting(QMainWindow, mainUi) :
             filePath = QFileDialog.getOpenFileName(self)
             fileNm = os.path.basename(filePath[0])
 
-            # 파일명이 .xlsx 또는 .xls 문자열이 포함하지 않으면 이벤트를 종료한다.
             if ('.xlsx' in fileNm) or ('.xls' in fileNm):
-                # 파일명/경로 세팅
                 self.file_nm.setText(fileNm)
                 self.file_path.setText(filePath[0])
             else: 
                 gui.alert('xlsx 또는 xls 확장자만 허용합니다.')
-        except Exception as e:
+        except Exception as e: 
             gui.alert('파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
-            return False
+            logging.debug(e)
     # def findFn End #
 
 
     #2 자동업로드 시작
     def startFn(self):
+        logging.info('startFn')
+
         if gui.confirm('자동화 업무를 실행하시겠습니까?'):
             starting(self)
-
-            # 확인사항 조건이 맞으면 자동업로드 시작
-            if check(self) and checkOpenFile(self): startAuto(self)
+            if check(self): startAuto(self) # 확인사항 조건이 맞으면 자동업로드 시작
             else: self.stopFn
         else:
             gui.alert('자동화 업무 실행을 취소합니다.')
-            print('fail start')
     # def startFn End #
 
 
@@ -98,19 +93,16 @@ class window__base__setting(QMainWindow, mainUi) :
     def stopFn(self):
         gui.alert('자동화 업무를 중단합니다.')
         ending(self)
-        return False
     # def stopFn End #
 
     
+    #4 refresh 조회
+    def refresh(self):
+        img = gui.locateOnScreen(self.refresh_path.toPlainText())
+        center = gui.center(img)
+        gui.click(center)
+    #  def refresh End #
         
-
-        
-        
-
-    
-
-
-
 
 ########## function ###################################################################################
 # 자동화 실행 전에 w4c_cd가 DB에 등록된 정보와 일치하는지 확인.
@@ -118,6 +110,11 @@ def check(self):
     checkW4cCd = self.w4c_cd.toPlainText().replace(' ', '') # 사용자가 입력한 w4c_cd
     checkFileNm = self.file_nm.toPlainText() # 사용자가 호출한 첨부파일명
     checkFilePath = self.file_path.toPlainText() # 사용자가 호출한 첨부파일 경로
+
+    # 테스트 데이터
+    # checkW4cCd = 'C0210599045'
+    # checkFileNm = '마음손거래내역_20230705040151.xlsx'
+    # checkFilePath = 'D:/ysk/Python/python_auto_work/download_file/마음손거래내역_20230705040151.xlsx'
 
     try: 
         if checkFileNm.replace(' ', '') != '' and checkFilePath.replace(' ', '') != '' and checkW4cCd != '':
@@ -131,7 +128,7 @@ def check(self):
                     result = cur.fetchall()
 
                     if len(result) > 0 and checkW4cCd in result[0] : 
-                        return True
+                        return checkOpenFile(self)
                     else : 
                         gui.alert('희망e음 인증코드가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')
                         return False
@@ -139,8 +136,8 @@ def check(self):
                 gui.alert('첨부파일 및 자동화 정보가 올바르지 않습니다. \n확인 후 다시 작업을 수행하세요.')
                 return False
     except Exception as e:
-        print(e)
         gui.alert('자동화 업무 수행 전 확인단계에서 오류가 발생했습니다. \n업로드한 자료 및 희망e음 인증코드를 확인하세요.')
+        logging.debug('check Exception : ', e)
 # def check End #
 
 
@@ -163,32 +160,50 @@ def checkOpenFile(self) :
 
         return True
     except Exception as e:
-        print(e)
+        logging.debug('checkOpenFile Exception : ', e)
 # def checkOpenFile End #
 
 
 
 # 자동화 실행(after)
 def startAuto(self):
+    logging.info('startAuto')
+
+    # Active
     excelWindow = gui.getWindowsWithTitle('마음손거래내역')[0] # 파일명 호출
     if excelWindow.isActive == False: excelWindow.activate() # 파일 활성화
+    time.sleep(0.2)
+    
+    # Action
+    excelList = makeExcelData(self)       #1 조회한 엑셀 데이터 생성
+    titleList = excelList[0]
+    makeTable(self, titleList, excelList) #2 조회한 엑셀 데이터를 가지고 테이블 생성
+    time.sleep(0.2)
+
+    # Active
+    w4cWindow = gui.getWindowsWithTitle('사회복지시설정보시스템(1W)')[0] # 프로그램 호출
+    if w4cWindow.isActive == False: w4cWindow.activate()           # 프로그램 활성화
+    time.sleep(0.2)
 
     # Action
-    makeTable(self) #1 조회한 엑셀 데이터를 가지고 테이블 생성
-    autoSave(self)  #2 결의서/전표 자동저장 작업
+    autoSave(self, excelList)  #2 결의서/전표 자동저장 작업
+    time.sleep(0.2)
+
     ending(self)    #3 다 끝나면 종료
-    
 # def startAuto(self) End #
 
 
 
-#1 테이블 생성
-def makeTable(self):
+#0 엑셀데이터 생성
+''' 
+    @param self
+    @return excelList 
+'''
+def makeExcelData(self):
     try:
         wb = openpyxl.load_workbook(self.file_path.toPlainText())
         sheet = wb[wb._sheets[0].title]
         maxColumnCnt = sheet.max_column
-        maxRowCnt = sheet.max_row - 1 # 타이틀을 제외한 데이터 row수
         excelList = [] # 객체를 담을 리스트
 
 
@@ -215,7 +230,7 @@ def makeTable(self):
                 cell = rows[i]
 
                 if str(cell.value) == 'None': inputData = ''
-                else: inputData = str(cell.value)
+                else: inputData = str(cell.value).replace(' 00:00:00', '')
 
                 dataList.insert(i, inputData) # list 형태로 삽입해야 함..
             # for in range End #
@@ -223,18 +238,27 @@ def makeTable(self):
             excelList.insert(cell.row - 1, dataList) # 0 index부터 삽입
         # for in End #
 
+        return excelList
+    except Exception as e:
+        logging.debug('엑셀 데이터 생성 실패 : ', e)
+# def makeExcelData End #
 
 
+#1 테이블 생성
+def makeTable(self, titleList, excelList):
+    try:
+        wb = openpyxl.load_workbook(self.file_path.toPlainText())
+        sheet = wb[wb._sheets[0].title]
+        maxColumnCnt = sheet.max_column
+        maxRowCnt = sheet.max_row - 1 # 타이틀을 제외한 데이터 row수
         excelTb = self.excel_tb # 엑셀 테이블
-        statusTb = self.status_tb # 상태 테이블
-        
+        statusTb = self.status_tb # 상태 테이블        
 
         # 테이블 세팅
         excelTb.setColumnCount(maxColumnCnt)
         excelTb.setRowCount(maxRowCnt)
-        excelTb.setHorizontalHeaderLabels(excelList[0]) # list 형태로 넣기
-        del excelList[0] # 타이틀만 있는 리스트 삭제
-
+        excelTb.setHorizontalHeaderLabels(titleList) # list 형태로 넣기
+        del excelList[0]
         statusTb.setRowCount(maxRowCnt)
 
 
@@ -253,18 +277,76 @@ def makeTable(self):
             statusTb.setItem(i, 0, QTableWidgetItem('False'))
         # for in range End #
     except Exception as e:
-        print(e)
+        logging.debug('엑셀 테이블 생성 실패 : ', e)
 # def makeTable(self) End
 
 
 #2 결의서/전표 자동저장 작업
-def autoSave(self):
+'''
+    @param self      # PyQT5
+    @param excelList # makeExcelData()를 통해 갖고있는 데이터
+'''
+def autoSave(self, excelList):
     try:
+        maxColumnCnt = len(excelList[0])
+
+        imgClick('신규.png')
+        time.sleep(0.2)
         
-        print('auto save')
+        
+        for rows in excelList:
+            for i in range(0, maxColumnCnt):
+                data = rows[i]
+
+                if i==0:
+                    print('i : ', i)
+                    imgClick('결의구분선택박스.png')
+                    time.sleep(0.2)
+
+                    if data == '수입': imgClick('수입결의서TXT.png')
+                    else: imgClick('지출결의서TXT.png')
+
+                    time.sleep(0.2)
+                    continue
+                elif i==2:
+                    # 결의일자 활성화
+                    print('i : ', i)
+                    imgRightClick('결의일자박스.png')
+                    time.sleep(0.2)
+
+                    # 결의일자 삽입
+                    gui.hotkey('ctrl', 'a')
+                    gui.press('backspace')
+                    pyperclip.copy(data)
+                    gui.hotkey('ctrl', 'v')
+                    continue
+                elif i==3:
+                    
     except Exception as e:
-        print(e) 
+        logging.debug('autoSave Exception : ', e)
 # def autoSave End #
+
+
+# 이미지 찾아서 가운데 클릭 기능
+def imgClick(imgNm):
+    imgDirPath = os.path.dirname(__file__) + os.sep + 'img' + os.sep # img 공통 경로
+    img = gui.locateOnScreen(imgDirPath + imgNm)
+    center = gui.center(img)
+    gui.click(center)
+# def imgClick End #
+
+
+# 이미지 찾아서 가운데의 살짝 오른쪽 클릭 기능
+def imgRightClick(imgNm):
+    imgDirPath = os.path.dirname(__file__) + os.sep + 'img' + os.sep # img 공통 경로
+    img = gui.locateOnScreen(imgDirPath + imgNm)
+
+    center = gui.center(img)
+    moveX = center[0] + 20
+    moveY = center[1]
+
+    gui.click(moveX, moveY)
+# def imgRightClick End #
 
 
 
