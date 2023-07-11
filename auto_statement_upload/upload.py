@@ -15,7 +15,11 @@ import time
 import openpyxl # 엑셀 
 import win32com.client as win32 # 윈도우 앱을 활용할 수 있게 해주는 모듈
 import logging # 로그
-import pyperclip # 데이터 복사 및 붙여넣기 
+import signal # 시그널
+
+
+##### Module import 
+from module import auto_save
 
 
 
@@ -30,12 +34,13 @@ import pyperclip # 데이터 복사 및 붙여넣기
 # 이미지 좌표 확인 및 가운데 클릭하는 방법 : https://forward.tistory.com/entry/pyautogui-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%A2%8C%ED%91%9C-%EC%95%8C%EC%95%84%EB%82%B4-%EB%A7%88%EC%9A%B0%EC%8A%A4%EB%A1%9C-%ED%81%B4%EB%A6%AD
 
 ########### 전역처리 ########################################################################################
-mainUi = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[0] # 파일경로
-logging.basicConfig( # 로그설정
-    level = logging.DEBUG,
-    format = '%(asctime)s [%(levelname)s] %(message)s'
-    # filename = 'upload.log'
-)
+# 파일경로
+mainUi = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[0]
+
+# 로그 설정
+logFormat = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 
 ########### class function ##############################################################################
@@ -102,7 +107,7 @@ class window__base__setting(QMainWindow, mainUi) :
         center = gui.center(img)
         gui.click(center)
     #  def refresh End #
-        
+    
 
 ########## function ###################################################################################
 # 자동화 실행 전에 w4c_cd가 DB에 등록된 정보와 일치하는지 확인.
@@ -186,7 +191,7 @@ def startAuto(self):
     time.sleep(0.2)
 
     # Action
-    autoSave(self, excelList)  #2 결의서/전표 자동저장 작업
+    auto_save.autoSave(self, excelList)  #2 결의서/전표 자동저장 작업
     time.sleep(0.2)
 
     ending(self)    #3 다 끝나면 종료
@@ -281,72 +286,10 @@ def makeTable(self, titleList, excelList):
 # def makeTable(self) End
 
 
-#2 결의서/전표 자동저장 작업
-'''
-    @param self      # PyQT5
-    @param excelList # makeExcelData()를 통해 갖고있는 데이터
-'''
-def autoSave(self, excelList):
-    try:
-        maxColumnCnt = len(excelList[0])
-
-        imgClick('신규.png')
-        time.sleep(0.2)
-        
-        
-        for rows in excelList:
-            for i in range(0, maxColumnCnt):
-                data = rows[i]
-
-                if i==0:
-                    print('i : ', i)
-                    imgClick('결의구분선택박스.png')
-                    time.sleep(0.2)
-
-                    if data == '수입': imgClick('수입결의서TXT.png')
-                    else: imgClick('지출결의서TXT.png')
-
-                    time.sleep(0.2)
-                    continue
-                elif i==2:
-                    # 결의일자 활성화
-                    print('i : ', i)
-                    imgRightClick('결의일자박스.png')
-                    time.sleep(0.2)
-
-                    # 결의일자 삽입
-                    gui.hotkey('ctrl', 'a')
-                    gui.press('backspace')
-                    pyperclip.copy(data)
-                    gui.hotkey('ctrl', 'v')
-                    continue
-                elif i==3:
-                    
-    except Exception as e:
-        logging.debug('autoSave Exception : ', e)
-# def autoSave End #
 
 
-# 이미지 찾아서 가운데 클릭 기능
-def imgClick(imgNm):
-    imgDirPath = os.path.dirname(__file__) + os.sep + 'img' + os.sep # img 공통 경로
-    img = gui.locateOnScreen(imgDirPath + imgNm)
-    center = gui.center(img)
-    gui.click(center)
-# def imgClick End #
 
 
-# 이미지 찾아서 가운데의 살짝 오른쪽 클릭 기능
-def imgRightClick(imgNm):
-    imgDirPath = os.path.dirname(__file__) + os.sep + 'img' + os.sep # img 공통 경로
-    img = gui.locateOnScreen(imgDirPath + imgNm)
-
-    center = gui.center(img)
-    moveX = center[0] + 20
-    moveY = center[1]
-
-    gui.click(moveX, moveY)
-# def imgRightClick End #
 
 
 
@@ -363,6 +306,9 @@ def ending(self) :
     self.status_text.setText('종료')
     self.status_text.setStyleSheet('Color: black')
 # def ending(self) End #
+
+
+
 
 
 
