@@ -91,6 +91,7 @@ class window__base__setting(QMainWindow, mainUi) :
         except Exception as e: 
             gui.alert('파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
             logging.debug(e)
+            sys.exit()
     # def findFn End #
 
 
@@ -114,6 +115,7 @@ class window__base__setting(QMainWindow, mainUi) :
     def stopFn(self):
         gui.alert('자동화 업무를 중단합니다.')
         ending(self)
+        sys.exit()
     # def stopFn End #
 
 
@@ -131,6 +133,7 @@ class window__base__setting(QMainWindow, mainUi) :
         except Exception as e:
             gui.alert('사업명 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
             logging.debug(e)
+            sys.exit()
     # def findProjectImg End #
 
 
@@ -148,7 +151,7 @@ class window__base__setting(QMainWindow, mainUi) :
         except Exception as e:
             gui.alert('계좌명 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
             logging.debug(e)
-
+            sys.exit()
 
     
     #7 refresh 조회
@@ -198,11 +201,12 @@ def check(self):
                         gui.alert('희망e음 인증코드가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')
                         return False
             else:
-                gui.alert('첨부파일 및 자동화 정보가 올바르지 않습니다. \n확인 후 다시 작업을 수행하세요.')
+                gui.alert('첨부파일 및 희망e음코드가 올바르지 않습니다. \n확인 후 다시 작업을 수행하세요.')
                 return False
     except Exception as e:
         gui.alert('자동화 업무 수행 전 확인단계에서 오류가 발생했습니다. \n업로드한 자료 및 희망e음 인증코드를 확인하세요.')
         logging.debug('check Exception : ', e)
+        sys.exit()
 # def check End #
 
 
@@ -226,6 +230,7 @@ def checkOpenFile(self) :
         return True
     except Exception as e:
         logging.debug('checkOpenFile Exception : ', e)
+        sys.exit()
 # def checkOpenFile End #
 
 
@@ -306,6 +311,7 @@ def makeExcelData(self):
         return excelList
     except Exception as e:
         logging.debug('엑셀 데이터 생성 실패 : ', e)
+        sys.exit()
 # def makeExcelData End #
 
 
@@ -343,6 +349,7 @@ def makeTable(self, titleList, excelList):
         # for in range End #
     except Exception as e:
         logging.debug('엑셀 테이블 생성 실패 : ', e)
+        sys.exit()
 # def makeTable(self) End
 
 

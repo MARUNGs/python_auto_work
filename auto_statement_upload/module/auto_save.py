@@ -30,8 +30,7 @@ class ProjectType(Enum):
     tp15 = '복지용구제공사업소'
 
 # 기본 딜레이 설정
-gui.PAUSE = 0.2
-gui.FAILSAFE = False
+gui.PAUSE = 0.2 
 
 
 '''
@@ -63,7 +62,7 @@ def autoSave(self, excelList):
                     imgRightClick('사업타이틀.png')
                     # time.sleep(0.2)
 
-                    customizationImgClick(self)
+                    customizationProjectImgClick(self)
                     # time.sleep(0.2)
                     
                     continue
@@ -133,7 +132,17 @@ def autoSave(self, excelList):
                         continue
                 elif i==11:
                     # 계좌명의 경우, 사업을 설정하면 자동적으로 매핑되는데 매핑되었는지 안 되었는지를 확인하여 처리하면 될 듯.
-                    print('아직 안했어')
+                    
+                    # time.sleep(0.2)
+
+                    customizationManageImgClick(self)
+                    # time.sleep(0.2)
+                    
+                    continue
+
+            
+            # 한 행의 작업이 끝나면 저장
+            imgClick('저장.png')
     except Exception as e:
         logging.debug('autoSave Exception : ', e)
 # def autoSave End #
@@ -169,24 +178,48 @@ def imgRightClick(imgNm):
 
 
 
-# 사용자가 올린 이미지 경로를 찾아서 가운데 클릭
+# 사용자가 올린 사업명 이미지 경로를 찾아서 가운데 클릭
 '''
     @param self : PyQt5
 '''
-def customizationImgClick(self):
+def customizationProjectImgClick(self):
     imgPath = self.file_projectImg_path.toPlainText()
     imgNm = self.file_projectImg_nm.toPlainText().split('.')[0]
 
-    #일반사업
-    if imgNm == ProjectType.tp01.value: 
+    #01: 일반사업
+    # if imgNm == ProjectType.tp01.value: 
+
+    # 상관없지 않나? 사업별 이미지를 업로드할거라 if문이 필요없을지도.
+    clickImg = gui.locateOnScreen(imgPath)
+
+    if clickImg is not None: 
+        center = gui.center(clickImg)
+        gui.click(center)
+    else:
+        gui.alert('찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        return False
+    #02: 보조금사업
+    # elif imgNm == ProjectType.tp02:
+        # imgClick()
+# def customizationImgClick End #
+
+
+# 사용자가 올린 계좌명 이미지 경로를 찾아서 가운데 클릭
+'''
+    @param self : PyQt5
+'''
+def customizationManageImgClick(self):
+    findManageImg = gui.locateOnScreen(imgDirPath, '계좌번호(선택).png')
+
+    # 만약, 사업이 세팅되어 계좌번호가 자동적으로 세팅되어 있지 않다면 이미지를 찾아서 클릭할 것.
+    if findManageImg is None:
+        imgPath = self.file_manageImg_path.toPlainText()
         clickImg = gui.locateOnScreen(imgPath)
 
-        if clickImg is not None: 
+        if clickImg is not None:
             center = gui.center(clickImg)
             gui.click(center)
         else:
-            gui.alert('찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-            return False
-    elif imgNm == ProjectType.tp02:
-        imgClick()
-# def customizationImgClick End #
+            gui.alert('찾고자 하는 계좌 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+            
+        
