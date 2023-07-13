@@ -16,6 +16,7 @@ import openpyxl # 엑셀
 import win32com.client as win32 # 윈도우 앱을 활용할 수 있게 해주는 모듈
 import logging # 로그
 import signal # 시그널
+import win32com.client as win32 # xls to xlsx 변환작업
 
 
 ##### Module import 
@@ -42,6 +43,10 @@ logFormat = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
+# 기본 딜레이 설정
+gui.PAUSE = 0.2
+gui.FAILSAFE = False
+
 
 ########### class function ##############################################################################
 class window__base__setting(QMainWindow, mainUi) :
@@ -53,6 +58,8 @@ class window__base__setting(QMainWindow, mainUi) :
         self.find_btn.clicked.connect(self.findFn)
         self.start_btn.clicked.connect(self.startFn)
         self.stop_btn.clicked.connect(self.stopFn)
+        self.find_projectImg_btn.clicked.connect(self.findProjectImg)
+        self.find_manageImg_btn.clicked.connect(self.findManageImg)
 
         # 테스트 기능(운영 배포시 삭제)
         self.refresh_btn.clicked.connect(self.refresh)
@@ -71,14 +78,23 @@ class window__base__setting(QMainWindow, mainUi) :
             fileNm = os.path.basename(filePath[0])
 
             if ('.xlsx' in fileNm) or ('.xls' in fileNm):
-                self.file_nm.setText(fileNm)
-                self.file_path.setText(filePath[0])
+                # 파일변환 작업 필요
+                if 'xls' == fileNm.split('.')[1]: 
+                    xlsToXlsxChange(self)
+                    self.file_nm.setText(fileNm + 'x')
+                    self.file_path.setText(filePath[0] + 'x')
+                else:
+                    self.file_nm.setText(fileNm)
+                    self.file_path.setText(filePath[0])
             else: 
                 gui.alert('xlsx 또는 xls 확장자만 허용합니다.')
         except Exception as e: 
             gui.alert('파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
             logging.debug(e)
     # def findFn End #
+
+
+    
 
 
     #2 자동업로드 시작
@@ -100,8 +116,42 @@ class window__base__setting(QMainWindow, mainUi) :
         ending(self)
     # def stopFn End #
 
+
+    #4 사업명 이미지 업로드
+    def findProjectImg(self):
+        try:
+            filePath = QFileDialog.getOpenFileName(self)
+            fileNm = os.path.basename(filePath[0])
+
+            if '.png' in fileNm:
+                self.file_projectImg_nm.setText(fileNm)
+                self.file_projectImg_path.setText(filePath)
+            else:
+                gui.alert('png 확장자 이미지만 허용합니다.')
+        except Exception as e:
+            gui.alert('사업명 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
+            logging.debug(e)
+    # def findProjectImg End #
+
+
+    #5 계좌 이미지 업로드
+    def findManageImg(self):
+        try:
+            filePath = QFileDialog.getOpenFileName(self)
+            fileNm = os.path.basename(filePath[0])
+
+            if '.png' in fileNm:
+                self.file_manageImg_nm.setText(fileNm)
+                self.file_manageImg_path.setText(filePath)
+            else:
+                gui.alert('png 확장자 이미지만 허용합니다.')
+        except Exception as e:
+            gui.alert('계좌명 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
+            logging.debug(e)
+
+
     
-    #4 refresh 조회
+    #7 refresh 조회
     def refresh(self):
         img = gui.locateOnScreen(self.refresh_path.toPlainText())
         center = gui.center(img)
@@ -110,16 +160,26 @@ class window__base__setting(QMainWindow, mainUi) :
     
 
 ########## function ###################################################################################
+# 확장자 변경
+def xlsToXlsxChange(self):
+    filePath = self.file_path.toPlainText()
+    excel = win32.gencache.EnsureDispatch('Excel.Application')
+    wb = excel.Workbooks.Open(filePath)
+
+    wb.SaveAs(filePath + "x", FileFormat = 51) #FileFormat = 51 is for .xlsx extension
+    wb.Close() #FileFormat = 56 is for .xls extension
+    excel.Application.Quit()
+# def xlsToXlsxChange End #
+
+
+
+
 # 자동화 실행 전에 w4c_cd가 DB에 등록된 정보와 일치하는지 확인.
 def check(self):
     checkW4cCd = self.w4c_cd.toPlainText().replace(' ', '') # 사용자가 입력한 w4c_cd
     checkFileNm = self.file_nm.toPlainText() # 사용자가 호출한 첨부파일명
     checkFilePath = self.file_path.toPlainText() # 사용자가 호출한 첨부파일 경로
 
-    # 테스트 데이터
-    # checkW4cCd = 'C0210599045'
-    # checkFileNm = '마음손거래내역_20230705040151.xlsx'
-    # checkFilePath = 'D:/ysk/Python/python_auto_work/download_file/마음손거래내역_20230705040151.xlsx'
 
     try: 
         if checkFileNm.replace(' ', '') != '' and checkFilePath.replace(' ', '') != '' and checkW4cCd != '':
@@ -177,22 +237,22 @@ def startAuto(self):
     # Active
     excelWindow = gui.getWindowsWithTitle('마음손거래내역')[0] # 파일명 호출
     if excelWindow.isActive == False: excelWindow.activate() # 파일 활성화
-    time.sleep(0.2)
+    # time.sleep(0.2)
     
     # Action
     excelList = makeExcelData(self)       #1 조회한 엑셀 데이터 생성
     titleList = excelList[0]
     makeTable(self, titleList, excelList) #2 조회한 엑셀 데이터를 가지고 테이블 생성
-    time.sleep(0.2)
+    # time.sleep(0.2)
 
     # Active
     w4cWindow = gui.getWindowsWithTitle('사회복지시설정보시스템(1W)')[0] # 프로그램 호출
     if w4cWindow.isActive == False: w4cWindow.activate()           # 프로그램 활성화
-    time.sleep(0.2)
+    # time.sleep(0.2)
 
     # Action
     auto_save.autoSave(self, excelList)  #2 결의서/전표 자동저장 작업
-    time.sleep(0.2)
+    # time.sleep(0.2)
 
     ending(self)    #3 다 끝나면 종료
 # def startAuto(self) End #
