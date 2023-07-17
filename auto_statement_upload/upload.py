@@ -16,7 +16,6 @@ import openpyxl # 엑셀
 import win32com.client as win32 # 윈도우 앱을 활용할 수 있게 해주는 모듈
 import logging # 로그
 import signal # 시그널
-import win32com.client as win32 # xls to xlsx 변환작업
 
 
 ##### Module import 
@@ -45,7 +44,15 @@ logger.setLevel(logging.DEBUG)
 
 # 기본 딜레이 설정
 gui.PAUSE = 0.2
-gui.FAILSAFE = False
+
+
+
+x, y = gui.position()
+if x == 0 and y == 0: 
+    gui.alert('자동화업무를 중지합니다. 실행버튼 클릭 시 처음부터 실행합니다.')
+    sys.exit()
+
+
 
 
 ########### class function ##############################################################################
@@ -61,8 +68,6 @@ class window__base__setting(QMainWindow, mainUi) :
         self.find_projectImg_btn.clicked.connect(self.findProjectImg)
         self.find_manageImg_btn.clicked.connect(self.findManageImg)
 
-        # 테스트 기능(운영 배포시 삭제)
-        self.refresh_btn.clicked.connect(self.refresh)
     # def __init__ End #
 
 
@@ -152,16 +157,6 @@ class window__base__setting(QMainWindow, mainUi) :
             gui.alert('계좌명 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
             logging.debug(e)
             sys.exit()
-
-    
-    #7 refresh 조회
-    def refresh(self):
-        img = gui.locateOnScreen(self.refresh_path.toPlainText())
-        center = gui.center(img)
-        gui.click(center)
-    #  def refresh End #
-    
-
 ########## function ###################################################################################
 # 확장자 변경
 def xlsToXlsxChange(self):
@@ -216,8 +211,14 @@ def checkOpenFile(self) :
     try :
         fileNm = self.file_nm.toPlainText()
         filePath = self.file_path.toPlainText()
-        xl = win32.gencache.EnsureDispatch('Excel.Application')
+        xl = win32.Dispatch('Excel.Application')
+
+        if len(gui.getWindowsWithTitle(fileNm.split('.')[0])) < 1: # 아예 엑셀프로그램이 열려있지 않으면 오픈
+            xl.Workbooks.Open(Filename = filePath)
+            xl.Visible = True
+            return True
         
+            
         if xl.Workbooks.Count > 0 :     # 열려있는 파일 중 특정 Excel 이름과 일치하는 파일이 없으면 새 파일 오픈
             for excel in xl.Workbooks :
                 if not excel.Name == fileNm :
@@ -345,7 +346,7 @@ def makeTable(self, titleList, excelList):
 
         # 상태 테이블 기본설정
         for i in range(0, maxRowCnt) :
-            statusTb.setItem(i, 0, QTableWidgetItem('False'))
+            statusTb.setItem(i, 0, QTableWidgetItem('Fail'))
         # for in range End #
     except Exception as e:
         logging.debug('엑셀 테이블 생성 실패 : ', e)
