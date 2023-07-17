@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QTableWidgetItem
 import pyperclip # 데이터 복사 및 붙여넣기 
 import time
 import logging # 로그
-from enum import Enum
+import sys              # 시스템 정보
 
 
 # 공통 경로
@@ -33,8 +33,10 @@ def autoSave(self, excelList):
 
                 if i==0:
                     imgRightClick('결의구분타이틀.png')
-                    if data == '수입': imgClick('수입결의서TXT.png')
-                    else: imgClick('지출결의서TXT.png')
+                    if data == '수입': 
+                        imgClick('수입결의서TXT.png')
+                    else: 
+                        imgClick('지출결의서TXT.png')
                     continue
                 elif i==2:
                     imgRightClick('사업타이틀.png')
@@ -55,9 +57,11 @@ def autoSave(self, excelList):
                     pyperclip.copy(data)
                     gui.hotkey('ctrl', 'v')
 
-                    # 본인부담금수입인 경우, 대상자 항목이 오픈됨.
+                    # 본인부담금수입인 경우, 대상자 항목이 오픈되고 가장 첫번째 대상자를 선택한다.
                     if data == '본인부담금수입':
                         imgRightInClick('대상자.png')
+                        time.sleep(1)
+                        gui.press('enter')
 
                     continue
                 elif i==5:
@@ -129,7 +133,7 @@ def imgClick(imgNm):
         gui.click(center)
     else:
         gui.alert(f'찾는 이미지 : {imgNm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        return False
+        sys.exit()
 # def imgClick End #
 
 
@@ -143,7 +147,7 @@ def imgRightClick(imgNm):
         gui.click(moveX, moveY)
     else:
         gui.alert(f'찾는 이미지 : {imgNm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        return False
+        sys.exit()
 # def imgRightClick End #
 
 
@@ -157,7 +161,7 @@ def imgLeftClick(imgNm):
         gui.click(moveX, moveY)
     else:
         gui.alert(f'찾는 이미지 : {imgNm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        return False
+        sys.exit()
 
 
 #3 사용자가 올린 사업명 이미지 경로를 찾아서 가운데 클릭
@@ -197,6 +201,10 @@ def customizationManageImgClick(self):
             gui.click(center)
         else:
             gui.alert(f'찾는 이미지 : {imgNm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+            sys.exit()
+    else:
+        gui.alert(f'찾는 이미지 : {imgNm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        sys.exit()
             
  
 
@@ -222,9 +230,9 @@ def imgRightInClick(imgNm):
     img = gui.locateOnScreen(imgDirPath + imgNm)
 
     if img is not None:
-        moveX = img.left + img.width + 10
+        moveX = img.left + img.width - 20
         moveY = img.top + img.height // 2
         gui.click(moveX, moveY)
     else:
         gui.alert(f'찾는 이미지 : {imgNm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        return False
+        sys.exit()

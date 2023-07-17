@@ -11,11 +11,9 @@ from PyQt5.QAxContainer import *
 from PyQt5.QtGui import *
 import psycopg2 as pg # PostgreSQL 연동
 import re # 정규식 표현
-import time 
 import openpyxl # 엑셀 
 import win32com.client as win32 # 윈도우 앱을 활용할 수 있게 해주는 모듈
 import logging # 로그
-import signal # 시그널
 
 
 ##### Module import 
@@ -23,15 +21,7 @@ from module import auto_save
 
 
 
-########## 참고한 블로그 ###############################################################################
-# PyQt5 사용법 : https://coding-kindergarten.tistory.com/60
-# 파이썬과 PostgreSQL 연결 : https://edudeveloper.tistory.com/131
-# Tkinter 위젯 배치 :  https://camplee.tistory.com/32
-# Tkinter 위젯 x,y 배치 : https://cosmosproject.tistory.com/610
-# Tkinter 여러가지 설정(읽어보기) : https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=yheekeun&logNo=220701094001
-# f문자열 포맷팅 사용법 : https://www.daleseo.com/python-f-strings/
-# 파일이 python에서 열려있는지 확인하는 방법 : https://cyworld.tistory.com/3053
-# 이미지 좌표 확인 및 가운데 클릭하는 방법 : https://forward.tistory.com/entry/pyautogui-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%A2%8C%ED%91%9C-%EC%95%8C%EC%95%84%EB%82%B4-%EB%A7%88%EC%9A%B0%EC%8A%A4%EB%A1%9C-%ED%81%B4%EB%A6%AD
+
 
 ########### 전역처리 ########################################################################################
 # 파일경로
@@ -44,16 +34,6 @@ logger.setLevel(logging.DEBUG)
 
 # 기본 딜레이 설정
 gui.PAUSE = 0.2
-
-
-
-x, y = gui.position()
-if x == 0 and y == 0: 
-    gui.alert('자동화업무를 중지합니다. 실행버튼 클릭 시 처음부터 실행합니다.')
-    sys.exit()
-
-
-
 
 ########### class function ##############################################################################
 class window__base__setting(QMainWindow, mainUi) :
