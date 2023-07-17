@@ -18,7 +18,7 @@ import logging # 로그
 
 ##### Module import 
 from module import auto_save
-
+import module.xls_to_xlsx as xlsToXlsx
 
 
 
@@ -65,7 +65,8 @@ class window__base__setting(QMainWindow, mainUi) :
             if ('.xlsx' in fileNm) or ('.xls' in fileNm):
                 # 파일변환 작업 필요
                 if 'xls' == fileNm.split('.')[1]: 
-                    xlsToXlsxChange(self)
+                    # xlsToXlsxChange(self)
+                    xlsToXlsx.xlsToXlsx(self)
                     self.file_nm.setText(fileNm + 'x')
                     self.file_path.setText(filePath[0] + 'x')
                 else:
@@ -78,9 +79,6 @@ class window__base__setting(QMainWindow, mainUi) :
             logging.debug(e)
             sys.exit()
     # def findFn End #
-
-
-    
 
 
     #2 자동업로드 시작
@@ -122,7 +120,7 @@ class window__base__setting(QMainWindow, mainUi) :
     # def findProjectImg End #
 
 
-    #5 계좌 이미지 업로드
+    #5 계좌 이미지 업로드(필요없을 수도 있음)
     def findManageImg(self):
         try:
             filePath = QFileDialog.getOpenFileName(self)
@@ -138,32 +136,19 @@ class window__base__setting(QMainWindow, mainUi) :
             logging.debug(e)
             sys.exit()
 ########## function ###################################################################################
-# 확장자 변경
-def xlsToXlsxChange(self):
-    filePath = self.file_path.toPlainText()
-    excel = win32.gencache.EnsureDispatch('Excel.Application')
-    wb = excel.Workbooks.Open(filePath)
-
-    wb.SaveAs(filePath + "x", FileFormat = 51) #FileFormat = 51 is for .xlsx extension
-    wb.Close() #FileFormat = 56 is for .xls extension
-    excel.Application.Quit()
-# def xlsToXlsxChange End #
-
-
-
-
-# 자동화 실행 전에 w4c_cd가 DB에 등록된 정보와 일치하는지 확인.
+#1# 자동화 실행 전에 w4c_cd가 DB에 등록된 정보와 일치하는지 확인.
 def check(self):
-    checkW4cCd = self.w4c_cd.toPlainText().replace(' ', '') # 사용자가 입력한 w4c_cd
-    checkFileNm = self.file_nm.toPlainText() # 사용자가 호출한 첨부파일명
-    checkFilePath = self.file_path.toPlainText() # 사용자가 호출한 첨부파일 경로
-
+    checkW4cCd = self.w4c_cd.toPlainText().replace(' ', '')       #1 사용자가 입력한 희망e음 코드
+    checkFilePath = self.file_path.toPlainText()                  #2 전표정보 첨부파일 경로
+    checkProjectImgPath = self.file_projectImg_path.toPlainText() #3 사업명이미지 경로
+    checkManageImgPath = self.file_manageImg_path().toPlainText() #4 계좌명이미지 경로
 
     try: 
-        if checkFileNm.replace(' ', '') != '' and checkFilePath.replace(' ', '') != '' and checkW4cCd != '':
+        if checkFilePath.replace(' ', '') != '' and checkProjectImgPath != '' and checkManageImgPath != '' and checkW4cCd != '':
             # w4c_cd 정규표현식 확인
             if len(checkW4cCd) == 11 and re.match('[a-zA-z0-9]', checkW4cCd):
                 conn = pg.connect(host='192.168.0.11', dbname='test_hearthands', user='postgres', password='123qwe```', port=54332) # DB정보
+
                 with conn:
                     cur = conn.cursor()
                     stmt = cur.mogrify('SELECT w4c_code FROM common.org_info WHERE w4c_code = %s', (checkW4cCd, )) # PreparedStatement 생성
@@ -186,7 +171,7 @@ def check(self):
 
 
 
-# 파일이 열려있는지 확인.
+#2# 파일이 열려있는지 확인.
 def checkOpenFile(self) :
     try :
         fileNm = self.file_nm.toPlainText()
@@ -216,36 +201,32 @@ def checkOpenFile(self) :
 
 
 
-# 자동화 실행(after)
+#3# 자동화 실행(after)
 def startAuto(self):
     logging.info('startAuto')
 
     # Active
     excelWindow = gui.getWindowsWithTitle('마음손거래내역')[0] # 파일명 호출
     if excelWindow.isActive == False: excelWindow.activate() # 파일 활성화
-    # time.sleep(0.2)
     
     # Action
     excelList = makeExcelData(self)       #1 조회한 엑셀 데이터 생성
     titleList = excelList[0]
     makeTable(self, titleList, excelList) #2 조회한 엑셀 데이터를 가지고 테이블 생성
-    # time.sleep(0.2)
 
     # Active
     w4cWindow = gui.getWindowsWithTitle('사회복지시설정보시스템(1W)')[0] # 프로그램 호출
     if w4cWindow.isActive == False: w4cWindow.activate()           # 프로그램 활성화
-    # time.sleep(0.2)
 
     # Action
     auto_save.autoSave(self, excelList)  #2 결의서/전표 자동저장 작업
-    # time.sleep(0.2)
 
     ending(self)    #3 다 끝나면 종료
 # def startAuto(self) End #
 
 
 
-#0 엑셀데이터 생성
+#4# 엑셀데이터 생성
 ''' 
     @param self
     @return excelList 
@@ -296,7 +277,7 @@ def makeExcelData(self):
 # def makeExcelData End #
 
 
-#1 테이블 생성
+#5# 테이블 생성
 def makeTable(self, titleList, excelList):
     try:
         wb = openpyxl.load_workbook(self.file_path.toPlainText())
@@ -334,31 +315,17 @@ def makeTable(self, titleList, excelList):
 # def makeTable(self) End
 
 
-
-
-
-
-
-
-
-
-
-# '실행중'으로 상태변경
+#6# '실행중'으로 상태변경
 def starting(self) :
     self.status_text.setText('실행중')
     self.status_text.setStyleSheet('color: red')
 # def starting(self) End #
 
-# '종료'으로 상태변경
+#7# '종료'으로 상태변경
 def ending(self) :
     self.status_text.setText('종료')
     self.status_text.setStyleSheet('Color: black')
 # def ending(self) End #
-
-
-
-
-
 
 
 ########## Start Program(PyQt5 Designer) ###################################################################################
