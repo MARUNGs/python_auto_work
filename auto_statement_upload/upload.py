@@ -58,8 +58,8 @@ class window__base__setting(QMainWindow, mainUi) :
         self.find_projectImg_btn.clicked.connect(self.find_project_img)     # 전표정보 - 첨부 사업이미지
         self.find_manageImg_btn.clicked.connect(self.find_manage_img)       # 전표정보 - 첨부 계좌이미지
 
-        self.file_payroll_btn.clicked.connect(self.find_fn)                # 급여대장 - 첨부 엑셀파일
-        self.start_payroll_btn.clicked.connect(self.start_payroll_fn)       # 급여대장 - 시작
+        # self.file_payroll_btn.clicked.connect(self.find_fn)                # 급여대장 - 첨부 엑셀파일
+        # self.start_payroll_btn.clicked.connect(self.start_payroll_fn)       # 급여대장 - 시작
 
     # def __init__ End #
 

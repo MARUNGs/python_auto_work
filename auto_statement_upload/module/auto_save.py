@@ -56,6 +56,7 @@ def auto_save(self, excel_list):
                     gui.press('tab')
                     pyperclip.copy(data)
                     gui.hotkey('ctrl', 'v')
+                    img_click('계정코드박스.png') # 포커스 초기화하여 '대상자' 항목을 나타내기 위함
 
                     # 본인부담금수입인 경우, 대상자 항목이 오픈되고 가장 첫번째 대상자를 선택한다.
                     if data == '본인부담금수입':
@@ -159,8 +160,8 @@ def imgLeftClick(img_nm):
     @param self : PyQt5
 '''
 def customization_project_img_click(self):
-    img_path = self.file_projectImg_path.toPlainText()
-    img_nm = self.file_projectImg_nm.toPlainText().split('.')[0]
+    img_path = self.file_project_img_path.toPlainText()
+    img_nm = self.file_project_img_nm.toPlainText().split('.')[0]
 
     click_img = gui.locateOnScreen(img_path)
 
@@ -175,11 +176,11 @@ def customization_project_img_click(self):
 #4 (사용안함, 계좌 관련된 내용 삭제예정)사용자가 올린 계좌명 이미지 경로를 찾아서 가운데 클릭
 def customization_manage_img_click(self):
     find_manage_img = gui.locateOnScreen(img_dir_path + '계좌번호(선택).png')
-    img_nm = self.file_projectImg_nm.toPlainText().split('.')[0]
+    img_nm = self.file_project_img_nm.toPlainText().split('.')[0]
 
     # 만약, 사업이 세팅되어 계좌번호가 자동적으로 세팅되어 있지 않다면 이미지를 찾아서 클릭할 것.
     if find_manage_img == None:
-        img_path = self.file_manageImg_path.toPlainText()
+        img_path = self.file_manage_img_path.toPlainText()
         img_right_click('계좌번호타이틀.png')
         click_img = gui.locateOnScreen(img_path)
 
