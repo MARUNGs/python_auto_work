@@ -1,7 +1,7 @@
 # 엑셀 확장자 변환작업(xls to xlsx)
 import win32com.client as win32
 
-def xlsToXlsx(self):
+def xls_to_xlsx(self):
     fname = self.file_path.toPlainText()
     excel = win32.Dispatch('Excel.Application')
     wb = excel.Workbooks.Open(fname)
