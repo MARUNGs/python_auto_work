@@ -63,10 +63,8 @@ class window__base__setting(QMainWindow, mainUi) :
             fileNm = os.path.basename(filePath[0])
 
             if ('.xlsx' in fileNm) or ('.xls' in fileNm):
-                # 파일변환 작업 필요
                 if 'xls' == fileNm.split('.')[1]: 
-                    # xlsToXlsxChange(self)
-                    xlsToXlsx.xlsToXlsx(self)
+                    xlsToXlsx.xlsToXlsx(self)                   # 파일변환 작업
                     self.file_nm.setText(fileNm + 'x')
                     self.file_path.setText(filePath[0] + 'x')
                 else:
