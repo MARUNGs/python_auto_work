@@ -74,10 +74,13 @@ def auto_save(self, excel_list):
                     continue
                 elif i==6 or i==7:
                     img_right_click('금액타이틀.png')
-                    # 수입이던지, 지출이던지간에 어차피 금액은 다시 세팅될것이므로 그냥 두자...
+                    
                     gui.hotkey('ctrl', 'a')
                     gui.press('backspace')
-                    pyperclip.copy(data)
+
+                    if rows[0] == '수입': pyperclip.copy(rows[6])
+                    elif rows[0] == '지출': pyperclip.copy(rows[7])
+                    
                     gui.hotkey('ctrl', 'v')
                     continue
                 elif i==9:
