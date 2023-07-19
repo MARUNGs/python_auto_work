@@ -43,7 +43,7 @@
      <bool>false</bool>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_1">
      <property name="toolTip">
@@ -151,7 +151,7 @@ QPushButton:pressed {
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;D:\ysk\Python\python_auto_work\download_file\마음손거래내역_20230712053931하늘빛요양원.xlsx&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;D:\ysk\Python\python_auto_work\download_file\마음손거래내역_하늘빛요양원운영전표정보테스트.xlsx&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="placeholderText">
         <string>첨부파일 경로</string>
@@ -174,7 +174,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;마음손거래내역_20230712053931하늘빛요양원.xlsx&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;마음손거래내역_하늘빛요양원운영전표정보테스트.xlsx&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="placeholderText">
         <string>첨부파일명</string>
@@ -394,7 +394,7 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>1120</x>
-        <y>160</y>
+        <y>170</y>
         <width>161</width>
         <height>101</height>
        </rect>
@@ -432,7 +432,7 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>1290</x>
-        <y>160</y>
+        <y>170</y>
         <width>161</width>
         <height>101</height>
        </rect>
@@ -461,6 +461,41 @@ QPushButton:pressed {
       </property>
       <property name="shortcut">
        <string>Ctrl+9</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="move_simple_menu_btn">
+      <property name="geometry">
+       <rect>
+        <x>950</x>
+        <y>170</y>
+        <width>161</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>HY헤드라인M</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>실행버튼을 누르면 자동화가 실행되며 더이상 마우스, 키보드 작업이 어렵습니다.</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton:hover {
+	background-color: rgb(222, 222, 222);
+}
+
+QPushButton:pressed {
+	background-color: rgb(180, 180, 180);
+	
+}</string>
+      </property>
+      <property name="text">
+       <string>화면 이동</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
       </property>
      </widget>
     </widget>
@@ -526,7 +561,7 @@ QPushButton:pressed {
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;D:\ysk\Python\python_auto_work\download_file\마음손거래내역_20230717112748하늘빛요양원급여대장테스트.xls&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;D:\ysk\Python\python_auto_work\download_file\마음손거래내역_급여대장테스트.xlsx&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="placeholderText">
         <string>첨부파일 경로</string>
@@ -549,7 +584,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;마음손거래내역_20230717112748하늘빛요양원급여대장테스트.xls&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;마음손거래내역_급여대장테스트.xlsx&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="placeholderText">
         <string>첨부파일명</string>
@@ -585,7 +620,7 @@ QPushButton:pressed {
 }</string>
       </property>
       <property name="text">
-       <string>실행(ctrl + F1)</string>
+       <string>실행(ctrl + F3)</string>
       </property>
       <property name="shortcut">
        <string>Ctrl+F1</string>
@@ -749,6 +784,41 @@ QPushButton:pressed {
         <string/>
        </property>
       </widget>
+     </widget>
+     <widget class="QPushButton" name="move_payroll_menu_btn">
+      <property name="geometry">
+       <rect>
+        <x>950</x>
+        <y>170</y>
+        <width>161</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>HY헤드라인M</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="toolTip">
+       <string>실행버튼을 누르면 자동화가 실행되며 더이상 마우스, 키보드 작업이 어렵습니다.</string>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton:hover {
+	background-color: rgb(222, 222, 222);
+}
+
+QPushButton:pressed {
+	background-color: rgb(180, 180, 180);
+	
+}</string>
+      </property>
+      <property name="text">
+       <string>화면 이동</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
      </widget>
     </widget>
    </widget>

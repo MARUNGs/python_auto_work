@@ -63,7 +63,9 @@ def auto_save(self, excel_list):
                         img_right_in_click('대상자.png')
                         time.sleep(1)
                         gui.press('enter')
-
+                    # 장기요양급여수입인 경우 팝업창이 오픈되는데 반영을 기준으로 선택하도록 한다.
+                    elif data == '장기요양급여수입':
+                        pick_account_반영(data, 'account_subject')
                     continue
                 elif i==5:
                     img_click('결의서적요.png')
@@ -90,19 +92,24 @@ def auto_save(self, excel_list):
                         pyperclip.copy(data)
                         gui.hotkey('ctrl', 'v')
                         time.sleep(0.2)
+
+                        # '장기요양급여수입' 계정과목같은 경우는, 마음손에서 반영/미반영을 별도로 처리하지 않을 때 상대계정코드목록 팝업창이 오픈하게 된다.
+                        # 따라서, 코드/명 항목이 존재하면 인풋에 값을 입력하고 검색한다.
+                        if data == '장기요양급여수입':
+                            pick_account_반영(data, 'opponent_subject')
                         continue
                     else:
                         continue
 
             if i == max_col_cnt-1:
                 time.sleep(0.5)
-                imgLeftClick('조회.png') # 포커스 초기화 클릭
+                img_left_click('조회.png') # 포커스 초기화 클릭
                 time.sleep(0.5)
                 gui.hotkey('alt', 'f8') # 저장
                 time.sleep(0.5)
                 screen_center_click() # 포커스 초기화 클릭
                 time.sleep(0.5)
-                imgLeftClick('저장취소.png')
+                img_left_click('저장취소.png')
                 time.sleep(0.5)                
                 screen_center_click() # 포커스 초기화 클릭
                 time.sleep(0.5)                
@@ -146,7 +153,7 @@ def img_right_click(img_nm):
 
 
 # 이미지 찾아서 이미지의 왼쪽 위치 클릭 기능
-def imgLeftClick(img_nm):
+def img_left_click(img_nm):
     img = gui.locateOnScreen(img_dir_path + img_nm)
 
     if img is not None:
@@ -227,3 +234,25 @@ def img_right_in_click(img_nm):
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         sys.exit()
+
+
+#8 계정과목코드가 '장기요양급여수입'인 경우 반영을 픽스하기 위한 기능
+def pick_account_반영(data, type):
+    img_left_click('조회.png') # 포커스 초기화 클릭
+    time.sleep(1.0)
+    
+    if type == 'account_subject':
+        img_click('팝업_계정코드목록.png')
+        time.sleep(1.0)
+        gui.press('enter') # 선택
+        time.sleep(0.5)
+    elif type == 'opponent_subject':
+        img_click('코드명_장기요양급여수입.png')
+        gui.hotkey('ctrl', 'a')
+        gui.press('backspace')
+        pyperclip.copy(data)
+        gui.hotkey('ctrl', 'v')
+        gui.press('enter')
+        time.sleep(1.0)
+        gui.press('enter') # 선택
+        time.sleep(0.5)

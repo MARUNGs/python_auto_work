@@ -12,22 +12,20 @@
 
 ########## import list ##############################################################################
 ##### Library import 
-import os        # 운영체제 정보
-import pyautogui as gui # 운영체제 제어
-import sys              # 시스템 정보
-from PyQt5.QtWidgets import *  # PyQt5 GUI
-from PyQt5 import uic   # .ui 파일 호출
+import os                          # 운영체제 정보
+import pyautogui as gui            # 운영체제 제어
+import sys                         # 시스템 정보
+from PyQt5.QtWidgets import *      # PyQt5 GUI
+from PyQt5 import uic              # .ui 파일 호출
 from PyQt5.QAxContainer import *
 from PyQt5.QtGui import *
-import psycopg2 as pg # PostgreSQL 연동
-import re # 정규식 표현
-import openpyxl # 엑셀 
-import win32com.client as win32 # 윈도우 앱을 활용할 수 있게 해주는 모듈
-import logging # 로그
+import openpyxl                    # 엑셀 
+import logging                     # 로그
 
 
 ##### Module import 
 from module import auto_save             # 자동업로드 및 저장기능 수행
+from module import check                 # 시작 전 확인기능 수행
 import module.xls_to_xlsx as xls_to_xlsx # 엑셀 확장자 변경
 
 
@@ -36,6 +34,9 @@ import module.xls_to_xlsx as xls_to_xlsx # 엑셀 확장자 변경
 ########### 전역처리 ########################################################################################
 # 파일경로
 mainUi = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[0]
+
+# 공통이미지경로
+img_dir_path = os.path.dirname(__file__) + os.sep + 'img' + os.sep
 
 # 로그 설정
 logFormat = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
@@ -55,9 +56,11 @@ class window__base__setting(QMainWindow, mainUi) :
         self.find_btn.clicked.connect(self.find_fn)                        # 전표정보 - 첨부 엑셀파일
         self.start_btn.clicked.connect(self.start_fn)                      # 전표정보 - 시작
         self.stop_btn.clicked.connect(self.stop_fn)                        # 전표정보 - 종료
-        self.find_projectImg_btn.clicked.connect(self.find_project_img)     # 전표정보 - 첨부 사업이미지
-        self.find_manageImg_btn.clicked.connect(self.find_manage_img)       # 전표정보 - 첨부 계좌이미지
+        self.find_projectImg_btn.clicked.connect(self.find_project_img_fn)    # 전표정보 - 첨부 사업이미지
+        self.find_manageImg_btn.clicked.connect(self.find_manage_img_fn)      # 전표정보 - 첨부 계좌이미지 <<<<<<<<<<<<<<<<<< 관련 기능 곧 삭제 예정
+        self.move_simple_menu_btn.clicked.connect(self.move_simple_menu_fn)   # 전표정보 - 간편입력 메뉴로 이동
 
+        self.move_payroll_menu_btn.clicked.connect(self.move_payroll_menu_fn) # 급여대장 등록 메뉴로 이동
         # self.file_payroll_btn.clicked.connect(self.find_fn)                # 급여대장 - 첨부 엑셀파일
         # self.start_payroll_btn.clicked.connect(self.start_payroll_fn)       # 급여대장 - 시작
 
@@ -98,7 +101,7 @@ class window__base__setting(QMainWindow, mainUi) :
 
         if gui.confirm('전표정보 자동업로드 업무를 실행하시겠습니까?'):
             starting(self)
-            if check(self): start_auto(self) # 확인사항 조건이 맞으면 자동업로드 시작
+            if check.check(self): start_auto(self) # 확인사항 조건이 맞으면 자동업로드 시작
             else: self.stopFn
         else:
             gui.alert('전표정보 자동업로드 실행을 취소합니다.')
@@ -109,7 +112,7 @@ class window__base__setting(QMainWindow, mainUi) :
     def start_payroll_fn(self):
         logging.info('----- 급여대장 START -----')
 
-    # def startPayrollFn End
+    # def start_payroll_fn End
 
 
     #3 자동업로드 중지
@@ -117,11 +120,11 @@ class window__base__setting(QMainWindow, mainUi) :
         gui.alert('자동화 업무를 중단합니다.')
         ending(self)
         sys.exit()
-    # def stopFn End #
+    # def stop_fn End #
 
 
     #4 사업명 이미지 업로드
-    def find_project_img(self):
+    def find_project_img_fn(self):
         try:
             filePath = QFileDialog.getOpenFileName(self)
             fileNm = os.path.basename(filePath[0])
@@ -135,11 +138,11 @@ class window__base__setting(QMainWindow, mainUi) :
             gui.alert('사업명 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
             logging.debug(e)
             sys.exit()
-    # def findProjectImg End #
+    # def find_project_img_fn End #
 
 
     #5 계좌 이미지 업로드(필요없을 수도 있음)
-    def find_manage_img(self):
+    def find_manage_img_fn(self):
         try:
             filePath = QFileDialog.getOpenFileName(self)
             fileNm = os.path.basename(filePath[0])
@@ -153,73 +156,32 @@ class window__base__setting(QMainWindow, mainUi) :
             gui.alert('계좌명 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
             logging.debug(e)
             sys.exit()
+    # def fine_manage_img_fn End #
+
+
+    #6 전표정보 - 간편입력 메뉴로 이동
+    def move_simple_menu_fn(self):
+        move_to_img('회계.png', self)
+        img_db_click('결의및전표관리.png', self)
+        img_db_click('결의서전표간편입력.png', self)
+    # def move_simple_menu_fn End #
+
+
+    #7 급여대장 등록 메뉴로 이동
+    def move_payroll_menu_fn(self):
+        img_db_click('간편입력.png', self)
+        img_db_click('급여대장등록.png', self)
+    # def move_payroll_menu_fn End #
 ########## function ###################################################################################
-#1# 자동화 실행 전에 w4c_cd가 DB에 등록된 정보와 일치하는지 확인.
-def check(self):
-    check_w4c_cd = self.w4c_cd.toPlainText().replace(' ', '')         #1 사용자가 입력한 희망e음 코드
-    check_file_path = self.file_path.toPlainText()                    #2 전표정보 첨부파일 경로
-    check_project_img_path = self.file_project_img_path.toPlainText() #3 사업명이미지 경로
-    check_manage_img_path = self.file_manage_img_path.toPlainText()   #4 계좌명이미지 경로
-
-    try: 
-        if check_file_path.replace(' ', '') != '' and check_project_img_path != '' and check_manage_img_path != '' and check_w4c_cd != '':
-            # w4c_cd 정규표현식 확인
-            if len(check_w4c_cd) == 11 and re.match('[a-zA-z0-9]', check_w4c_cd):
-                conn = pg.connect(host='192.168.0.11', dbname='test_hearthands', user='postgres', password='123qwe```', port=54332) # DB정보
-
-                with conn:
-                    cur = conn.cursor()
-                    stmt = cur.mogrify('SELECT w4c_code FROM common.org_info WHERE w4c_code = %s', (check_w4c_cd, )) # PreparedStatement 생성
-                    cur.execute(stmt) # PreparedStatement 실행
-                    result = cur.fetchall()
-
-                    if len(result) > 0 and check_w4c_cd in result[0] : 
-                        return check_open_file(self)
-                    else : 
-                        gui.alert('희망e음 인증코드가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')
-                        return False
-            else:
-                gui.alert('첨부파일 및 희망e음코드가 올바르지 않습니다. \n확인 후 다시 작업을 수행하세요.')
-                return False
-    except Exception as e:
-        gui.alert('자동화 업무 수행 전 확인단계에서 오류가 발생했습니다. \n업로드한 자료 및 희망e음 인증코드를 확인하세요.')
-        logging.debug('check Exception : ', e)
-        sys.exit()
-# def check End #
 
 
 
-#2# 파일이 열려있는지 확인.
-def check_open_file(self) :
-    try :
-        file_nm = self.file_nm.toPlainText()
-        file_path = self.file_path.toPlainText()
-        xl = win32.Dispatch('Excel.Application')
-
-        if len(gui.getWindowsWithTitle(file_nm.split('.')[0])) < 1: # 아예 엑셀프로그램이 열려있지 않으면 오픈
-            xl.Workbooks.Open(Filename = file_path)
-            xl.Visible = True
-            return True
-        
-            
-        if xl.Workbooks.Count > 0 :     # 열려있는 파일 중 특정 Excel 이름과 일치하는 파일이 없으면 새 파일 오픈
-            for excel in xl.Workbooks :
-                if not excel.Name == file_nm :
-                    xl.Workbooks.Open(Filename = file_path)
-                    xl.Visible = True
-        else:                           # 안 열려져 있으면 오픈
-            xl.Workbooks.Open(Filename = file_path)
-            xl.Visible = True
-
-        return True
-    except Exception as e:
-        logging.debug('---- 해당 첨부파일 열림 확인 오류 ----', e)
-        sys.exit()
-# def check_open_file End #
 
 
 
-#3# 자동화 실행(after)
+
+
+#3-1# 자동화 실행(after) >> 간편입력
 def start_auto(self):
     logging.info('----- 전표정보 자동업로드 업무 실행 -----')
 
@@ -242,6 +204,11 @@ def start_auto(self):
     ending(self)    #3 다 끝나면 종료
 # def start_auto(self) End #
 
+
+#3-2# 자동화 실행 >> 급여대장
+def start_payroll_auto(self):
+    print('작업예정')
+# def start_payroll_auto End #
 
 
 #4# 엑셀데이터 생성
@@ -346,6 +313,27 @@ def ending(self) :
 # def ending(self) End #
 
 
+#8# 이미지 찾아서 이동
+def move_to_img(img_nm, self):
+    img = gui.locateOnScreen(img_dir_path + img_nm)
+
+    if img is not None: 
+        center = gui.center(img)
+        gui.click(center)
+    else:
+        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+# def move_to_img End #
+
+
+#9# 이미지 더블클릭
+def img_db_click(img_nm, self):
+    img = gui.locateOnScreen(img_dir_path + img_nm)
+
+    if img is not None: 
+        center = gui.center(img)
+        gui.doubleClick(center)
+    else:
+        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
 ########## Start Program(PyQt5 Designer) ###################################################################################
 '''
     프로그램 시작
