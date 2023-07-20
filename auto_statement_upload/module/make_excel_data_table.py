@@ -18,9 +18,12 @@ import openpyxl                     # 엑셀
     @param self
     @return excelList 
 '''
-def make_excel_data(self):
+def make_excel_data(self, title):
     try:
-        wb = openpyxl.load_workbook(self.file_path.toPlainText())
+        if title=='statement':
+            wb = openpyxl.load_workbook(self.file_path.toPlainText())
+        elif title=='payroll': #급여대장
+            wb = openpyxl.load_workbook(self.file_payroll_path.toPlainText())
         sheet = wb[wb._sheets[0].title]
         max_col_cnt = sheet.max_column
         excel_list = [] # 객체를 담을 리스트
@@ -67,9 +70,12 @@ def make_excel_data(self):
 
 
 #5# 테이블 생성
-def make_table(self, title_list, excel_list):
+def make_table(self, title_list, excel_list, title):
     try:
-        wb = openpyxl.load_workbook(self.file_path.toPlainText())
+        if title=='statement':
+            wb = openpyxl.load_workbook(self.file_path.toPlainText())
+        elif title=='payroll':
+            wb = openpyxl.load_workbook(self.file_payroll_path.toPlainText())
         sheet = wb[wb._sheets[0].title]
         max_col_cnt = sheet.max_column
         max_row_cnt = sheet.max_row - 1  # 타이틀을 제외한 데이터 row수

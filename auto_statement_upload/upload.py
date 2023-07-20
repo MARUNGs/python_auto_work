@@ -212,9 +212,9 @@ def start_auto(self):
     if excel_window.isActive == False: excel_window.activate() # 파일 활성화
     
     # Action
-    excel_list = make_excel_data_table.make_excel_data(self)       #1 조회한 엑셀 데이터 생성
+    excel_list = make_excel_data_table.make_excel_data(self, 'statement')       #1 조회한 엑셀 데이터 생성
     title_list = excel_list[0]
-    make_excel_data_table.make_table(self, title_list, excel_list) #2 조회한 엑셀 데이터를 가지고 테이블 생성
+    make_excel_data_table.make_table(self, title_list, excel_list, 'statement') #2 조회한 엑셀 데이터를 가지고 테이블 생성
 
     # Active
     w4c_window = gui.getWindowsWithTitle('사회복지시설정보시스템(1W)')[0] # 프로그램 호출
@@ -236,9 +236,9 @@ def start_payroll_auto(self):
     if excel_window.isActive == False: excel_window.activate()
 
     # Action
-    excel_list = make_excel_data_table.make_excel_data(self)       #1 조회한 엑셀 데이터 생성
+    excel_list = make_excel_data_table.make_excel_data(self, 'payroll')       #1 조회한 엑셀 데이터 생성
     title_list = excel_list[0]
-    make_excel_data_table.make_table(self, title_list, excel_list) #2 조회한 엑셀 데이터를 가지고 테이블 생성
+    make_excel_data_table.make_table(self, title_list, excel_list, 'payroll') #2 조회한 엑셀 데이터를 가지고 테이블 생성
 
     # Active
     w4c_window = gui.getWindowsWithTitle('사회복지시설정보시스템(1W)')[0]
