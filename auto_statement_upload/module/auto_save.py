@@ -120,8 +120,26 @@ def auto_save(self, excel_list):
                 time.sleep(0.5)
             
     except Exception as e:
-        logging.debug('자동저장(auto_save) Exception : ', e)
+        logging.debug('전표정보 자동저장(auto_save) Exception : ', e)
 # def auto_save End #
+
+
+
+
+
+
+def payroll_auto_save(self):
+    try:
+        logging.info('급여대장 시~~~~~~~~~~~~작')
+    except Exception as e:
+        logging.debug('급여대장 자동저장(payroll_auto_save) Exception : ', e)
+
+
+
+
+
+
+
 
 
 

@@ -709,7 +709,7 @@ p, li { white-space: pre-wrap; }
       <property name="title">
        <string>첨부 사업명이미지</string>
       </property>
-      <widget class="QTextEdit" name="file_payroll_projectImg_path">
+      <widget class="QTextEdit" name="file_payroll_project_img_path">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -735,7 +735,7 @@ p, li { white-space: pre-wrap; }
         <string>첨부파일 경로</string>
        </property>
       </widget>
-      <widget class="QTextEdit" name="file_payroll_projectImg_nm">
+      <widget class="QTextEdit" name="file_payroll_project_img_nm">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -758,7 +758,7 @@ p, li { white-space: pre-wrap; }
         <string>첨부파일명</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="find_projectImg_btn_2">
+      <widget class="QPushButton" name="find_payroll_project_img_btn">
        <property name="geometry">
         <rect>
          <x>610</x>
