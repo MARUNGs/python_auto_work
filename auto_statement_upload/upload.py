@@ -34,7 +34,7 @@ import module.xls_to_xlsx as xls_to_xlsx # 엑셀 확장자 변경
 
 ########### 전역처리 ########################################################################################
 # 파일경로
-mainUi = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[0]
+main_ui = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[0]
 
 # 공통이미지경로
 img_dir_path = os.path.dirname(__file__) + os.sep + 'img' + os.sep
@@ -48,7 +48,7 @@ logger.setLevel(logging.DEBUG)
 gui.PAUSE = 0.2
 
 ########### class function ##############################################################################
-class window__base__setting(QMainWindow, mainUi) :
+class window__base__setting(QMainWindow, main_ui) :
     def __init__(self) :
         super().__init__()
 
