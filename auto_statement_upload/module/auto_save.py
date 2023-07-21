@@ -199,7 +199,9 @@ def payroll_auto_save(self, excel_list):
                     #선택
 
                     gui.press('enter')
-                    time.sleep(0.5)
+                    time.sleep(1.0)
+                    gui.press('enter')
+                    time.sleep(1.0)
 
                     for idx in range(0,3):
                         # 다음 항목 활성화
@@ -207,7 +209,9 @@ def payroll_auto_save(self, excel_list):
 
                     continue
                 elif i==7:
-                    img_bottom_right_in_click('급여대장_금액.png')
+                    # img_bottom_right_in_click('급여대장_금액.png')
+
+                    # tab으로 찾은 금액 항목에 입력.
                     gui.hotkey('ctrl', 'a')
                     gui.press('backspace')
                     pyperclip.copy(data)
@@ -215,12 +219,16 @@ def payroll_auto_save(self, excel_list):
                     time.sleep(0.5)
 
                     # 다음 항목(적요) 활성화
-                    gui.press('tab')
-
                     # 만약 적요를 작성할거라면 별도로 처리하던지 여기서 이어서 작성하던지.
+                    for idx in range(0,2):
+                        # 다음 항목 활성화
+                        gui.press('tab')
+
                     continue
                 elif i==9:
-                    img_bottom_right_in_click('급여대장_상대계정과목_타이틀.png')
+                    # img_bottom_right_in_click('급여대장_상대계정과목_타이틀.png')
+
+                    # tab으로 찾은 상대계정 항목에 입력
                     gui.hotkey('ctrl', 'a')
                     gui.press('backspace')
                     pyperclip.copy(data)
@@ -229,10 +237,13 @@ def payroll_auto_save(self, excel_list):
 
                     # 팝업창을 오픈하기 위한 tab
                     gui.press('tab')
+                    time.sleep(0.5)
 
                     # 인건비 반영을 기준으로 그냥 엔터 침
-                    gui.press('enter') if data == '장기요양급여수입' else None
-
+                    if data == '장기요양급여수입':
+                        time.sleep(1.0)
+                        gui.press('enter')
+                        time.sleep(0.5)
                     
                     continue
             
@@ -243,6 +254,12 @@ def payroll_auto_save(self, excel_list):
                 time.sleep(0.5)
                 gui.press('enter') # 성공저장 확인
                 time.sleep(0.5)
+                img_click('급여대장_닫기.png')
+                time.sleep(0.5)
+                status_change_true(self, row_i) #### 성공 확인됨. Flag값 수정하기
+                
+                time.sleep(0.5)
+
         time.sleep(0.5)
     except Exception as e:
         logging.debug('급여대장 자동저장(payroll_auto_save) Exception : ', e)

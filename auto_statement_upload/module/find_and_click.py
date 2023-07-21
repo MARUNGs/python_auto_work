@@ -13,25 +13,41 @@ img_dir_path = os.path.dirname(__file__).replace('module', 'img') + os.sep
 gui.PAUSE = 0.2
 
 
-#8# 이미지 찾아서 이동
+########## Function ##############################################################################################################################
+# 이미지 찾아서 클릭
+def img_click(img_nm, self):
+    img = gui.locateOnScreen(img_dir_path + img_nm)
+
+    if img is not None: 
+        center = gui.center(img)
+        gui.click(center, interval=0.5)
+    else:
+        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+
+
+# 이미지 찾음유무 flag 확인
+def find_img_flag(img_nm):
+    img = gui.locateOnScreen(img_dir_path + img_nm)
+    return True if img is not None else False
+
+
+# 이미지 찾아서 이동
 def move_to_img(img_nm, self):
     img = gui.locateOnScreen(img_dir_path + img_nm)
 
     if img is not None: 
         center = gui.center(img)
-        gui.click(center)
+        gui.click(center, interval=0.5)
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-# def move_to_img End #
 
 
-#9# 이미지 더블클릭
+# 이미지 더블클릭
 def img_db_click(img_nm, self):
     img = gui.locateOnScreen(img_dir_path + img_nm)
 
     if img is not None: 
         center = gui.center(img)
-        gui.doubleClick(center)
+        gui.doubleClick(center, interval=0.5)
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-# def img_db_click End #

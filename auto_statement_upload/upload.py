@@ -181,6 +181,10 @@ class window__base__setting(QMainWindow, mainUi) :
 
     #7 급여대장 등록 메뉴로 이동
     def move_payroll_menu_fn(self):
+        # Active
+        w4c_window = gui.getWindowsWithTitle('사회복지시설정보시스템(1W)')[0] # 프로그램 호출
+        if w4c_window.isActive == False: w4c_window.activate()              # 프로그램 활성화
+
         find_and_click.img_db_click('간편입력.png', self)
         find_and_click.img_db_click('급여대장등록.png', self)
     # def move_payroll_menu_fn End #
@@ -244,8 +248,16 @@ def start_payroll_auto(self):
     w4c_window = gui.getWindowsWithTitle('사회복지시설정보시스템(1W)')[0]
     if w4c_window.isActive == False: w4c_window.activate()
 
-    # Action
-    auto_save.payroll_auto_save(self, excel_list) # 급여대장 전표 자동저장 작업
+    # Active 1 : 급여항목등록여부 확인하기
+    find_and_click.img_click('급여대장_급여항목등록.png')
+
+    if find_and_click.find_img_flag('급여대장_급여항목_순번.png'):
+        # Action 2 : 급여대장 전표 자동저장 작업
+        auto_save.payroll_auto_save(self, excel_list)
+    else:
+        gui.alert('급여대장 자동업로드시 급여항목이 등록되어야 사용이 가능합니다.')
+
+
 
     ending(self)
 # def start_payroll_auto End #
