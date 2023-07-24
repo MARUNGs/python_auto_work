@@ -30,8 +30,7 @@ def check(self):
                     cur.execute(stmt) # PreparedStatement 실행
                     result = cur.fetchall()
 
-                    if len(result) > 0 and check_w4c_cd in result[0] : 
-                        return check_open_file(self)
+                    if (len(result) > 0) and (check_w4c_cd in result[0]): return check_open_file(self)
                     else : 
                         gui.alert('희망e음 인증코드가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')
                         return False
@@ -49,8 +48,9 @@ def check(self):
 #2# 파일이 열려있는지 확인.
 def check_open_file(self) :
     try :
-        file_nm = self.file_nm.toPlainText()
         file_path = self.file_path.toPlainText()
+        length = len(file_path.rsplit(os.sep))
+        file_nm = file_path.rsplit(os.sep)[length-1]
         xl = win32.Dispatch('Excel.Application')
 
         if len(gui.getWindowsWithTitle(file_nm.split('.')[0])) < 1: # 아예 엑셀프로그램이 열려있지 않으면 오픈
