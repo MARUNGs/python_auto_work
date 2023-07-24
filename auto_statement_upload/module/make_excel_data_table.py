@@ -3,10 +3,6 @@
 ########## import list ##############################################################################################################################
 ##### Library import 
 from PyQt5.QtWidgets import *      # PyQt5 GUI
-import psycopg2 as pg               # PostgreSQL 연동
-import win32com.client as win32     # 윈도우 앱을 활용할 수 있게 해주는 모듈
-import re                           # 정규식 표현
-import pyautogui as gui             # 운영체제 제어
 import logging                      # 로그
 import sys                          # 시스템 정보
 import openpyxl                     # 엑셀 
@@ -72,15 +68,23 @@ def make_excel_data(self, title):
 #5# 테이블 생성
 def make_table(self, title_list, excel_list, title):
     try:
+        excel_tb    = None               # 엑셀 테이블
+        status_tb   = None               # 상태 테이블
+
         if title=='statement':
-            wb = openpyxl.load_workbook(self.file_path.toPlainText())
+            wb        = openpyxl.load_workbook(self.file_path.toPlainText())
+            excel_tb  = self.excel_tb
+            status_tb = self.status_tb
         elif title=='payroll':
             wb = openpyxl.load_workbook(self.file_payroll_path.toPlainText())
-        sheet = wb[wb._sheets[0].title]
+            excel_tb  = self.payroll_excel_tb
+            status_tb = self.payroll_status_tb
+
+
+        sheet       = wb[wb._sheets[0].title]
         max_col_cnt = sheet.max_column
         max_row_cnt = sheet.max_row - 1  # 타이틀을 제외한 데이터 row수
-        excel_tb = self.excel_tb         # 엑셀 테이블
-        status_tb = self.status_tb       # 상태 테이블
+
 
         # 테이블 세팅
         excel_tb.setColumnCount(max_col_cnt)

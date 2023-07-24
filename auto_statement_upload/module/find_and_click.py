@@ -15,7 +15,7 @@ gui.PAUSE = 0.2
 
 ########## Function ##############################################################################################################################
 # 이미지 찾아서 클릭
-def img_click(img_nm, self):
+def img_click(img_nm):
     img = gui.locateOnScreen(img_dir_path + img_nm)
 
     if img is not None: 

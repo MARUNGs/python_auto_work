@@ -351,29 +351,6 @@ def customization_project_img_click(self):
         return False
 
 
-#4 (사용안함, 계좌 관련된 내용 삭제예정)사용자가 올린 계좌명 이미지 경로를 찾아서 가운데 클릭
-def customization_manage_img_click(self):
-    find_manage_img = gui.locateOnScreen(img_dir_path + '계좌번호(선택).png')
-    img_nm = self.file_project_img_nm.toPlainText().split('.')[0]
-
-    # 만약, 사업이 세팅되어 계좌번호가 자동적으로 세팅되어 있지 않다면 이미지를 찾아서 클릭할 것.
-    if find_manage_img == None:
-        img_path = self.file_manage_img_path.toPlainText()
-        img_right_click('계좌번호타이틀.png')
-        click_img = gui.locateOnScreen(img_path)
-
-        if click_img is not None:
-            center = gui.center(click_img)
-            gui.click(center)
-        else:
-            gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-            sys.exit()
-    else:
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        sys.exit()
-            
- 
-
 #5 화면 정 가운데 클릭
 def screen_center_click():
     # 화면 크기 가져오기
@@ -430,7 +407,8 @@ def pick_account_반영(data, type):
 # 급여대장의 사업명 선택
 def customization_payroll_project_img_click(self):
     img_path = self.file_payroll_project_img_path.toPlainText()
-    img_nm = self.file_payroll_project_img_nm.toPlainText().split('.')[0]
+    length = len(img_path.rsplit(os.sep))
+    img_nm = img_path.rsplit(os.sep)[length-1]
 
     click_img = gui.locateOnScreen(img_path)
 

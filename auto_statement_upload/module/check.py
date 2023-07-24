@@ -2,6 +2,7 @@
 
 ########## import list ##############################################################################################################################
 ##### Library import 
+import os
 import psycopg2 as pg               # PostgreSQL 연동
 import win32com.client as win32     # 윈도우 앱을 활용할 수 있게 해주는 모듈
 import re                           # 정규식 표현
@@ -11,18 +12,18 @@ import sys                          # 시스템 정보
 
 
 ########## function #################################################################################################################################
+conn = pg.connect(host='192.168.0.11', dbname='test_hearthands', user='postgres', password='123qwe```', port=54332) # DB정보
+
+
 def check(self):
     check_w4c_cd = self.w4c_cd.toPlainText().replace(' ', '')         #1 사용자가 입력한 희망e음 코드
     check_file_path = self.file_path.toPlainText()                    #2 전표정보 첨부파일 경로
     check_project_img_path = self.file_project_img_path.toPlainText() #3 사업명이미지 경로
-    check_manage_img_path = self.file_manage_img_path.toPlainText()   #4 계좌명이미지 경로
 
     try: 
-        if check_file_path.replace(' ', '') != '' and check_project_img_path != '' and check_manage_img_path != '' and check_w4c_cd != '':
+        if check_file_path.replace(' ', '') != '' and check_project_img_path != '' and check_w4c_cd != '':
             # w4c_cd 정규표현식 확인
             if len(check_w4c_cd) == 11 and re.match('[a-zA-z0-9]', check_w4c_cd):
-                conn = pg.connect(host='192.168.0.11', dbname='test_hearthands', user='postgres', password='123qwe```', port=54332) # DB정보
-
                 with conn:
                     cur = conn.cursor()
                     stmt = cur.mogrify('SELECT w4c_code FROM common.org_info WHERE w4c_code = %s', (check_w4c_cd, )) # PreparedStatement 생성
@@ -105,8 +106,9 @@ def payroll_check(self):
 # 급여대장 파일 열렸는지 확인
 def check_open_payroll_file(self):
     try:
-        file_nm = self.file_payroll_nm.toPlainText()
         file_path = self.file_payroll_path.toPlainText()
+        length = len(file_path.rsplit(os.sep))
+        file_nm = file_path.rsplit(os.sep)[length-1]
         xl = win32.Dispatch('Excel.Application')
 
         if len(gui.getWindowsWithTitle(file_nm.split('.')[0])) < 1: # 엑셀프로그램이 열려있지 않으면 오픈
@@ -141,7 +143,7 @@ def check_open_payroll_file(self):
     @return True / False
 '''
 def code_check_DB(check_w4c_cd):
-    conn = pg.connect(host='192.168.0.11', dbname='test_hearthands', user='postgres', password='123qwe```', port=54332) # DB정보
+    
 
     with conn:
         cur = conn.cursor()
