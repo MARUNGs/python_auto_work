@@ -136,7 +136,8 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;4. 실행(ctrl+1) 버튼을 통해 자동업로드 업무를 수행합니다.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;    - &lt;/span&gt;&lt;span style=&quot; font-size:10pt; color:#da1619;&quot;&gt;'확인'을 누르면 자동업로드 업무를 진행하며, 작업이 완전히 종료되기 전까지 키보드 및 마우스 사용(동작)은 권장하지 않습니다.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;    - &lt;/span&gt;&lt;span style=&quot; font-size:10pt; color:#da1619;&quot;&gt;만약, 상태가 '종료'이거나 '중지'상태가 아닌 상황에서 키보드 및 마우스 사용(동작)이 수행된 경우 나타나는 오류는 사용자가 부담합니다.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;5. 모니터의 좌측 상단으로 마우스를 끌어다 두면 강제 종료됩니다.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;5. 모니터의 좌측 상단으로 마우스를 끌어다 두면 강제 종료됩니다.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;6. 매해마다 직/간접비 구분 설정이 필요합니다. (급여대장 등록 &amp;gt; 급여항목 등록)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </widget>
