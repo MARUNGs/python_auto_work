@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1483</width>
-    <height>1000</height>
+    <width>955</width>
+    <height>983</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,8 +26,8 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>1461</width>
-      <height>951</height>
+      <width>931</width>
+      <height>901</height>
      </rect>
     </property>
     <property name="maximumSize">
@@ -60,7 +60,7 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>1431</width>
+        <width>901</width>
         <height>321</height>
        </rect>
       </property>
@@ -72,7 +72,7 @@
         <rect>
          <x>10</x>
          <y>20</y>
-         <width>1411</width>
+         <width>851</width>
          <height>291</height>
         </rect>
        </property>
@@ -101,9 +101,9 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>360</y>
-        <width>1431</width>
-        <height>321</height>
+        <y>350</y>
+        <width>901</width>
+        <height>331</height>
        </rect>
       </property>
       <property name="title">
@@ -114,7 +114,7 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>10</x>
          <y>20</y>
-         <width>1411</width>
+         <width>851</width>
          <height>291</height>
         </rect>
        </property>
@@ -221,7 +221,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="title">
-       <string>첨부 사업명이미지</string>
+       <string>첨부 사업명 이미지</string>
       </property>
       <widget class="QTextEdit" name="file_project_img_path">
        <property name="geometry">
@@ -312,8 +312,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="start_btn">
       <property name="geometry">
        <rect>
-        <x>1110</x>
-        <y>20</y>
+        <x>180</x>
+        <y>160</y>
         <width>161</width>
         <height>101</height>
        </rect>
@@ -350,8 +350,8 @@ QPushButton:pressed {
      <widget class="QPushButton" name="stop_btn">
       <property name="geometry">
        <rect>
-        <x>1280</x>
-        <y>20</y>
+        <x>350</x>
+        <y>160</y>
         <width>161</width>
         <height>101</height>
        </rect>
@@ -385,8 +385,8 @@ QPushButton:pressed {
      <widget class="QPushButton" name="move_simple_menu_btn">
       <property name="geometry">
        <rect>
-        <x>940</x>
-        <y>20</y>
+        <x>10</x>
+        <y>160</y>
         <width>161</width>
         <height>101</height>
        </rect>
@@ -422,7 +422,7 @@ QPushButton:pressed {
        <rect>
         <x>10</x>
         <y>300</y>
-        <width>1431</width>
+        <width>881</width>
         <height>541</height>
        </rect>
       </property>
@@ -434,7 +434,7 @@ QPushButton:pressed {
         <rect>
          <x>120</x>
          <y>30</y>
-         <width>1301</width>
+         <width>751</width>
          <height>491</height>
         </rect>
        </property>
@@ -520,7 +520,7 @@ QPushButton:pressed {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>24</y>
+         <y>22</y>
          <width>591</width>
          <height>24</height>
         </rect>
@@ -546,8 +546,8 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="start_payroll_btn">
       <property name="geometry">
        <rect>
-        <x>1110</x>
-        <y>20</y>
+        <x>180</x>
+        <y>160</y>
         <width>161</width>
         <height>101</height>
        </rect>
@@ -584,8 +584,8 @@ QPushButton:pressed {
      <widget class="QPushButton" name="stop_payroll_btn">
       <property name="geometry">
        <rect>
-        <x>1280</x>
-        <y>20</y>
+        <x>350</x>
+        <y>160</y>
         <width>161</width>
         <height>101</height>
        </rect>
@@ -717,8 +717,8 @@ QPushButton:pressed {
      <widget class="QPushButton" name="move_payroll_menu_btn">
       <property name="geometry">
        <rect>
-        <x>940</x>
-        <y>20</y>
+        <x>10</x>
+        <y>160</y>
         <width>161</width>
         <height>101</height>
        </rect>
@@ -754,19 +754,19 @@ QPushButton:pressed {
        <rect>
         <x>10</x>
         <y>300</y>
-        <width>1431</width>
+        <width>881</width>
         <height>541</height>
        </rect>
       </property>
       <property name="title">
-       <string>첨부파일 내역</string>
+       <string>첨부 엑셀파일 내역</string>
       </property>
       <widget class="QTableWidget" name="payroll_excel_tb">
        <property name="geometry">
         <rect>
          <x>120</x>
          <y>30</y>
-         <width>1301</width>
+         <width>751</width>
          <height>491</height>
         </rect>
        </property>
@@ -810,8 +810,8 @@ QPushButton:pressed {
    <widget class="QLabel" name="status_text">
     <property name="geometry">
      <rect>
-      <x>1410</x>
-      <y>930</y>
+      <x>880</x>
+      <y>920</y>
       <width>51</width>
       <height>20</height>
      </rect>
@@ -829,8 +829,8 @@ QPushButton:pressed {
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>1390</x>
-      <y>930</y>
+      <x>870</x>
+      <y>920</y>
       <width>31</width>
       <height>20</height>
      </rect>
@@ -845,7 +845,7 @@ QPushButton:pressed {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1483</width>
+     <width>955</width>
      <height>21</height>
     </rect>
    </property>

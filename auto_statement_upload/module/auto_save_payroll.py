@@ -157,7 +157,7 @@ def auto_save_payroll(self, excel_list):
 
         gui.alert(f'급여대장 자동업로드 등록이 완료되었습니다. \n성공횟수: {success_count} \n실패횟수: {fail_count}')
     except Exception as e:
-        logging.debug('급여대장 자동저장(payroll_auto_save) Exception : ', e)
+        logging.debug('급여대장 자동저장(payroll_auto_save) Exception : ', str(e))
         sys.exit()
 
 

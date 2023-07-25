@@ -129,7 +129,7 @@ def auto_save(self, excel_list):
 
         gui.alert(f'전표정보 자동업로드 등록이 완료되었습니다. \n성공횟수: {success_count} \n실패횟수: {fail_count}')
     except Exception as e:
-        logging.debug('전표정보 자동저장(auto_save) Exception : ', e)
+        logging.debug('전표정보 자동저장(auto_save) Exception : ', str(e))
 # def auto_save End #
 
 

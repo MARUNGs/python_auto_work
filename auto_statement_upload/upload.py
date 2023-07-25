@@ -41,9 +41,14 @@ main_ui = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[
 img_dir_path = os.path.dirname(__file__) + os.sep + 'img' + os.sep
 
 # 로그 설정
-logFormat = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+# logging.basicConfig(filename='error.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.getLogger().setLevel(logging.DEBUG) # 로그레벨 설정
+log_file = 'app.log'
+file_handler = logging.FileHandler(log_file)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+logging.getLogger().addHandler(file_handler)
+
 
 # 기본 딜레이 설정
 gui.PAUSE = 0.2
@@ -92,7 +97,7 @@ class window__base__setting(QMainWindow, main_ui) :
                 gui.alert('xlsx 또는 xls 확장자만 허용합니다.')
         except Exception as e: 
             gui.alert('파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
-            logging.debug(e)
+            logging.debug(str(e))
 
 
     #2-1 전표 간편입력 자동업로드 시작
@@ -143,7 +148,7 @@ class window__base__setting(QMainWindow, main_ui) :
             change_file_path.setText(file_path[0]) if ('.png' in file_path[0]) else gui.alert('png 확장자 이미지만 허용합니다.')
         except Exception as e:
             gui.alert('사업명 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
-            logging.debug(e)
+            logging.debug(str(e))
 
 
     # 현재 탭에 맞는 메뉴로 이동

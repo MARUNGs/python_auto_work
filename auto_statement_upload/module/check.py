@@ -85,7 +85,7 @@ def check(self):
                 return False
     except Exception as e:
         gui.alert('자동화 업무 수행 전 확인단계에서 오류가 발생했습니다. \n업로드한 자료 및 희망e음 인증코드를 확인하세요.')
-        logging.debug('check Exception : ', e)
+        logging.debug('check Exception : ', str(e))
         sys.exit()
 # def check End #
 
@@ -116,7 +116,7 @@ def check_open_file(self) :
 
         return True
     except Exception as e:
-        logging.debug('---- 해당 첨부파일 열림 확인 오류 ----', e)
+        logging.debug('---- 해당 첨부파일 열림 확인 오류 ----', str(e))
         sys.exit()
 # def check_open_file End #
 
@@ -146,7 +146,7 @@ def payroll_check(self):
             return False
     except Exception as e:
         gui.alert('자동화 업무 수행 전 확인단계에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
-        logging.debug('급여대장 확인 기능 오류: ', e)
+        logging.debug('급여대장 확인 기능 오류: ', str(e))
         sys.exit()
 
 
@@ -176,7 +176,7 @@ def check_open_payroll_file(self):
 
         return True
     except Exception as e:
-        logging.debug('----- 해당 첨부파일 열림 확인 오류 -----', e)
+        logging.debug('----- 해당 첨부파일 열림 확인 오류 -----', str(e))
         sys.exit()
 # def check_open_payroll_file End #
 
