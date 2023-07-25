@@ -5,10 +5,11 @@
 import pyautogui as gui             # 운영체제 제어
 import os
 import sys                          # 시스템 정보
+import logging
 
 
 # 공통 경로
-img_dir_path = os.path.dirname(__file__).replace('module', 'img') + os.sep
+img_dir_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'img')) + os.sep
 # 기본 딜레이 설정
 gui.PAUSE = 0.2
 
@@ -16,13 +17,18 @@ gui.PAUSE = 0.2
 ########## Function ##############################################################################################################################
 # 이미지 찾아서 클릭
 def img_click(img_nm):
-    img = gui.locateOnScreen(img_dir_path + img_nm)
+    try:
+        img = gui.locateOnScreen(os.path.join(img_dir_path, img_nm))
 
-    if img is not None: 
-        center = gui.center(img)
-        gui.click(center, interval=0.5)
-    else:
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        if img is not None: 
+            center = gui.center(img)
+            gui.click(center, interval=0.5)
+        else:
+            gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+    except Exception as e:
+        logging.error('이미지 클릭 이슈: ', str(e))
+
+    
 
 
 # 이미지 찾음유무 flag 확인

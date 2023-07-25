@@ -58,7 +58,7 @@ def make_excel_data(self, title):
 
         return excel_list
     except Exception as e:
-        logging.debug('엑셀 데이터 생성 실패 : ', str(e))
+        logging.error('엑셀 데이터 생성 실패 : ', str(e))
         sys.exit()
 # def make_excel_data End #
 
@@ -109,6 +109,6 @@ def make_table(self, title_list, excel_list, title):
             status_tb.setItem(i, 0, QTableWidgetItem('Fail'))
         # for in range End #
     except Exception as e:
-        logging.debug('엑셀 테이블 생성 실패 : ', str(e))
+        logging.error('엑셀 테이블 생성 실패 : ', str(e))
         sys.exit()
 # def make_table(self) End
