@@ -9,10 +9,58 @@ import re                           # 정규식 표현
 import pyautogui as gui             # 운영체제 제어
 import logging                      # 로그
 import sys                          # 시스템 정보
+import base64
+from sshtunnel import SSHTunnelForwarder # SSH DB 연결
+import paramiko
+import io
 
 
 ########## function #################################################################################################################################
-conn = pg.connect(host='192.168.0.11', dbname='test_hearthands', user='postgres', password='123qwe```', port=54332) # DB정보
+'''
+    @param check_w4c_cd
+    @return result
+'''
+def DB_setting_and_select_result(check_w4c_cd):
+    try:
+        # pem 파일 경로
+        pem_path = __file__.replace(__file__.rsplit(os.sep)[len(__file__.rsplit(os.sep))-1], '') + 'hearthands-aws.pem'
+
+        with open(pem_path, 'rb') as f: blob = base64.b64encode(f.read())
+        pem_decode = blob.decode('utf-8')
+
+        SSH_KEY_BLOB_DECODED = base64.b64decode(pem_decode)
+        SSH_KEY = SSH_KEY_BLOB_DECODED.decode('utf-8')
+
+        pkey = paramiko.RSAKey.from_private_key(io.StringIO(SSH_KEY))
+
+        server = SSHTunnelForwarder(
+            ('15.165.39.46', 22),
+            ssh_username='ec2-user',
+            ssh_pkey=pkey,
+            remote_bind_address=('127.0.0.1', 5432)
+        )
+
+        server.start()
+
+        conn = pg.connect(
+            host='ec2-15-165-39-46.ap-northeast-2.compute.amazonaws.com', 
+            dbname='hearthands', 
+            user='postgres', 
+            password='hearthandsLive2022', 
+            port=5432
+        )
+
+        with conn:
+            cur = conn.cursor()
+            stmt = cur.mogrify('SELECT w4c_code FROM common.org_info WHERE w4c_code = %s', (check_w4c_cd, )) # PreparedStatement 생성
+            cur.execute(stmt) # PreparedStatement 실행
+            result = cur.fetchall()
+
+            return result
+    except Exception as e:
+        server.stop()
+        logging.debug('DB 연결 오류!', e)
+        sys.exit()
 
 
 def check(self):
@@ -24,16 +72,14 @@ def check(self):
         if check_file_path.replace(' ', '') != '' and check_project_img_path != '' and check_w4c_cd != '':
             # w4c_cd 정규표현식 확인
             if len(check_w4c_cd) == 11 and re.match('[a-zA-z0-9]', check_w4c_cd):
-                with conn:
-                    cur = conn.cursor()
-                    stmt = cur.mogrify('SELECT w4c_code FROM common.org_info WHERE w4c_code = %s', (check_w4c_cd, )) # PreparedStatement 생성
-                    cur.execute(stmt) # PreparedStatement 실행
-                    result = cur.fetchall()
 
-                    if (len(result) > 0) and (check_w4c_cd in result[0]): return check_open_file(self)
-                    else : 
-                        gui.alert('희망e음 인증코드가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')
-                        return False
+                # db 연결 함수                
+                result = DB_setting_and_select_result(check_w4c_cd)
+
+                if (len(result) > 0) and (check_w4c_cd in result[0]): return check_open_file(self)
+                else : 
+                    gui.alert('희망e음 인증코드가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')
+                    return False
             else:
                 gui.alert('첨부파일 및 희망e음코드가 올바르지 않습니다. \n확인 후 다시 작업을 수행하세요.')
                 return False
@@ -85,8 +131,10 @@ def payroll_check(self):
     try:
         if check_file_path.replace(' ', '') != '' and check_payroll_project_img_path != '' and check_w4c_cd != '':
             if len(check_w4c_cd) == 11 and re.match('[a-zA-z0-9]', check_w4c_cd):
-                if code_check_DB(check_w4c_cd) == True:
-                    return check_open_payroll_file(self)
+                # db 연결 함수                
+                result = DB_setting_and_select_result(check_w4c_cd)
+
+                if (len(result) > 0) and (check_w4c_cd in result[0]): return check_open_payroll_file(self)
                 else:
                     gui.alert('희망e음 코드가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')
                     return False
@@ -142,16 +190,16 @@ def check_open_payroll_file(self):
     @param check_w4c_cd      ### 희망e음 코드
     @return True / False
 '''
-def code_check_DB(check_w4c_cd):
+# def code_check_DB(check_w4c_cd):
     
 
-    with conn:
-        cur = conn.cursor()
-        stmt = cur.mogrify('SELECT w4c_code FROM common.org_info WHERE w4c_code = %s', (check_w4c_cd, )) # PreparedStatement 생성
-        cur.execute(stmt) # PreparedStatement 실행
-        result = cur.fetchall()
+#     with conn:
+#         cur = conn.cursor()
+#         stmt = cur.mogrify('SELECT w4c_code FROM common.org_info WHERE w4c_code = %s', (check_w4c_cd, )) # PreparedStatement 생성
+#         cur.execute(stmt) # PreparedStatement 실행
+#         result = cur.fetchall()
 
-        if len(result) > 0 and check_w4c_cd in result[0] : 
-            return True
-        else:
-            return False
+#         if len(result) > 0 and check_w4c_cd in result[0] : 
+#             return True
+#         else:
+#             return False
