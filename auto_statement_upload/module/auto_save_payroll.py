@@ -30,7 +30,7 @@ def auto_save_payroll(self, excel_list):
 
             # 사업명 리프레시
             find_and_click.img_right_150_click('급여대장_사업명.png')
-            if find_and_click.find_img_flag('급여대장_사업명_선택하세요.png'): 
+            if find_and_click.find_img_flag('급여대장_사업명_선택하세요.png'):
                 find_and_click.img_click('급여대장_사업명_선택하세요.png')
 
             gui.press('enter') # 팝업창 뜸.. 제거하기 위한 엔터
