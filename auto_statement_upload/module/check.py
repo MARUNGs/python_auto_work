@@ -34,14 +34,6 @@ def DB_setting_and_select_result(check_w4c_cd, self):
 
         pkey = paramiko.RSAKey.from_private_key(io.StringIO(SSH_KEY))
 
-        # server = SSHTunnelForwarder(
-        #     ('15.165.39.46', 22),
-        #     ssh_username='ec2-user',
-        #     ssh_pkey=pkey,
-        #     remote_bind_address=('127.0.0.1', 5432)
-        # )
-
-        # server.start()
         with SSHTunnelForwarder(
             ssh_address_or_host=('15.165.39.46', 22),
             ssh_username='ec2-user',
@@ -64,7 +56,6 @@ def DB_setting_and_select_result(check_w4c_cd, self):
                 if(self.tabs.tabText(self.tabs.currentIndex()) in '전표정보'):   input_id = self.id.toPlainText()
                 elif(self.tabs.tabText(self.tabs.currentIndex()) in '급여대장'): input_id = self.id_2.toPlainText()
 
-                # stmt = cur.mogrify('SELECT w4c_code FROM common.org_info WHERE w4c_code = %s', (check_w4c_cd, )) # PreparedStatement 생성
                 stmt = cur.mogrify('''
                     SELECT A.id,
                            A.password,
@@ -93,15 +84,25 @@ def check(self):
     check_project_img_path = self.file_project_img_path.toPlainText() #3 사업명이미지 경로
 
     try: 
-        if check_file_path.replace(' ', '') != '' and check_project_img_path != '' and check_w4c_cd != '':
-            # w4c_cd 정규표현식 확인
-            if len(check_w4c_cd) == 11 and re.match('[a-zA-z0-9]', check_w4c_cd):
+        if (
+                check_file_path.replace(' ', '') != '' and 
+                check_project_img_path != '' and 
+                check_w4c_cd != ''
+            ):
+            if ( # w4c_cd 정규표현식 확인
+                    len(check_w4c_cd) == 11 and 
+                    re.match('[a-zA-z0-9]', check_w4c_cd)
+                ):
                 
                 # db 연결 함수                
                 result = DB_setting_and_select_result(check_w4c_cd, self)
 
                 ''' 0: id, 1: pw(hash), 2: w4c_code '''
-                if (len(result) > 0) and (self.id.toPlainText() == result[0][0]) and (check_w4c_cd == result[0][2]): 
+                if (
+                    len(result) > 0                       and
+                    self.id.toPlainText() == result[0][0] and
+                    check_w4c_cd == result[0][2]
+                ): 
                     return check_open_file(self)
                 else : 
                     gui.alert('입력 정보가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')
@@ -116,7 +117,6 @@ def check(self):
         gui.alert('자동화 업무 수행 전 확인단계에서 오류가 발생했습니다. \n업로드한 자료 및 희망e음 인증코드를 확인하세요.')
         logging.error('check Exception : ', str(e))
         sys.exit()
-# def check End #
 
 
 
@@ -147,7 +147,6 @@ def check_open_file(self) :
     except Exception as e:
         logging.error('---- 해당 첨부파일 열림 확인 오류 ----', str(e))
         sys.exit()
-# def check_open_file End #
 
 
 
@@ -156,15 +155,29 @@ def payroll_check(self):
     check_file_path = self.file_payroll_path.toPlainText()                            # 엑셀파일
     check_payroll_project_img_path = self.file_payroll_project_img_path.toPlainText() # 사업명이미지
     check_w4c_cd = self.payroll_w4c_cd.toPlainText().replace(' ', '')                 # 희망e음 코드
+    check_year = self.file_payroll_year_img_path.toPlainText().replace(' ', '')       # 급여대장 회계연도
 
     try:
-        if check_file_path.replace(' ', '') != '' and check_payroll_project_img_path != '' and check_w4c_cd != '':
-            if len(check_w4c_cd) == 11 and re.match('[a-zA-z0-9]', check_w4c_cd):
+        if (
+            check_file_path.replace(' ', '') != '' and 
+            check_payroll_project_img_path   != '' and 
+            check_w4c_cd                     != '' and
+            check_year                       != ''
+
+        ):
+            if (
+                len(check_w4c_cd) == 11              and
+                re.match('[a-zA-z0-9]', check_w4c_cd)
+            ):
                 # db 연결 함수                
                 result = DB_setting_and_select_result(check_w4c_cd, self)
 
                 ''' 0: id, 1: pw(hash), 2: w4c_code '''
-                if (len(result) > 0) and (self.id_2.toPlainText() == result[0][0]) and (check_w4c_cd == result[0][2]): 
+                if (
+                    len(result)              > 0            and
+                    self.id_2.toPlainText() == result[0][0] and
+                    check_w4c_cd            == result[0][2]
+                ): 
                     return check_open_payroll_file(self)
                 else:
                     gui.alert('입력 정보가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')

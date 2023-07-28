@@ -14,15 +14,14 @@ import openpyxl                     # 엑셀
     @param self
     @return excelList 
 '''
-def make_excel_data(self, title):
+def make_excel_data(self, tab_i):
     try:
-        if title=='statement':
-            wb = openpyxl.load_workbook(self.file_path.toPlainText())
-        elif title=='payroll': #급여대장
-            wb = openpyxl.load_workbook(self.file_payroll_path.toPlainText())
-        sheet = wb[wb._sheets[0].title]
+        
+        if   tab_i == 1: wb = openpyxl.load_workbook(self.file_path.toPlainText()) # 1: 전표정보 #
+        elif tab_i == 2: wb = openpyxl.load_workbook(self.file_payroll_path.toPlainText()) # 2: 급여대장 #
+        sheet       = wb[wb._sheets[0].title]
         max_col_cnt = sheet.max_column
-        excel_list = [] # 객체를 담을 리스트
+        excel_list  = [] # 객체를 담을 리스트
 
 
         for rows in sheet.iter_rows() :
@@ -44,17 +43,14 @@ def make_excel_data(self, title):
             dataList = []
 
             for i in range(0, max_col_cnt):
-                inputData = None
                 cell = rows[i]
 
                 if str(cell.value) == 'None': inputData = ''
-                else: inputData = str(cell.value).replace(' 00:00:00', '') # 거래일자 시분초 제거
+                else:                         inputData = str(cell.value).replace(' 00:00:00', '') # 거래일자 시분초 제거
 
-                dataList.insert(i, inputData) # list 형태로 삽입해야 함..
-            # for in range End #
+                dataList.insert(i, inputData) # list 형태로 삽입
 
             excel_list.insert(cell.row - 1, dataList) # 0 index부터 삽입
-        # for in End #
 
         return excel_list
     except Exception as e:
@@ -66,16 +62,13 @@ def make_excel_data(self, title):
 
 
 #5# 테이블 생성
-def make_table(self, title_list, excel_list, title):
+def make_table(self, excel_list, tab_i):
     try:
-        excel_tb    = None               # 엑셀 테이블
-        status_tb   = None               # 상태 테이블
-
-        if title=='statement':
+        if tab_i == 1: # 1: 전표정보 #
             wb        = openpyxl.load_workbook(self.file_path.toPlainText())
             excel_tb  = self.excel_tb
             status_tb = self.status_tb
-        elif title=='payroll':
+        elif tab_i == 2: # 2: 급여대장 #
             wb = openpyxl.load_workbook(self.file_payroll_path.toPlainText())
             excel_tb  = self.payroll_excel_tb
             status_tb = self.payroll_status_tb
@@ -89,26 +82,22 @@ def make_table(self, title_list, excel_list, title):
         # 테이블 세팅
         excel_tb.setColumnCount(max_col_cnt)
         excel_tb.setRowCount(max_row_cnt)
-        excel_tb.setHorizontalHeaderLabels(title_list) # list 형태로 넣기
+        excel_tb.setHorizontalHeaderLabels(excel_list[0]) # title_list(list 형태로 삽입.)
         del excel_list[0]
         status_tb.setRowCount(max_row_cnt)
 
 
         # 테이블 내 엑셀데이터 기본설정
-        for i in range(0, max_row_cnt) :
+        for i in range(0, max_row_cnt) : 
             data = excel_list[i]
 
             for j in range(0, len(data)): 
                 excel_tb.setItem(i, j, QTableWidgetItem(data[j]))
-            # for in range End #
-        # for in range End #
 
 
         # 상태 테이블 기본설정
         for i in range(0, max_row_cnt) :
             status_tb.setItem(i, 0, QTableWidgetItem('Fail'))
-        # for in range End #
     except Exception as e:
         logging.error('엑셀 테이블 생성 실패 : ', str(e))
         sys.exit()
-# def make_table(self) End

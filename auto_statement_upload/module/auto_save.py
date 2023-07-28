@@ -35,10 +35,13 @@ def auto_save(self, excel_list):
 
                 if i==0:
                     find_and_click.img_right_click('결의구분타이틀.png')
-                    if data == '수입': 
-                        find_and_click.img_click('수입결의서TXT.png')
-                    else: 
-                        find_and_click.img_click('지출결의서TXT.png')
+
+                    find_and_click.img_click('수입결의서TXT.png') if data == '수입' else find_and_click.img_click('지출결의서TXT.png')
+
+                    # if data == '수입': 
+                    #     find_and_click.img_click('수입결의서TXT.png')
+                    # else: 
+                    #     find_and_click.img_click('지출결의서TXT.png')
                     continue
                 elif i==2:
                     find_and_click.img_right_click('사업타이틀.png')
@@ -97,204 +100,43 @@ def auto_save(self, excel_list):
 
                         # '장기요양급여수입' 계정과목같은 경우는, 마음손에서 반영/미반영을 별도로 처리하지 않을 때 상대계정코드목록 팝업창이 오픈하게 된다.
                         # 따라서, 코드/명 항목이 존재하면 인풋에 값을 입력하고 검색한다.
-                        if data == '장기요양급여수입':
-                            find_and_click.pick_account_반영(data, 'opponent_subject')
+                        find_and_click.pick_account_반영(data, 'opponent_subject') if data == '장기요양급여수입' else None
+                        # if data == '장기요양급여수입':
+                        #     find_and_click.pick_account_반영(data, 'opponent_subject')
                         continue
                     else:
                         continue
 
             if i == max_col_cnt-1:
-                time.sleep(0.5)
+                # time.sleep(0.5)
                 find_and_click.img_left_click('조회.png') # 포커스 초기화 클릭
-                time.sleep(0.5)
+                # time.sleep(0.5)
                 gui.hotkey('alt', 'f8') # 저장
                 time.sleep(0.5)
                 find_and_click.screen_center_click() # 포커스 초기화 클릭
-                time.sleep(0.5)
+                # time.sleep(0.5)
                 find_and_click.img_left_click('저장취소.png')
-                time.sleep(0.5)                
+                # time.sleep(0.5)
                 find_and_click.screen_center_click() # 포커스 초기화 클릭
-                time.sleep(0.5)                
+                # time.sleep(0.5)                
                 find_and_click.img_click('성공저장확인.png')                
-                time.sleep(0.5)                
+                # time.sleep(0.5)                
                 status_change_true(self, row_i) #### 성공 확인됨. Flag값 수정하기
                 
                 time.sleep(0.5)
         
 
-        status_tb = self.status_tb
+        status_tb     = self.status_tb
         success_count = 0
-        fail_count = 0
+        fail_count    = 0
         for idx in range(0, status_tb.rowCount()):
             if status_tb.item(idx,0).text() in 'Success': success_count += 1
-            else: fail_count += 1
+            else:                                         fail_count += 1
 
         gui.alert(f'전표정보 자동업로드 등록이 완료되었습니다. \n성공횟수: {success_count} \n실패횟수: {fail_count}')
     except Exception as e:
         logging.error('전표정보 자동저장(auto_save) Exception : ', str(e))
-# def auto_save End #
-
-
-############### FUNCTION ############################################################################################################################################
-#1 이미지 찾아서 가운데 클릭 기능
-# def img_click(img_nm):
-#     img = gui.locateOnScreen(img_dir_path + img_nm)
-
-#     if img is not None: 
-#         center = gui.center(img)
-#         gui.click(center, interval=0.5)
-#     else:
-#         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-#         sys.exit()
-# # def img_click End #
-
-
-# #1-2 이미지 찾음유무 flag 확인
-# def find_img_flag(img_nm):
-#     img = gui.locateOnScreen(img_dir_path + img_nm)
-#     return True if img is not None else False
-
-
-# #2 이미지 찾아서 이미지의 오른쪽 위치 클릭 기능
-# def img_right_click(img_nm):
-#     img = gui.locateOnScreen(img_dir_path + img_nm)
-
-#     if img is not None:
-#         moveX = (img.left + img.width) + 10
-#         moveY = img.top + img.height // 2
-#         gui.click(moveX, moveY)
-#     else:
-#         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-#         sys.exit()
-# # def img_right_click End #
-
-
-# #2-2 이미지 찾아서 이미지의 오른쪽 위치 50 클릭 기능
-# def img_right_150_click(img_nm):
-#     img = gui.locateOnScreen(img_dir_path + img_nm)
-
-#     if img is not None:
-#         moveX = (img.left + img.width) + 150
-#         moveY = img.top + img.height // 2
-#         gui.click(moveX, moveY, interval=0.5)
-#     else:
-#         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-#         sys.exit()
-# # def img_right_click End #
-
-
-# # 이미지 찾아서 이미지의 왼쪽 위치 클릭 기능
-# def img_left_click(img_nm):
-#     img = gui.locateOnScreen(img_dir_path + img_nm)
-
-#     if img is not None:
-#         moveX = img.left - 30
-#         moveY = img.top + img.height // 2
-#         gui.click(moveX, moveY)
-#     else:
-#         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-#         sys.exit()
-
-
-# #3 사용자가 올린 사업명 이미지 경로를 찾아서 가운데 클릭
-# '''
-#     @param self : PyQt5
-# '''
-# def customization_project_img_click(self):
-#     img_path = self.file_project_img_path.toPlainText()
-#     length = len(img_path.rsplit(os.sep))
-#     img_nm = img_path.rsplit(os.sep)[length-1]
-
-#     click_img = gui.locateOnScreen(img_path)
-
-#     if click_img is not None: 
-#         center = gui.center(click_img)
-#         gui.click(center)
-#     else:
-#         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-#         return False
-
-
-# #5 화면 정 가운데 클릭
-# def screen_center_click():
-#     # 화면 크기 가져오기
-#     screen_width, screen_height = gui.size()
-
-#     # 정 가운데 좌표 계산
-#     click_x = screen_width // 2
-#     click_y = screen_height // 2
-
-#     # 클릭 실행
-#     gui.click(click_x, click_y)
 
 
 # #6 상태 테이블값 true로 변환
 def status_change_true(self, row_i): self.status_tb.setItem(row_i, 0, QTableWidgetItem('Success'))
-
-
-# #7 이미지를 찾아서 이미지의 오른쪽 끝을 클릭하는 기능
-# def img_right_in_click(img_nm):
-#     img = gui.locateOnScreen(img_dir_path + img_nm)
-
-#     if img is not None:
-#         moveX = img.left + img.width - 20
-#         moveY = img.top + img.height // 2
-#         gui.click(moveX, moveY)
-#     else:
-#         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-#         sys.exit()
-
-
-# #8 계정과목코드가 '장기요양급여수입'인 경우 반영을 픽스하기 위한 기능
-# def pick_account_반영(data, type):
-#     img_left_click('조회.png') # 포커스 초기화 클릭
-#     time.sleep(1.0)
-    
-#     if type == 'account_subject':
-#         img_click('팝업_계정코드목록.png')
-#         time.sleep(1.0)
-#         gui.press('enter') # 선택
-#         time.sleep(0.5)
-#     elif type == 'opponent_subject':
-#         img_click('코드명_장기요양급여수입.png')
-#         gui.hotkey('ctrl', 'a')
-#         gui.press('backspace')
-#         pyperclip.copy(data)
-#         gui.hotkey('ctrl', 'v')
-#         gui.press('enter')
-#         time.sleep(1.0)
-#         gui.press('enter') # 선택
-#         time.sleep(0.5)
-
-
-
-# # 급여대장의 사업명 선택
-# def customization_payroll_project_img_click(self):
-#     img_path = self.file_payroll_project_img_path.toPlainText()
-#     length = len(img_path.rsplit(os.sep))
-#     img_nm = img_path.rsplit(os.sep)[length-1]
-
-#     click_img = gui.locateOnScreen(img_path)
-
-#     if click_img is not None:
-#         center = gui.center(click_img)
-#         gui.click(center, interval=0.5)
-#     else:
-#         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-#         return False
-# # def customization_payroll_project_img_click End #
-
-
-
-
-# def img_bottom_right_in_click(img_nm):
-#     img = gui.locateOnScreen(img_dir_path + img_nm)
-
-#     if img is not None:
-#         moveX = img.left + img.width - 10
-#         moveY = img.top + img.height + 10
-#         gui.click(moveX, moveY, interval=0.5)
-#     else:
-#         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-#         sys.exit()
-# # def img_bottom_right_in_click End #

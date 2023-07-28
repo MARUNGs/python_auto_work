@@ -18,6 +18,13 @@ gui.PAUSE = 0.2
 
 
 ########## Function ##############################################################################################################################
+# 이미지 gray_scale 변환
+def gray_scale_img(img_nm):
+    gray_image = Image.open(os.path.join(img_dir_path, img_nm)).convert("L")
+    confidence = 0.999
+    return gui.locateOnScreen(gray_image, grayscale=True, confidence=confidence)
+
+
 # 이미지 찾아서 클릭
 def img_click(img_nm):
     try:
@@ -26,29 +33,9 @@ def img_click(img_nm):
         if location_img is not None:
             center = gui.center(location_img)
             gui.click(center, interval=0.5)
-        else:
-            gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-
-
-        # 기존 소스
-        # img = gui.locateOnScreen(os.path.join(img_dir_path, img_nm))
-
-        # if img is not None: 
-        #     center = gui.center(img)
-        #     gui.click(center, interval=0.5)
-        # else:
-        #     gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        else: gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
     except Exception as e:
         logging.error('이미지 클릭 이슈: ', str(e))
-
-
-
-# 이미지 gray_scale 변환
-def gray_scale_img(img_nm):
-    gray_image = Image.open(os.path.join(img_dir_path, img_nm)).convert("L")
-    confidence_threshold = 0.999
-
-    return gui.locateOnScreen(gray_image, grayscale=True, confidence=confidence_threshold)
 
 
 # 이미지 찾음유무 flag 확인
@@ -61,19 +48,16 @@ def find_img_flag(img_nm):
 # 이미지 더블클릭
 def img_db_click(img_nm):
     img = gray_scale_img(img_nm)
-    # img = gui.locateOnScreen(img_dir_path + img_nm)
 
     if img is not None: 
         center = gui.center(img)
         gui.doubleClick(center, interval=0.5)
-    else:
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+    else: gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
 
 
 # 이미지의 오른쪽 150px 이동하여 클릭
 def img_right_150_click(img_nm):
     img = gray_scale_img(img_nm)
-    # img = gui.locateOnScreen(img_dir_path + img_nm)
 
     if img is not None:
         moveX = (img.left + img.width) + 150
@@ -87,24 +71,37 @@ def img_right_150_click(img_nm):
 # 커스텀된 사업명을 찾아서 클릭
 def customization_payroll_project_img_click(self):
     img_path = self.file_payroll_project_img_path.toPlainText()
-    length = len(img_path.rsplit(os.sep))
-    img_nm = img_path.rsplit(os.sep)[length-1]
+    length   = len(img_path.rsplit(os.sep))
+    img_nm   = img_path.rsplit(os.sep)[length-1]
+    img      = gray_scale_img(img_nm)
 
-    click_img = gray_scale_img(img_nm)
-    # click_img = gui.locateOnScreen(img_path)
-
-    if click_img is not None:
-        center = gui.center(click_img)
+    if img is not None:
+        center = gui.center(img)
         gui.click(center, interval=0.5)
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        return False
+        sys.exit()
+
+
+# 커스텀된 회계연도를 찾아서 왼쪽 클릭
+def customization_payroll_year_img_click(self):
+    img_path = self.file_payroll_year_img_path.toPlainText()
+    length   = len(img_path.rsplit(os.sep))
+    img_nm   = img_path.rsplit(os.sep)[length-1]
+    img      = gray_scale_img(img_nm)
+
+    if img is not None:
+        moveX = img.left - 10
+        moveY = img.top + img.height // 2
+        gui.click(moveX, moveY, interval=0.5)
+    else:
+        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        sys.exit()
     
 
 # 이미지 찾아서 이미지의 오른쪽 위치 클릭 기능
 def img_right_click(img_nm):
     img = gray_scale_img(img_nm)
-    # img = gui.locateOnScreen(img_dir_path + img_nm)
 
     if img is not None:
         moveX = (img.left + img.width) + 10
@@ -115,11 +112,9 @@ def img_right_click(img_nm):
         sys.exit()
 
 
-
 # 이미지의 바텀에서 살짝 오른쪽 클릭
 def img_bottom_right_in_click(img_nm):
     img = gray_scale_img(img_nm)
-    # img = gui.locateOnScreen(img_dir_path + img_nm)
 
     if img is not None:
         moveX = img.left + img.width - 10
@@ -128,11 +123,6 @@ def img_bottom_right_in_click(img_nm):
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         sys.exit()
-
-
-
-
-
 
 
 ###########################################################################
@@ -145,10 +135,10 @@ def customization_project_img_click(self):
     length = len(img_path.rsplit(os.sep))
     img_nm = img_path.rsplit(os.sep)[length-1]
 
-    click_img = gray_scale_img(img_nm)
+    img = gray_scale_img(img_nm)
 
-    if click_img is not None:
-        center = gui.center(click_img)
+    if img is not None:
+        center = gui.center(img)
         gui.click(center, interval = 0.5)
     else:
         gui.alert(f'찾는 이미지: {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
@@ -171,7 +161,6 @@ def img_right_in_click(img_nm):
 # 이미지 찾아서 이미지의 왼쪽 위치 클릭하는 기능
 def img_left_click(img_nm):
     img = gray_scale_img(img_nm)
-    # img = gui.locateOnScreen(img_dir_path + img_nm)
 
     if img is not None:
         moveX = img.left - 30
@@ -214,4 +203,4 @@ def screen_center_click():
     click_y = screen_height // 2
 
     # 클릭 실행
-    gui.click(click_x, click_y)
+    gui.click(click_x, click_y, interval=0.5)
