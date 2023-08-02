@@ -62,12 +62,13 @@ class window__base__setting(QMainWindow, main_ui) :
         self.find_btn.clicked.connect(self.find_fn)                                         # 전표정보 - 첨부 엑셀파일
         self.start_btn.clicked.connect(self.start_fn)                                       # 전표정보 - 시작
         self.stop_btn.clicked.connect(self.stop_fn)                                         # 전표정보 - 종료
-        self.find_projectImg_btn.clicked.connect(self.find_project_img_fn)                  # 전표정보 - 첨부 사업이미지
+        # self.find_project_img_btn.clicked.connect(self.find_project_img_fn)                  # 전표정보 - 첨부 사업이미지
         self.move_simple_menu_btn.clicked.connect(self.move_simple_menu_fn)                 # 전표정보 - 간편입력 메뉴로 이동
 
         self.move_payroll_menu_btn.clicked.connect(self.move_simple_menu_fn)               # 급여대장 등록 메뉴로 이동
         self.find_payroll_btn.clicked.connect(self.find_fn)                                 # 급여대장 - 첨부 엑셀파일
-        self.find_payroll_project_img_btn.clicked.connect(self.find_project_img_fn)         # 급여대장 - 첨부 사업이미지
+        self.find_project_img_btn.clicked.connect(self.find_project_img_fn)                  # 급여대장 - 첨부 사업이미지 1
+        self.find_payroll_project_img_btn.clicked.connect(self.find_project_img_fn)         # 급여대장 - 첨부 사업이미지 2
         self.find_payroll_year_img_btn.clicked.connect(self.find_year_img_fn)             # 급여대장 - 첨부 회계연도 이미지
         self.start_payroll_btn.clicked.connect(self.start_payroll_fn)                       # 급여대장 - 시작
 
@@ -133,12 +134,19 @@ class window__base__setting(QMainWindow, main_ui) :
         try:
             file_path = QFileDialog.getOpenFileName(self)
 
-            # 현재 활성화중인 탭의 정보에 따라서 file_path 정보값이 달라지도록 유도할 것.
-            tab_txt = self.tabs.tabText(self.tabs.currentIndex())
-            if(tab_txt in '전표정보'):   change_file_path = self.file_project_img_path
-            elif(tab_txt in '급여대장'): change_file_path = self.file_payroll_project_img_path
+            ## 업로드하는 이미지명에 '인건비' 포함여부 확인하여 file_img_path 설정하기
+            if   '인건비' in file_path[0]:     change_file_path = self.file_payroll_project_img_path
+            elif '인건비' not in file_path[0]: change_file_path = self.file_project_img_path
 
             change_file_path.setText(file_path[0]) if ('.png' in file_path[0]) else gui.alert('png 확장자 이미지만 허용합니다.')
+
+            #### 기본소스
+            # 현재 활성화중인 탭의 정보에 따라서 file_path 정보값이 달라지도록 유도할 것.
+            # tab_txt = self.tabs.tabText(self.tabs.currentIndex())
+            # if(tab_txt in '전표정보'):   change_file_path = self.file_project_img_path
+            # elif(tab_txt in '급여대장'): change_file_path = self.file_payroll_project_img_path
+
+            # change_file_path.setText(file_path[0]) if ('.png' in file_path[0]) else gui.alert('png 확장자 이미지만 허용합니다.')
         except Exception as e:
             gui.alert('사업명 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
             logging.error(str(e))
@@ -194,21 +202,26 @@ def start_payroll_auto(self):
     
     # Action
     tab_i = self.tabs.currentIndex()
-    excel_list = make_excel_data_table.make_excel_data(self, tab_i)       #1 조회한 엑셀 데이터 생성
-    make_excel_data_table.make_table(self, excel_list, tab_i) #2 조회한 엑셀 데이터를 가지고 테이블 생성
+    # excel_list = make_excel_data_table.make_excel_data(self, tab_i)       #1 조회한 엑셀 데이터 생성
+    # make_excel_data_table.make_table(self, excel_list, tab_i) #2 조회한 엑셀 데이터를 가지고 테이블 생성
+
+    excel_obj = make_excel_data_table.make_excel_data_test(self)
+    make_excel_data_table.make_table_test(self, excel_obj)
 
     # Active
     w4c_window = gui.getWindowsWithTitle('사회복지시설정보시스템(1W)')[0]
     if w4c_window.isActive == False: w4c_window.activate()
 
     # Active 1 : 급여항목등록여부 확인하기
-    find_and_click.img_click('급여대장_급여항목등록.png')
+    # find_and_click.img_click('급여대장_급여항목등록.png')
 
-    if find_and_click.find_img_flag('급여대장_급여항목_순번.png'):
-        # Action 2 : 창 닫고 급여대장 전표 자동저장 작업
-        find_and_click.img_click('창닫기.png')
-        auto_save_payroll.auto_save_payroll(self, excel_list)
-    else: gui.alert('급여대장 자동업로드시 급여항목이 등록되어야 사용이 가능합니다.')
+    auto_save.auto_save(self, excel_obj) ################################ 신규작업
+
+    # if find_and_click.find_img_flag('급여대장_급여항목_순번.png'):
+    #     # Action 2 : 창 닫고 급여대장 전표 자동저장 작업
+    #     find_and_click.img_click('창닫기.png')
+    #     auto_save_payroll.auto_save_payroll(self, excel_list) ################################# 기존소스
+    # else: gui.alert('급여대장 자동업로드시 급여항목이 등록되어야 사용이 가능합니다.')
 
     ending(self)
 # def start_payroll_auto End #

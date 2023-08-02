@@ -31,8 +31,6 @@ def auto_save_payroll(self, excel_list):
             # 사업명 리프레시
             find_and_click.img_right_150_click('급여대장_사업명.png')
             find_and_click.img_click('급여대장_사업명_선택하세요.png') if find_and_click.find_img_flag('급여대장_사업명_선택하세요.png') else None
-            # if find_and_click.find_img_flag('급여대장_사업명_선택하세요.png'):
-            #     find_and_click.img_click('급여대장_사업명_선택하세요.png')
 
             gui.press('enter') # 팝업창 뜸.. 제거하기 위한 엔터
             time.sleep(0.5)
@@ -53,10 +51,6 @@ def auto_save_payroll(self, excel_list):
             find_and_click.img_click('회계연도_선택.png') # 회계연도 선택
 
             time.sleep(1.0)
-
-            # gui.alert('지출결의서의 회계연도를 설정 후 선택하신 뒤, 해당 안내창의 \'확인\'을 눌러주세요.')
-
-            # 확인을 누르면 다음 매크로 수행
 
             for i in range(3, max_col_cnt):
                 '''
@@ -135,7 +129,6 @@ def auto_save_payroll(self, excel_list):
                     continue
             
             if i == max_col_cnt-1:
-                # time.sleep(0.5)
                 find_and_click.img_click('급여대장_저장.png')
                 gui.press('enter') # 저장여부 '확인'
                 time.sleep(0.5)
@@ -147,15 +140,17 @@ def auto_save_payroll(self, excel_list):
                 
                 time.sleep(0.5)
 
-        # time.sleep(0.5)
-        status_tb     = self.payroll_status_tb
-        success_count = 0
-        fail_count    = 0
-        for idx in range(0, status_tb.rowCount()):
-            if status_tb.item(idx,0).text() in 'Success': success_count += 1
-            else:                                         fail_count += 1
+        status_change_true(self, len(excel_list)) #### 사실 여기까지 왔으면 성공취급함. 마지막줄 Flag값 수정하기
 
-        gui.alert(f'급여대장 자동업로드 등록이 완료되었습니다. \n성공횟수: {success_count} \n실패횟수: {fail_count}')
+        # time.sleep(0.5)
+        # status_tb     = self.payroll_status_tb
+        # success_count = 0
+        # fail_count    = 0
+        # for idx in range(0, status_tb.rowCount()):
+        #     if status_tb.item(idx,0).text() in 'Success': success_count += 1
+        #     else:                                         fail_count += 1
+
+        # gui.alert(f'급여대장 자동업로드 등록이 완료되었습니다. \n성공횟수: {success_count} \n실패횟수: {fail_count}')
     except Exception as e:
         logging.error('급여대장 자동저장(payroll_auto_save) Exception : ', str(e))
         sys.exit()
