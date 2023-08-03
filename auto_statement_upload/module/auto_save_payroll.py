@@ -20,7 +20,7 @@ img_dir_path = os.path.dirname(__file__).replace('module', 'img') + os.sep
 '''
 def auto_save_payroll(self, excel_list):
     try:
-        max_col_cnt = len(excel_list[0])
+        max_col_cnt = len(excel_list[0]) if len(excel_list) > 0 else 0
 
         for row_i in range(0, len(excel_list)) :
             rows = excel_list[row_i]
@@ -141,20 +141,10 @@ def auto_save_payroll(self, excel_list):
                 time.sleep(0.5)
 
         status_change_true(self, len(excel_list)) #### 사실 여기까지 왔으면 성공취급함. 마지막줄 Flag값 수정하기
-
-        # time.sleep(0.5)
-        # status_tb     = self.payroll_status_tb
-        # success_count = 0
-        # fail_count    = 0
-        # for idx in range(0, status_tb.rowCount()):
-        #     if status_tb.item(idx,0).text() in 'Success': success_count += 1
-        #     else:                                         fail_count += 1
-
-        # gui.alert(f'급여대장 자동업로드 등록이 완료되었습니다. \n성공횟수: {success_count} \n실패횟수: {fail_count}')
     except Exception as e:
         logging.error('급여대장 자동저장(payroll_auto_save) Exception : ', str(e))
         sys.exit()
 
 
 # 상태 테이블값 true로 변환
-def status_change_true(self, row_i): self.payroll_status_tb.setItem(row_i, 0, QTableWidgetItem('Success'))
+def status_change_true(self, row_i): self.status_tb.setItem(row_i, 0, QTableWidgetItem('Success'))

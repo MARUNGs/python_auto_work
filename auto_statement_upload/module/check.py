@@ -50,11 +50,8 @@ def DB_setting_and_select_result(check_w4c_cd, self):
             )
 
             with conn:
-                cur = conn.cursor()
-
-                # 현재 활성화중인 탭의 정보에 따라서 file_path 정보값이 달라지도록 유도할 것.
-                if(self.tabs.tabText(self.tabs.currentIndex()) in '전표정보'):   input_id = self.id.toPlainText()
-                elif(self.tabs.tabText(self.tabs.currentIndex()) in '급여대장'): input_id = self.id_2.toPlainText()
+                cur      = conn.cursor()
+                input_id = self.id_2.toPlainText()
 
                 stmt = cur.mogrify('''
                     SELECT A.id,
@@ -78,95 +75,23 @@ def DB_setting_and_select_result(check_w4c_cd, self):
         sys.exit()
 
 
-def check(self):
-    check_w4c_cd = self.w4c_cd.toPlainText().replace(' ', '')         #1 사용자가 입력한 희망e음 코드
-    check_file_path = self.file_path.toPlainText()                    #2 전표정보 첨부파일 경로
-    check_project_img_path = self.file_project_img_path.toPlainText() #3 사업명이미지 경로
-
-    try: 
-        if (
-                check_file_path.replace(' ', '') != '' and 
-                check_project_img_path != '' and 
-                check_w4c_cd != ''
-            ):
-            if ( # w4c_cd 정규표현식 확인
-                    len(check_w4c_cd) == 11 and 
-                    re.match('[a-zA-z0-9]', check_w4c_cd)
-                ):
-                
-                # db 연결 함수                
-                result = DB_setting_and_select_result(check_w4c_cd, self)
-
-                ''' 0: id, 1: pw(hash), 2: w4c_code '''
-                if (
-                    len(result) > 0                       and
-                    self.id.toPlainText() == result[0][0] and
-                    check_w4c_cd == result[0][2]
-                ): 
-                    return check_open_file(self)
-                else : 
-                    gui.alert('입력 정보가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')
-                    return False
-            else:
-                gui.alert('입력한 희망e음코드 규칙이 올바르지 않습니다. \n확인 후 다시 작업을 수행하세요.')
-                return False
-        else:
-            gui.alert('각 파일정보와 희망e음 코드 확인이 어렵습니다. \n확인 후 다시 작업을 수행하세요.')
-            return False
-    except Exception as e:
-        gui.alert('자동화 업무 수행 전 확인단계에서 오류가 발생했습니다. \n업로드한 자료 및 희망e음 인증코드를 확인하세요.')
-        logging.error('check Exception : ', str(e))
-        sys.exit()
-
-
-
-#2# 파일이 열려있는지 확인.
-def check_open_file(self) :
-    try :
-        file_path = self.file_path.toPlainText()
-        length = len(file_path.rsplit(os.sep))
-        file_nm = file_path.rsplit(os.sep)[length-1]
-        xl = win32.Dispatch('Excel.Application')
-
-        if len(gui.getWindowsWithTitle(file_nm.split('.')[0])) < 1: # 아예 엑셀프로그램이 열려있지 않으면 오픈
-            xl.Workbooks.Open(Filename = file_path)
-            xl.Visible = True
-            return True
-        
-            
-        if xl.Workbooks.Count > 0 :     # 열려있는 파일 중 특정 Excel 이름과 일치하는 파일이 없으면 새 파일 오픈
-            for excel in xl.Workbooks :
-                if not excel.Name == file_nm :
-                    xl.Workbooks.Open(Filename = file_path)
-                    xl.Visible = True
-        else:                           # 안 열려져 있으면 오픈
-            xl.Workbooks.Open(Filename = file_path)
-            xl.Visible = True
-
-        return True
-    except Exception as e:
-        logging.error('---- 해당 첨부파일 열림 확인 오류 ----', str(e))
-        sys.exit()
-
-
-
-# 급여대장 
-def payroll_check(self):
-    check_file_path = self.file_payroll_path.toPlainText()                            # 엑셀파일
-    check_payroll_project_img_path = self.file_payroll_project_img_path.toPlainText() # 사업명이미지
-    check_w4c_cd = self.payroll_w4c_cd.toPlainText().replace(' ', '')                 # 희망e음 코드
-    check_year = self.file_payroll_year_img_path.toPlainText().replace(' ', '')       # 급여대장 회계연도
+def all_check(self):
+    check_file_path                = self.file_path.toPlainText()                                   # 엑셀파일
+    check_project_img_path         = self.file_project_img_path.toPlainText()                       # 간편입력 사업명이미지
+    check_payroll_project_img_path = self.file_payroll_project_img_path.toPlainText()               # 급여대장 사업명이미지
+    check_w4c_cd                   = self.w4c_cd.toPlainText().replace(' ', '')                     # 희망e음 코드
+    check_year                     = self.file_payroll_year_img_path.toPlainText().replace(' ', '') # 급여대장 회계연도
 
     try:
         if (
             check_file_path.replace(' ', '') != '' and 
+            check_project_img_path           != '' and
             check_payroll_project_img_path   != '' and 
             check_w4c_cd                     != '' and
             check_year                       != ''
-
         ):
             if (
-                len(check_w4c_cd) == 11              and
+                len(check_w4c_cd) == 11               and
                 re.match('[a-zA-z0-9]', check_w4c_cd)
             ):
                 # db 연결 함수                
@@ -178,7 +103,7 @@ def payroll_check(self):
                     self.id_2.toPlainText() == result[0][0] and
                     check_w4c_cd            == result[0][2]
                 ): 
-                    return check_open_payroll_file(self)
+                    return check_open_file(self)
                 else:
                     gui.alert('입력 정보가 확인되지 않습니다. \n확인 후 다시 작업을 수행하세요.')
                     return False
@@ -194,11 +119,9 @@ def payroll_check(self):
         sys.exit()
 
 
-
-# 급여대장 파일 열렸는지 확인
-def check_open_payroll_file(self):
+def check_open_file(self):
     try:
-        file_path = self.file_payroll_path.toPlainText()
+        file_path = self.file_path.toPlainText()
         length = len(file_path.rsplit(os.sep))
         file_nm = file_path.rsplit(os.sep)[length-1]
         xl = win32.Dispatch('Excel.Application')
@@ -222,4 +145,3 @@ def check_open_payroll_file(self):
     except Exception as e:
         logging.error('----- 해당 첨부파일 열림 확인 오류 -----', str(e))
         sys.exit()
-# def check_open_payroll_file End #

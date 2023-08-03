@@ -52,8 +52,9 @@ def auto_save(self, excel_obj):
 
             ### 인건비(지출) 처리
             auto_save_payroll.auto_save_payroll(self, personnel_expense_list)
-            
-        status_tb     = self.payroll_status_tb
+        
+        # Success 갯수 체크
+        status_tb     = self.status_tb
         success_count = 0
         fail_count    = 0
         for idx in range(0, status_tb.rowCount()):
@@ -71,7 +72,7 @@ def auto_save(self, excel_obj):
 '''
 def auto_save_simple(self, excel_list):
     try:
-        max_col_cnt = len(excel_list[0])
+        max_col_cnt = len(excel_list[0]) if len(excel_list) > 0 else 0
         
         for row_i in range(0, len(excel_list)) :
             rows = excel_list[row_i]
@@ -146,8 +147,6 @@ def auto_save_simple(self, excel_list):
                         # '장기요양급여수입' 계정과목같은 경우는, 마음손에서 반영/미반영을 별도로 처리하지 않을 때 상대계정코드목록 팝업창이 오픈하게 된다.
                         # 따라서, 코드/명 항목이 존재하면 인풋에 값을 입력하고 검색한다.
                         find_and_click.pick_account_반영(data, 'opponent_subject') if data == '장기요양급여수입' else None
-                        # if data == '장기요양급여수입':
-                        #     find_and_click.pick_account_반영(data, 'opponent_subject')
                         continue
                     else:
                         continue
@@ -176,5 +175,4 @@ def auto_save_simple(self, excel_list):
 
 
 # #6 상태 테이블값 true로 변환
-def status_change_true(self, row_i): self.payroll_status_tb.setItem(row_i, 0, QTableWidgetItem('Success'))
-# def status_change_true(self, row_i): self.status_tb.setItem(row_i, 0, QTableWidgetItem('Success'))
+def status_change_true(self, row_i): self.status_tb.setItem(row_i, 0, QTableWidgetItem('Success'))
