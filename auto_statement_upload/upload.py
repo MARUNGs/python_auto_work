@@ -49,7 +49,7 @@ logging.getLogger().addHandler(file_handler)
 
 
 # 기본 딜레이 설정
-gui.PAUSE = 0.3
+gui.PAUSE = 0.25
 
 ########### class function ##############################################################################
 class window__base__setting(QMainWindow, main_ui) :
