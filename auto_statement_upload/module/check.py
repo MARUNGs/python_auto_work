@@ -13,7 +13,7 @@ import base64
 from sshtunnel import SSHTunnelForwarder # SSH DB 연결
 import paramiko
 import io
-import hashlib
+import tkinter as tk
 
 
 ########## function #################################################################################################################################
@@ -83,6 +83,19 @@ def all_check(self):
     check_year                     = self.file_payroll_year_img_path.toPlainText().replace(' ', '') # 급여대장 회계연도
 
     try:
+        root = tk.Tk()
+        width = root.winfo_screenwidth()
+        height = root.winfo_screenheight()
+        root.destroy()
+
+        if (
+                width  != self.img_xy_info['init_resolution'][0] and
+                height != self.img_xy_info['init_resolution'][1]
+            ):
+            gui.alert(f"화면 해상도는 {self.img_xy_info['init_resolution'][0]} x {self.img_xy_info['init_resolution'][1]}으로 맞춰야 합니다.")
+            return False
+
+
         if (
             check_file_path.replace(' ', '') != '' and 
             check_project_img_path           != '' and
@@ -115,31 +128,33 @@ def all_check(self):
             return False 
     except Exception as e:
         gui.alert('자동화 업무 수행 전 확인단계에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
-        logging.error('급여대장 확인 기능 오류: ', str(e))
+        logging.error('전체 확인기능 오류: ', str(e))
         sys.exit()
 
 
 def check_open_file(self):
     try:
-        file_path = self.file_path.toPlainText()
-        length = len(file_path.rsplit(os.sep))
-        file_nm = file_path.rsplit(os.sep)[length-1]
-        xl = win32.Dispatch('Excel.Application')
+        ################ 굳이 엑셀파일을 열 필요가 없을 것 같아서 리턴만 작업.
+        ################ 기능상 문제는 없음, 만약 엑셀파일을 열어야 한다면 아래 소스를 주석해제할 것.
+        # file_path = self.file_path.toPlainText()
+        # length = len(file_path.rsplit(os.sep))
+        # file_nm = file_path.rsplit(os.sep)[length-1]
+        # xl = win32.Dispatch('Excel.Application')
 
-        if len(gui.getWindowsWithTitle(file_nm.split('.')[0])) < 1: # 엑셀프로그램이 열려있지 않으면 오픈
-            xl.Workbooks.Open(Filename=file_path)
-            xl.Visible = True
-            return True
+        # if len(gui.getWindowsWithTitle(file_nm.split('.')[0])) < 1: # 엑셀프로그램이 열려있지 않으면 오픈
+        #     xl.Workbooks.Open(Filename=file_path)
+        #     xl.Visible = True
+        #     return True
         
 
-        if xl.Workbooks.Count > 0: # 열려있는 파일 중 특정 Excel 이름과 일치하는 파일이 없으면 새 파일 오픈
-            for excel in xl.Workbooks:
-                if not excel.Name == file_nm:
-                    xl.Workbooks.Open(Filename=file_path)
-                    xl.Visible = True
-        else:
-            xl.Workbooks.Ope(Filename=file_path)
-            xl.Visible=True
+        # if xl.Workbooks.Count > 0: # 열려있는 파일 중 특정 Excel 이름과 일치하는 파일이 없으면 새 파일 오픈
+        #     for excel in xl.Workbooks:
+        #         if not excel.Name == file_nm:
+        #             xl.Workbooks.Open(Filename=file_path)
+        #             xl.Visible = True
+        # else:
+        #     xl.Workbooks.Ope(Filename=file_path)
+        #     xl.Visible=True
 
         return True
     except Exception as e:

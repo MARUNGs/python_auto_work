@@ -172,25 +172,45 @@ def img_left_click(img_nm):
 
 
 # 계정과목코드가 '장기요양급여수입'인 경우 반영을 픽스하기 위한 기능
-def pick_account_반영(data, type):
-    img_left_click('조회.png') # 포커스 초기화 클릭
-    time.sleep(1.0)
+def pick_account_반영(data, type, self):
+    xy_info = self.img_xy_info
     
     if type == 'account_subject':
-        img_click('팝업_계정코드목록.png')
-        time.sleep(1.0)
-        gui.press('enter') # 선택
-        time.sleep(0.5)
-    elif type == 'opponent_subject':
-        img_click('코드명_장기요양급여수입.png')
+        xy_info_click(xy_info['popup_account_cd']) # 팝업_계정코드목록
         gui.hotkey('ctrl', 'a')
         gui.press('backspace')
         pyperclip.copy(data)
         gui.hotkey('ctrl', 'v')
         gui.press('enter')
-        time.sleep(1.0)
-        gui.press('enter') # 선택
-        time.sleep(0.5)
+        gui.press('enter')
+    elif type == 'opponent_subject':
+        xy_info_click(*xy_info['popup_opponent_account_subject_cd']) # 상대계정 코드명 입력
+        gui.hotkey('ctrl', 'a')
+        gui.press('backspace')
+        pyperclip.copy(data)
+        gui.hotkey('ctrl', 'v')
+        gui.press('enter')
+        gui.press('enter')
+
+# def pick_account_반영(data, type):
+#     img_left_click('조회.png') # 포커스 초기화 클릭
+#     time.sleep(1.0)
+    
+#     if type == 'account_subject':
+#         img_click('팝업_계정코드목록.png')
+#         time.sleep(1.0)
+#         gui.press('enter') # 선택
+#         time.sleep(0.5)
+#     elif type == 'opponent_subject':
+#         img_click('코드명_장기요양급여수입.png')
+#         gui.hotkey('ctrl', 'a')
+#         gui.press('backspace')
+#         pyperclip.copy(data)
+#         gui.hotkey('ctrl', 'v')
+#         gui.press('enter')
+#         time.sleep(1.0)
+#         gui.press('enter') # 선택
+#         time.sleep(0.5)
 
 
 # 화면 정 가운데 클릭
@@ -204,3 +224,8 @@ def screen_center_click():
 
     # 클릭 실행
     gui.click(click_x, click_y, interval=0.5)
+
+
+def xy_info_click(xy_info):
+    gui.moveTo(*xy_info) # key값의 xy좌표로 이동
+    gui.click()          # 이동한 좌표에서 클릭

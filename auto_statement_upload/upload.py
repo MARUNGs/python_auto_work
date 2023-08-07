@@ -18,12 +18,15 @@ from PyQt5 import uic              # .ui 파일 호출
 from PyQt5.QAxContainer import *
 from PyQt5.QtGui import *
 import logging                     # 로그
+from screeninfo import get_monitors
+import tkinter as tk
 
 
 ##### Module import 
 from module import auto_save             # 결의서/전표정보 자동업로드 및 저장기능 수행
 from module import check                 # 시작 전 확인기능 수행
 from module import make_excel_data_table # 엑셀 데이터 생성기능 수행
+from module import xy_info               # xy좌표 정보
 import module.xls_to_xlsx as xls_to_xlsx # 엑셀 확장자 변경
 
 
@@ -46,12 +49,14 @@ logging.getLogger().addHandler(file_handler)
 
 
 # 기본 딜레이 설정
-gui.PAUSE = 0.2
+gui.PAUSE = 0.3
 
 ########### class function ##############################################################################
 class window__base__setting(QMainWindow, main_ui) :
     def __init__(self) :
         super().__init__()
+
+        self.img_xy_info = xy_info.xy_info_map()
 
         # 버튼 기능 연결
         self.set_ui()
@@ -61,6 +66,7 @@ class window__base__setting(QMainWindow, main_ui) :
         self.find_payroll_year_img_btn.clicked.connect(self.find_year_img_fn)               # 첨부 회계연도 이미지
         self.start_btn.clicked.connect(self.start_fn)                               # 시작
 
+        
 
     # ui 세팅
     def set_ui(self): self.setupUi(self)
