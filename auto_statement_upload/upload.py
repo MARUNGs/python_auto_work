@@ -18,8 +18,7 @@ from PyQt5 import uic              # .ui 파일 호출
 from PyQt5.QAxContainer import *
 from PyQt5.QtGui import *
 import logging                     # 로그
-from screeninfo import get_monitors
-import tkinter as tk
+import openpyxl                    # 엑셀
 
 
 ##### Module import 
@@ -40,16 +39,18 @@ main_ui = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[
 img_dir_path = os.path.dirname(__file__) + os.sep + 'img' + os.sep
 
 # 로그 설정
-logging.getLogger().setLevel(logging.DEBUG) # 로그레벨 설정
-log_file = 'app.log'
-file_handler = logging.FileHandler(log_file)
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-logging.getLogger().addHandler(file_handler)
+applogger = logging.getLogger("app")
+applogger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s', '%Y-%m-%d %H:%M:%S')
+stream_hander = logging.StreamHandler()
+stream_hander.setFormatter(formatter)
+applogger.addHandler(stream_hander)
+file_handler = logging.FileHandler('app.log')
+applogger.addHandler(file_handler)
 
 
 # 기본 딜레이 설정
-gui.PAUSE = 0.25
+gui.PAUSE = 0.5
 
 ########### class function ##############################################################################
 class window__base__setting(QMainWindow, main_ui) :
@@ -61,16 +62,17 @@ class window__base__setting(QMainWindow, main_ui) :
         # 버튼 기능 연결
         self.set_ui()
         self.find_btn.clicked.connect(self.find_fn)                                 # 첨부 엑셀파일
-        self.find_project_img_btn.clicked.connect(self.find_project_img_fn)                 # 첨부 사업이미지 1
-        self.find_payroll_project_img_btn.clicked.connect(self.find_project_img_fn)         # 첨부 사업이미지 2
+        # self.find_project_img_btn.clicked.connect(self.find_project_img_fn)                 # 첨부 사업이미지 1
+        # self.find_payroll_project_img_btn.clicked.connect(self.find_project_img_fn)         # 첨부 사업이미지 2
         self.find_payroll_year_img_btn.clicked.connect(self.find_year_img_fn)               # 첨부 회계연도 이미지
         self.start_btn.clicked.connect(self.start_fn)                               # 시작
+        self.download_btn.clicked.connect(self.download)                            # 엑셀 다운로드
+        self.excel_list = None # make excel data 수행할 때 삽입할 객체
 
         
 
     # ui 세팅
     def set_ui(self): self.setupUi(self)
-
 
     #1 파일 업로드
     def find_fn(self):
@@ -132,6 +134,63 @@ class window__base__setting(QMainWindow, main_ui) :
         except Exception as e:
             gui.alert('회계연도 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
             logging.error(str(e))
+
+
+    # 엑셀 생성 + 엑셀 다운로드
+    def download(self):
+        excel_tb  = self.excel_tb
+        status_tb = self.status_tb
+        excel_list = self.excel_list #실제로 담겨져있는 엑셀데이터#
+
+        #엑셀 행 수가 0 이상인 경우에만 수행#
+        if excel_tb.rowCount() > 0:
+            if gui.confirm('작업한 결과를 저장하시겠습니까?') == 'OK':
+                try:
+                    #Workbook 생성#
+                    wb           = openpyxl.Workbook()
+                    #저장경로 추출하기 위한 요소 조회#
+                    file_path    = self.file_path.toPlainText()
+                    file_rsplit  = file_path.rsplit('/')
+                    length       = len(file_rsplit)
+                        # 파일명 추출
+                    file_nm      = file_rsplit[length-1]
+                    file_rsplit.pop()
+                        # 저장경로 생성
+                    save_path    = '/'.join(file_rsplit) + '/'
+                        # 저장파일명 생성
+                    save_file_nm = '[결과]' + file_nm
+
+
+                    #엑셀내용 생성 시작#
+                        # 현재 워크시트 선택
+                    ws = wb.active
+
+                        # 첫행은 무조건 타이틀 삽입
+                    ws.append(excel_list[0])
+
+                        # append()를 이용하여 list 자체를 하나의 row로 채운다
+                    for idx in range(1, len(excel_list)):
+                        print('엑셀 데이터를 각 행에 대입하자 append')
+                        # 행에 데이터 자체를 붙임
+                        ws.append(excel_list[idx])
+                        # 셀 범위 설정
+                        cell_range = f'A{idx + 1}:{openpyxl.utils.get_column_letter(ws.max_column)}{idx + 1}'
+                        # 채우기 색상 설정
+                        fill       = openpyxl.styles.PatternFill(start_color='FFFF00', end_color='FFFF00', fill_type="solid")
+                        # 등록하는 전표 상태값이 'Success'이면 넘어가고, 'Fail' 이면 배경색 칠하기
+                        # status_tb와 excel_tb의 list size() 값이 다르므로 idx-1 처리
+                        if status_tb.item(idx - 1, 0).text() == 'Fail':
+                            print('배경색 칠하기 노란색으로~')
+                            for row in ws[cell_range]:
+                                for cell in row: 
+                                    cell.fill = fill
+
+
+                    # 엑셀 저장(마무리)
+                    wb.save(save_path + save_file_nm)
+                except Exception as e:
+                    gui.alert('첨부파일 엑셀작업 결과를 엑셀로 생성하는 과정에서 문제가 발생했습니다.')
+
 ########## function ###################################################################################
 # 자동화 실행 >> 전표정보
 def start_auto(self):
@@ -156,6 +215,8 @@ def starting(self) :
 def ending(self) :
     self.status_text.setText('종료')
     self.status_text.setStyleSheet('Color: black')
+
+
 
 
 ########## Start Program(PyQt5 Designer) ###################################################################################

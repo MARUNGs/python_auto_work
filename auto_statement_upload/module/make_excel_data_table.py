@@ -33,6 +33,8 @@ def make_excel_data(self):
             'personnel_expense_list': []  # 인건비(지출)
         }
 
+        excel_list = [] #다운로드 기능 수행 시 이용할 변수#
+
         for rows in sheet.iter_rows():
             '''한 행의 데이터를 담을 딕셔너리 자료형 - 엑셀 항목 기준'''
             data_list = [] ## 한 행을 생성하는 list
@@ -50,6 +52,11 @@ def make_excel_data(self):
             elif data_list[0] == '수입':                               excel_obj['income_list'].append(data_list)
             elif data_list[0] == '지출' and data_list[12] != '인건비': excel_obj['expense_list'].append(data_list)
             elif data_list[0] == '지출' and data_list[12] == '인건비': excel_obj['personnel_expense_list'].append(data_list)
+
+            excel_list.insert(i, data_list) #다운로드 기능 수행 시 이용할 변수#
+
+        #나중에 다운로드하기 위해 미리 대입해둠#
+        self.excel_list = excel_list
 
         return excel_obj
     except Exception as e:
