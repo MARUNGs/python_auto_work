@@ -39,14 +39,29 @@ main_ui = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[
 img_dir_path = os.path.dirname(__file__) + os.sep + 'img' + os.sep
 
 # 로그 설정
-applogger = logging.getLogger("app")
-applogger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s', '%Y-%m-%d %H:%M:%S')
+global_logger = logging.getLogger()  # 전역 로그 (DEBUG 전용)
+applogger = logging.getLogger("app") # app 로그 (ERROR 전용)
+
+global_logger.setLevel(logging.ERROR) # DEBUG
+applogger.setLevel(logging.DEBUG)     # ERROR
+
+# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s', '%Y-%m-%d %H:%M:%S')
+formatter = logging.Formatter(u'%(asctime)s [%(levelname)8s] %(message)s')
+
+# 로그 핸들러 
 stream_hander = logging.StreamHandler()
 stream_hander.setFormatter(formatter)
-applogger.addHandler(stream_hander)
+
+global_logger.addHandler(stream_hander) # DEBUG
+applogger.addHandler(stream_hander)     # ERROR
+
+# 파일 핸들러
 file_handler = logging.FileHandler('app.log')
-applogger.addHandler(file_handler)
+file_handler.setFormatter(formatter)
+
+global_logger.addHandler(file_handler) # DEBUG
+applogger.addHandler(file_handler)     # ERROR
+
 
 
 # 기본 딜레이 설정
@@ -62,9 +77,7 @@ class window__base__setting(QMainWindow, main_ui) :
         # 버튼 기능 연결
         self.set_ui()
         self.find_btn.clicked.connect(self.find_fn)                                 # 첨부 엑셀파일
-        # self.find_project_img_btn.clicked.connect(self.find_project_img_fn)                 # 첨부 사업이미지 1
-        # self.find_payroll_project_img_btn.clicked.connect(self.find_project_img_fn)         # 첨부 사업이미지 2
-        self.find_payroll_year_img_btn.clicked.connect(self.find_year_img_fn)               # 첨부 회계연도 이미지
+        self.find_payroll_year_img_btn.clicked.connect(self.find_year_img_fn)       # 첨부 회계연도 이미지
         self.start_btn.clicked.connect(self.start_fn)                               # 시작
         self.download_btn.clicked.connect(self.download)                            # 엑셀 다운로드
         self.excel_list = None # make excel data 수행할 때 삽입할 객체

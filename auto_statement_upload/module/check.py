@@ -18,6 +18,7 @@ import tkinter as tk
 
 
 applogger = logging.getLogger("app")
+global_logger = logging.getLogger()
 
 ########## function #################################################################################################################################
 '''
@@ -34,104 +35,108 @@ def DB_setting_and_select_result(check_w4c_cd, self):
         with open(pem_path, 'rb') as f: blob = base64.b64encode(f.read())
         pem_decode = blob.decode('utf-8')
 
+        applogger.debug("-------------------------------------------------------------------------------------")
+        applogger.debug("1. " + pem_decode)
+        applogger.debug("-------------------------------------------------------------------------------------")
+
         SSH_KEY_BLOB_DECODED = base64.b64decode(pem_decode)
+        applogger.debug("-------------------------------------------------------------------------------------")
+        applogger.debug("2. " + SSH_KEY_BLOB_DECODED)
+        applogger.debug("-------------------------------------------------------------------------------------")
+
         SSH_KEY = SSH_KEY_BLOB_DECODED.decode('utf-8')
+        applogger.debug("-------------------------------------------------------------------------------------")
+        applogger.debug("3. "+ SSH_KEY)
+        applogger.debug("-------------------------------------------------------------------------------------")
 
         pkey = paramiko.RSAKey.from_private_key(io.StringIO(SSH_KEY))
+        applogger.debug("-------------------------------------------------------------------------------------")
+        applogger.debug("4. "+ pkey)
+        applogger.debug("-------------------------------------------------------------------------------------")
 
         # 개발용
-        conn = pg.connect(
-            dbname='test_hearthands',
-            user='postgres',
-            password='123qwe```',
-            host='192.168.0.11',
-            port=54332
-        )
+        # conn = pg.connect(
+        #     dbname='test_hearthands',
+        #     user='postgres',
+        #     password='123qwe```',
+        #     host='192.168.0.11',
+        #     port=54332
+        # )
 
-        with conn:
-            cur      = conn.cursor()
-            input_id = self.id_2.toPlainText()
+        # with conn:
+        #     cur      = conn.cursor()
+        #     input_id = self.id_2.toPlainText()
 
-            stmt = cur.mogrify('''
-                SELECT A.id,
-                        A.password,
-                        C.w4c_code
-                    FROM common.login_user A
-                INNER JOIN common.login_user_and_org B
-                        ON A.login_user_idno = B.login_user_idno
-                        AND A.id = %s
-                INNER JOIN common.org_info C
-                        ON B.org_idno = C.org_idno
-                        AND C.w4c_code = %s
-            ''', (input_id, check_w4c_cd, ))
-            cur.execute(stmt) # PreparedStatement 실행
-            result = cur.fetchall()
+        #     stmt = cur.mogrify('''
+        #         SELECT A.id,
+        #                 A.password,
+        #                 C.w4c_code
+        #             FROM common.login_user A
+        #         INNER JOIN common.login_user_and_org B
+        #                 ON A.login_user_idno = B.login_user_idno
+        #                 AND A.id = %s
+        #         INNER JOIN common.org_info C
+        #                 ON B.org_idno = C.org_idno
+        #                 AND C.w4c_code = %s
+        #     ''', (input_id, check_w4c_cd, ))
+        #     cur.execute(stmt) # PreparedStatement 실행
+        #     result = cur.fetchall()
 
-            return result
+        #     return result
 
 
-        # with SSHTunnelForwarder(
-        #     ssh_address_or_host=('15.165.39.46', 22),
-        #     ssh_username='ec2-user',
-        #     ssh_pkey=pkey,
-        #     remote_bind_address=('127.0.0.1', 5432),
-        #     local_bind_address=('127.0.0.1', 5432)
-        # ) as server:
-        #     conn = pg.connect(
-        #         host='ec2-15-165-39-46.ap-northeast-2.compute.amazonaws.com', 
-        #         dbname='hearthands', 
-        #         user='postgres', 
-        #         password='hearthandsLive2022', 
-        #         port=5432
-        #     )
+        with SSHTunnelForwarder(
+            ssh_address_or_host=('15.165.39.46', 22),
+            ssh_username='ec2-user',
+            ssh_pkey=pkey,
+            remote_bind_address=('127.0.0.1', 5432),
+            local_bind_address=('127.0.0.1', 5432)
+        ) as server:
+            conn = pg.connect(
+                host='ec2-15-165-39-46.ap-northeast-2.compute.amazonaws.com', 
+                dbname='hearthands', 
+                user='postgres', 
+                password='hearthandsLive2022', 
+                port=5432
+            )
 
-        #     with conn:
-        #         cur      = conn.cursor()
-        #         input_id = self.id_2.toPlainText()
+            with conn:
+                cur      = conn.cursor()
+                input_id = self.id_2.toPlainText()
 
-        #         stmt = cur.mogrify('''
-        #             SELECT A.id,
-        #                    A.password,
-        #                    C.w4c_code
-        #               FROM common.login_user A
-        #             INNER JOIN common.login_user_and_org B
-        #                     ON A.login_user_idno = B.login_user_idno
-        #                    AND A.id = %s
-        #             INNER JOIN common.org_info C
-        #                     ON B.org_idno = C.org_idno
-        #                    AND C.w4c_code = %s
-        #         ''', (input_id, check_w4c_cd, ))
-        #         cur.execute(stmt) # PreparedStatement 실행
-        #         result = cur.fetchall()
+                stmt = cur.mogrify('''
+                    SELECT A.id,
+                           A.password,
+                           C.w4c_code
+                      FROM common.login_user A
+                    INNER JOIN common.login_user_and_org B
+                            ON A.login_user_idno = B.login_user_idno
+                           AND A.id = %s
+                    INNER JOIN common.org_info C
+                            ON B.org_idno = C.org_idno
+                           AND C.w4c_code = %s
+                ''', (input_id, check_w4c_cd, ))
+                cur.execute(stmt) # PreparedStatement 실행
 
-        #         return result
+                applogger.debug("-------------------------------------------------------------------------------------")
+                applogger.debug("5. execute")
+                applogger.debug("-------------------------------------------------------------------------------------")
+
+                result = cur.fetchall()
+
+                return result
     except Exception as e:
-        # server.stop()
         applogger.debug('DB Connect ERROR MSG : ', e)
-        logging.error('DB 연결 오류!', e)
+        global_logger.error('DB 연결 오류!', e)
 
 
 def all_check(self):
     check_file_path                = self.file_path.toPlainText()                                   # 엑셀파일
-    # check_project_img_path         = self.file_project_img_path.toPlainText()                       # 간편입력 사업명이미지
-    # check_payroll_project_img_path = self.file_payroll_project_img_path.toPlainText()               # 급여대장 사업명이미지
     check_w4c_cd                   = self.w4c_cd.toPlainText().replace(' ', '')                     # 희망e음 코드
     check_year                     = self.file_payroll_year_img_path.toPlainText().replace(' ', '') # 급여대장 회계연도
     check_project_num              = self.project_num.text().replace(' ', '')                       # 간편입력 사업 순서
 
     try:
-        root = tk.Tk()
-        width = root.winfo_screenwidth()
-        height = root.winfo_screenheight()
-        root.destroy()
-
-        if (
-                width  != self.img_xy_info['init_resolution'][0] and
-                height != self.img_xy_info['init_resolution'][1]
-            ):
-            gui.alert(f"화면 해상도는 {self.img_xy_info['init_resolution'][0]} x {self.img_xy_info['init_resolution'][1]}으로 맞춰야 합니다.")
-            return False
-
         p = re.compile('[0-9]{1,2}')
         if p.match(check_project_num) is None:
             gui.alert('사업명 순서는 순서에 맞게 숫자만 입력해야 합니다. (2글자까지 제한)')
@@ -139,9 +144,7 @@ def all_check(self):
         
 
         if (
-            check_file_path.replace(' ', '') != '' and 
-            # check_project_img_path           != '' and
-            # check_payroll_project_img_path   != '' and 
+            check_file_path.replace(' ', '') != '' and
             check_w4c_cd                     != '' and
             check_year                       != '' and
             check_project_num                != ''
@@ -173,8 +176,7 @@ def all_check(self):
             return False 
     except Exception as e:
         gui.alert('자동화 업무 수행 전 확인단계에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
-        logging.error('ALL CHECK ERROR MSG: ', str(e))
-        applogger.error('전체 확인기능 오류: ', str(e))
+        global_logger.error('전체 확인기능 오류: ', str(e))
 
 
 def check_open_file(self):
