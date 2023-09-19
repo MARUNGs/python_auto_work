@@ -59,7 +59,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_1">
      <property name="toolTip">
@@ -116,19 +116,19 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'맑은 고딕'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; font-weight:600; color:#474747; vertical-align:sub;&quot;&gt;&amp;lt;필독사항&amp;gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;필독 1. 반드시 안내글을 필독바랍니다.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;필독 2. 해당 프로그램은 마음손 사용자 외에는 사용불가합니다.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;필독 3.&lt;/span&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; vertical-align:sub;&quot;&gt; 급여대장 등록 시, 매해마다 급여항목 등록 &amp;gt; 직(간)접비 구분 설정을 수행해야 합니다.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;필독 1. 해당 프로그램은 마음손 사용자 외에는 사용불가합니다.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;필독 2.&lt;/span&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; vertical-align:sub;&quot;&gt; 급여대장 등록 시, 매해마다 급여항목 등록 &amp;gt; 직(간)접비 구분 설정을 수행해야 합니다.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; vertical-align:sub;&quot;&gt;필독 3. 매크로 프로그램 이용 시, W4C 프로그램이 &lt;/span&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; font-weight:600; vertical-align:sub;&quot;&gt;가장 최적화된 상태(방금 실행한 상태)&lt;/span&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; vertical-align:sub;&quot;&gt;에서 수행해야 원활하게 진행됩니다.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; vertical-align:sub;&quot;&gt;필독 4. 상세한 사용매뉴얼은 실행파일과 함께 제공되는 첨부파일을 참고하십시오.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; font-weight:600; color:#474747; vertical-align:sub;&quot;&gt;&amp;lt;사용방법&amp;gt;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;1. 자동업로드 처리할 첨부파일명을 선택하세요. (xls 또는 xlsx 확장자 파일만 허용합니다.)&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;2. 일반전표 자동업로드 처리할 사업명 이미지를 선택하세요. (png 확장자 파일만 허용합니다.)&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;3. 인건비(지출) 전표 자동업로드 처리할 사업명 이미지를 선택하세요. (png 확장자 파일만 허용합니다.)&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;4. 사회복지시설정보시스템에서 발급받은 희망e음 코드를 입력하세요.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;5. 실행(ctrl+1) 버튼을 통해 자동업로드 업무를 수행합니다.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;2. 자동업로드 처리할 사업명 순서를 입력하세요. (숫자만 허용, 1~2글자만 허용합니다.)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;3. 사회복지시설정보시스템에서 발급받은 희망e음 코드를 입력하세요.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;4. 실행(ctrl+1) 버튼을 통해 자동업로드 업무를 수행합니다.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt; * &lt;/span&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#c83623; vertical-align:sub;&quot;&gt;'확인'을 누르면 자동화 작업이 진행되며, 작업이 완전히 종료되기 전까지 키보드 및 마우스 사용(동작)은 권장하지 않습니다.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt; *  &lt;/span&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#c83623; vertical-align:sub;&quot;&gt;만약, '중지' 상태가 아닌 상황에서 키보드 및 마우스 사용(동작)이 수행된 경우 나타나는 오류는 사용자가 부담합니다.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;4. 실행중인 상태에서 매크로를 강제 중지하려면 모니터의 좌측 상단으로 마우스를 끌어다 둡니다.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt; *  &lt;/span&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#c83623; vertical-align:sub;&quot;&gt;만약, 프로그램이 실행중인 상황에서 키보드 및 마우스 사용(동작)이 수행된 경우 나타나는 오류는 사용자가 부담합니다.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Gulim'; font-size:14pt; color:#474747; vertical-align:sub;&quot;&gt;5. 매크로 프로그램이 실행중인 상태에서 강제 중지하려면 모니터의 좌측 상단으로 마우스를 끌어다 두고, 프로그램이 강제종료 될 때까지 대기합니다.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
       <widget class="QLabel" name="label">
@@ -179,7 +179,7 @@ p, li { white-space: pre-wrap; }
         <x>10</x>
         <y>40</y>
         <width>524</width>
-        <height>24</height>
+        <height>25</height>
        </rect>
       </property>
       <property name="font">
@@ -203,7 +203,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'맑은 고딕','맑은 고딕','맑은 고딕'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;D:/ysk/Python/python_auto_work/download_file/마음손거래내역_8월테스트.xlsx&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="placeholderText">
        <string>첨부파일 경로</string>
@@ -265,7 +265,7 @@ QPushButton:hover {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>89</y>
+         <y>180</y>
          <width>191</width>
          <height>16</height>
         </rect>
@@ -276,70 +276,7 @@ QPushButton:hover {
         </font>
        </property>
        <property name="text">
-        <string>첨부 사업명 이미지(간편입력)</string>
-       </property>
-      </widget>
-      <widget class="QTextEdit" name="file_payroll_project_img_path">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>172</y>
-         <width>524</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>맑은 고딕</family>
-        </font>
-       </property>
-       <property name="cursor" stdset="0">
-        <cursorShape>ForbiddenCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QTextEdit {
-	border: 1px solid #9e9fa3
-}</string>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="html">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'맑은 고딕'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'맑은 고딕','맑은 고딕','맑은 고딕';&quot;&gt;D:/ysk/Python/python_auto_work/download_file/인건비_일반사업.png&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="placeholderText">
-        <string>첨부파일 경로</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="find_payroll_project_img_btn">
-       <property name="geometry">
-        <rect>
-         <x>540</x>
-         <y>172</y>
-         <width>68</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	background-color: #f0f0f0;
-	border: 1px solid #9e9fa3;
-}
-
-QPushButton:hover {
-	background-color: rgb(222,222,222)
-}
-</string>
-       </property>
-       <property name="text">
-        <string>파일찾기</string>
-       </property>
-       <property name="shortcut">
-        <string/>
+        <string>사업명 순서(숫자만 입력)</string>
        </property>
       </widget>
       <widget class="Line" name="line_3">
@@ -359,7 +296,7 @@ QPushButton:hover {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>213</y>
+         <y>100</y>
          <width>141</width>
          <height>16</height>
         </rect>
@@ -377,9 +314,9 @@ QPushButton:hover {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>235</y>
+         <y>128</y>
          <width>524</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <property name="font">
@@ -403,7 +340,7 @@ QPushButton:hover {
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'맑은 고딕'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'맑은 고딕','맑은 고딕','맑은 고딕';&quot;&gt;D:/ysk/Python/python_auto_work/download_file/2023.png&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="placeholderText">
         <string>첨부파일 경로</string>
@@ -413,10 +350,15 @@ p, li { white-space: pre-wrap; }
        <property name="geometry">
         <rect>
          <x>540</x>
-         <y>235</y>
+         <y>128</y>
          <width>68</width>
          <height>24</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>맑은 고딕</family>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -460,7 +402,7 @@ QPushButton:hover {
          <x>640</x>
          <y>50</y>
          <width>271</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <property name="font">
@@ -478,7 +420,7 @@ QPushButton:hover {
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'맑은 고딕'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;X0000001377&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="placeholderText">
         <string>희망e음 인증코드를 입력하세요.</string>
@@ -508,7 +450,7 @@ p, li { white-space: pre-wrap; }
          <x>640</x>
          <y>120</y>
          <width>271</width>
-         <height>24</height>
+         <height>25</height>
         </rect>
        </property>
        <property name="font">
@@ -526,7 +468,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'맑은 고딕'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;marungs12&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="placeholderText">
         <string>마음손 ID</string>
@@ -552,50 +494,13 @@ p, li { white-space: pre-wrap; }
 }</string>
        </property>
        <property name="text">
-        <string>heartful12</string>
+        <string/>
        </property>
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>
        </property>
        <property name="placeholderText">
         <string>마음손 PW</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="stop_payroll_btn">
-       <property name="geometry">
-        <rect>
-         <x>320</x>
-         <y>280</y>
-         <width>296</width>
-         <height>60</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>맑은 고딕</family>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>중지버튼을 누르면 자동화작업을 이어서 진행할 수 없습니다.</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	background-color: #f0f0f0;
-	border: 1px solid #9e9fa3;
-}
-
-QPushButton:hover {
-	background-color: rgb(222,222,222)
-}</string>
-       </property>
-       <property name="text">
-        <string>중지(ctrl + 9)</string>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+9</string>
        </property>
       </widget>
       <widget class="QPushButton" name="start_btn">
@@ -630,6 +535,9 @@ QPushButton:hover {
        </property>
        <property name="text">
         <string>실행(ctrl + 1)</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+1</string>
        </property>
        <property name="checkable">
         <bool>false</bool>
@@ -706,68 +614,51 @@ QPushButton:hover {
         <number>0</number>
        </property>
       </widget>
-      <widget class="QLabel" name="payroll_project_lb">
+      <widget class="QLineEdit" name="project_num">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>150</y>
-         <width>171</width>
-         <height>16</height>
+         <y>204</y>
+         <width>296</width>
+         <height>25</height>
         </rect>
        </property>
        <property name="font">
         <font>
          <family>맑은 고딕</family>
         </font>
-       </property>
-       <property name="text">
-        <string>첨부 사업명 이미지(급여대장)</string>
-       </property>
-      </widget>
-      <widget class="QTextEdit" name="file_project_img_path">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>111</y>
-         <width>524</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>맑은 고딕</family>
-        </font>
-       </property>
-       <property name="cursor" stdset="0">
-        <cursorShape>ForbiddenCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">QTextEdit {
+        <string notr="true">QLineEdit {
 	border: 1px solid #9e9fa3
 }</string>
        </property>
-       <property name="readOnly">
-        <bool>true</bool>
+       <property name="inputMask">
+        <string>00</string>
        </property>
-       <property name="html">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'맑은 고딕'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'맑은 고딕','맑은 고딕','맑은 고딕';&quot;&gt;D:/ysk/Python/python_auto_work/download_file/일반사업.png&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Normal</enum>
        </property>
        <property name="placeholderText">
-        <string>첨부파일 경로</string>
+        <string>사업명 순서를 입력하세요. (숫자만 입력)</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="find_project_img_btn">
+      <widget class="QPushButton" name="download_btn">
        <property name="geometry">
         <rect>
-         <x>540</x>
-         <y>111</y>
+         <x>840</x>
+         <y>370</y>
          <width>68</width>
          <height>24</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>맑은 고딕</family>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
@@ -777,49 +668,14 @@ p, li { white-space: pre-wrap; }
 
 QPushButton:hover {
 	background-color: rgb(222,222,222)
-}</string>
+}
+</string>
        </property>
        <property name="text">
-        <string>파일찾기</string>
+        <string>다운로드</string>
        </property>
        <property name="shortcut">
         <string/>
-       </property>
-      </widget>
-      <widget class="QTextEdit" name="project_num">
-       <property name="geometry">
-        <rect>
-         <x>710</x>
-         <y>250</y>
-         <width>41</width>
-         <height>24</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>맑은 고딕</family>
-        </font>
-       </property>
-       <property name="cursor" stdset="0">
-        <cursorShape>IBeamCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QTextEdit {
-	border: 1px solid #9e9fa3
-}</string>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-       <property name="html">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'맑은 고딕'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'맑은 고딕','맑은 고딕','맑은 고딕';&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="placeholderText">
-        <string>첨부파일 경로</string>
        </property>
       </widget>
      </widget>

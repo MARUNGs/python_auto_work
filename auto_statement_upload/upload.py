@@ -23,7 +23,6 @@ import openpyxl                    # 엑셀
 
 ##### Module import 
 from module import auto_save             # 결의서/전표정보 자동업로드 및 저장기능 수행
-from module import check                 # 시작 전 확인기능 수행
 from module import make_excel_data_table # 엑셀 데이터 생성기능 수행
 from module import xy_info               # xy좌표 정보
 import module.xls_to_xlsx as xls_to_xlsx # 엑셀 확장자 변경
@@ -45,7 +44,6 @@ applogger = logging.getLogger("app") # app 로그 (ERROR 전용)
 global_logger.setLevel(logging.ERROR) # DEBUG
 applogger.setLevel(logging.DEBUG)     # ERROR
 
-# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s', '%Y-%m-%d %H:%M:%S')
 formatter = logging.Formatter(u'%(asctime)s [%(levelname)8s] %(message)s')
 
 # 로그 핸들러 
@@ -112,8 +110,10 @@ class window__base__setting(QMainWindow, main_ui) :
             starting(self)
 
             # 확인사항 조건이 맞으면 자동업로드 시작
-            start_auto(self) if check.all_check(self) else self.stop_fn
-        else: gui.alert('전표정보 자동업로드 실행을 취소합니다.')
+            start_auto(self)
+        else: 
+            gui.alert('전표정보 자동업로드 실행을 취소합니다.')
+            self.stop_fn
 
 
     #3 자동업로드 중지
