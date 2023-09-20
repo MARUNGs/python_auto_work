@@ -25,6 +25,7 @@ import openpyxl                    # 엑셀
 from module import auto_save             # 결의서/전표정보 자동업로드 및 저장기능 수행
 from module import make_excel_data_table # 엑셀 데이터 생성기능 수행
 from module import xy_info               # xy좌표 정보
+from module import check_data            # input에 작성한 데이터 체크
 import module.xls_to_xlsx as xls_to_xlsx # 엑셀 확장자 변경
 
 
@@ -110,7 +111,10 @@ class window__base__setting(QMainWindow, main_ui) :
             starting(self)
 
             # 확인사항 조건이 맞으면 자동업로드 시작
-            start_auto(self)
+            if check_data.select_and_return_result(self):
+                start_auto(self)
+            else:
+                return False
         else: 
             gui.alert('전표정보 자동업로드 실행을 취소합니다.')
             self.stop_fn
