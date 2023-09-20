@@ -158,7 +158,15 @@ def auto_save_simple(self, excel_list):
                 pyperclip.copy(rows[9])
                 gui.hotkey('ctrl', 'v')
                 for _ in range(0, 2): gui.press('enter') # 무조건 첫번째 상대계정 선택
-            
+
+            #적요#
+            if len(rows[5]) > 0:
+                for _ in range(0, 6): gui.press('tab')
+                pyperclip.copy(rows[5])
+                gui.hotkey('ctrl', 'v')
+                gui.press('tab')
+
+            gui.sleep(0.5)
 
             #1건 저장 프로세스#
             gui.hotkey('alt', 'f8') # 저장
