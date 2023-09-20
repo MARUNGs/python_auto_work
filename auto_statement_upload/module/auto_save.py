@@ -27,7 +27,6 @@ applogger = logging.getLogger("app")
 '''
 def auto_save(self, excel_obj):
     try:
-        xy_info = self.img_xy_info # x,y 좌표 정보
         ### 입력해야 할 엑셀 데이터들을 변수로 선언
         income_list = excel_obj['income_list']
         expense_list = excel_obj['expense_list']
@@ -38,9 +37,6 @@ def auto_save(self, excel_obj):
             find_and_click.img_click('회계.png')
             find_and_click.img_click('결의및전표관리.png')
             find_and_click.img_click('결의서전표간편입력.png')
-            # find_and_click.xy_info_click(xy_info['move_menu1_depth1'])
-            # find_and_click.xy_info_click(xy_info['move_menu1_depth2'])
-            # find_and_click.xy_info_click(xy_info['move_menu1_depth3'])
             gui.press('enter')
 
             ### 일반전표(수입, 지출) 처리
@@ -52,8 +48,6 @@ def auto_save(self, excel_obj):
         if len(personnel_expense_list) > 0:
             find_and_click.img_click('간편입력.png')
             find_and_click.img_click('급여대장등록.png')
-            # find_and_click.xy_info_click(xy_info['move_menu2_depth1'])
-            # find_and_click.xy_info_click(xy_info['move_menu2_depth2'])
             gui.press('enter')
             time.sleep(1)
 
@@ -73,156 +67,12 @@ def auto_save(self, excel_obj):
         logging.error('전표정보 자동저장(auto_save) Exception : ', str(e))
 
 
-'''
-    @param self      # PyQT5
-    @param excelList # makeExcelData()를 통해 갖고있는 데이터
-'''
-# def auto_save_simple(self, excel_list):
-#     try:
-#         xy_info = self.img_xy_info # x,y 좌표 정보
-#         max_col_cnt = len(excel_list[0]) if len(excel_list) > 0 else 0
-        
-#         for row_i in range(0, len(excel_list)) :
-#             rows = excel_list[row_i]
-
-#             for idx in range(0, 2): gui.hotkey('alt', 'f3') # 조회
-#             for idx in range(0, 2): gui.hotkey('alt', 'f2') # 신규
-            
-#             for i in range(0, max_col_cnt):
-#                 data = rows[i]
-
-#                 #결의구분, 금액 함께 설정#
-#                 if i==0:
-#                     find_and_click.img_right_click('결의구분타이틀.png')
-#                     now_position = gui.position()
-
-#                     if data == '수입':
-#                         #수입결의서 선택#
-#                         gui.moveTo(now_position.x, now_position.y + 45)
-#                         gui.click()
-#                         #수입금액 입력#
-#                         for idx in range(0, 2): gui.press('tab')
-#                         gui.hotkey('ctrl', 'a')
-#                         gui.press('backspace')
-#                         pyperclip.copy(rows[6])
-#                         gui.hotkey('ctrl', 'v')
-#                         gui.press('tab')
-#                     else:
-#                         #지출결의서 선택#
-#                         gui.moveTo(now_position.x, now_position.y + 65)
-#                         gui.click()
-#                         #지출금액 입력#
-#                         for idx in range(0, 2): gui.press('tab')
-#                         gui.hotkey('ctrl', 'a')
-#                         gui.press('backspace')
-#                         pyperclip.copy(rows[7])
-#                         gui.hotkey('ctrl', 'v')
-#                         gui.press('tab')
-#                     # 기존 작업 주석 # gui.moveTo(now_position.x, now_position.y + 45) if data == '수입' else gui.moveTo(now_position.x, now_position.y + 65) # find_and_click.img_click('수입결의서TXT.png') if data == '수입' else find_and_click.img_click('지출결의서TXT.png')
-#                     # gui.click()
-#                     continue
-#                 #사업#
-#                 elif i==2:
-#                     find_and_click.img_right_click('사업타이틀.png') # find_and_click.xy_info_click(xy_info['project_combobox'])
-#                     find_and_click.customization_project_img_click(self)
-#                     continue
-#                 #결의일자#
-#                 elif i==3:
-#                     # 결의일자 활성화
-#                     find_and_click.img_right_click('결의일자타이틀.png') # find_and_click.xy_info_click(xy_info['cashier_dt'])
-#                     # 결의일자 삽입
-#                     gui.hotkey('ctrl', 'a')
-#                     gui.press('backspace')
-#                     pyperclip.copy(data)
-#                     gui.hotkey('ctrl', 'v')
-#                     continue
-#                 #계정코드#
-#                 elif i==4:
-#                     find_and_click.img_click('계정코드박스.png') # find_and_click.xy_info_click(xy_info['account_subject_cd_box'])
-#                     gui.press('tab')
-#                     pyperclip.copy(data)
-#                     gui.hotkey('ctrl', 'v')
-#                     gui.press('tab')
-
-#                     # 본인부담금수입인 경우, 대상자 항목이 오픈되고 가장 첫번째 대상자를 선택한다.
-#                     if data == '본인부담금수입':
-#                         for i in range(0, 3): gui.press('tab') # 대상자 검색 아이콘으로 이동
-#                         gui.press('enter')
-#                         # find_and_click.img_right_in_click('대상자.png') # find_and_click.xy_info_click(xy_info['subject_box'])
-#                         time.sleep(0.5) # 팝업오픈으로 인한 딜레이
-#                         gui.press('enter')
-#                     # 장기요양급여수입인 경우 팝업창이 오픈되는데 반영을 기준으로 선택하도록 한다.
-#                     elif data == '장기요양급여수입':
-#                         for i in range(0, 4): gui.press('tab') # 칸 이동
-#                         gui.hotkey('ctrl', 'a')
-#                         gui.press('backspace')
-#                         gui.hotkey('ctrl', 'v')
-#                         for i in range(0, 2): gui.press('enter')
-#                         # find_and_click.pick_account_반영(data, 'account_subject') # find_and_click.pick_account_반영(data, 'account_subject', self)
-#                     continue
-#                 #결의서적요#
-#                 elif i==5:
-#                     find_and_click.img_click('결의서적요.png') # find_and_click.xy_info_click(xy_info['summary'])
-#                     gui.hotkey('ctrl', 'a')
-#                     gui.press('backspace')
-#                     pyperclip.copy(data)
-#                     gui.hotkey('ctrl', 'v')
-#                     continue
-#                 #금액#
-#                 # elif i==6 or i==7:
-#                 #     find_and_click.img_right_click('금액타이틀.png')
-
-#                 #     if data == '0': continue
-#                 #     else:
-#                 #         gui.hotkey('ctrl', 'a')
-#                 #         gui.press('backspace')
-#                 #         pyperclip.copy(data)
-#                 #         gui.hotkey('ctrl', 'v')
-#                 #         gui.press('tab')
-#                 #     continue
-#                 #상대계정#
-#                 elif i==9:
-#                     if data != '':
-#                         find_and_click.img_click('상대계정박스.png')
-#                         gui.click()
-#                         gui.press('tab')
-#                         pyperclip.copy(data)
-#                         gui.hotkey('ctrl', 'v')
-#                         gui.press('tab')
-
-#                         # find_and_click.xy_info_click(xy_info['opponent_account_subject_cd_box']) #상대계정박스 
-#                         # gui.press('tab')
-#                         # pyperclip.copy(data)
-#                         # gui.hotkey('ctrl', 'v')
-
-#                         # '장기요양급여수입' 계정과목같은 경우는, 마음손에서 반영/미반영을 별도로 처리하지 않을 때 상대계정코드목록 팝업창이 오픈하게 된다.
-#                         # 따라서, 코드/명 항목이 존재하면 인풋에 값을 입력하고 검색한다.
-#                         if data == '장기요양급여수입':
-#                             for i in range(0, 3): gui.press('tab')
-#                             gui.hotkey('ctrl', 'a')
-#                             gui.press('backspace')
-#                             gui.hotkey('ctrl', 'v')
-#                             for i in range(0, 2): gui.press('enter')
-#                         else: None
-#                         # find_and_click.pick_account_반영(data, 'opponent_subject') if data == '장기요양급여수입' else None # find_and_click.pick_account_반영(data, 'opponent_subject', self) if data == '장기요양급여수입' else None
-#                         continue
-#                     else: continue
-                
-#             if i == max_col_cnt-1:
-#                 gui.hotkey('alt', 'f8') # 저장
-#                 gui.sleep(0.2)
-#                 for idx in range(0, 2): 
-#                     gui.press('enter')
-#                     gui.sleep(0.2)
-                
-#                 status_change_true(self, row_i) #### 성공 확인됨. Flag값 수정하기
-                
-#     except Exception as e:
-#         applogger.debug('auto save statement ERROR MSG : ', str(e))
-
 
 ##### 성능을 위하여 리팩토링
 def auto_save_simple(self, excel_list):
+    global loop_flag
+    
+
     try:
         for row_i in range(0, len(excel_list)) :
             # for문 대신 컨트롤할 변수
@@ -252,15 +102,11 @@ def auto_save_simple(self, excel_list):
             project_num = int(self.project_num.text())
             if project_num != None: 
                 for _ in range(0, project_num): gui.press('down')
-            # if rows[2]:
-                # find_and_click.img_right_click('사업타이틀.png')
-                # find_and_click.customization_project_img_click(self)
 
             gui.press('tab')
 
             #금액
             # - 반납구분이 '반납'인 경우 '-' 붙여서 금액 입력할 것.
-            # #
             gui.hotkey('ctrl', 'a')
             gui.press('backspace')
             
@@ -276,7 +122,6 @@ def auto_save_simple(self, excel_list):
                 if rows[1] == '반납': pyperclip.copy('-' + rows[6])
                 ## '정상'인 경우, 금액 그대로 작성
                 else: pyperclip.copy(rows[7])
-            #기존 소스 # pyperclip.copy(rows[6]) if rows[0] == '수입' else pyperclip.copy(rows[7])
             gui.hotkey('ctrl', 'v')
             
             #계정코드#
@@ -324,7 +169,6 @@ def auto_save_simple(self, excel_list):
             
             #성공 확인됨. Flag값 수정하기#
             status_change_true(self, rows)
-            # status_change_true(self, row_i) #### 성공 확인됨. Flag값 수정하기
                 
     except Exception as e: applogger.debug('auto save statement ERROR MSG : ', str(e))
 
@@ -332,8 +176,7 @@ def auto_save_simple(self, excel_list):
 
 
 # 상태 테이블값 true로 변환
-def status_change_true(self, rows): 
-    #기존소스 self.status_tb.setItem(row_i, 0, QTableWidgetItem('Success'))
+def status_change_true(self, rows):
     data      = rows
     excel_tb  = self.excel_tb
     status_tb = self.status_tb
