@@ -70,9 +70,6 @@ def auto_save(self, excel_obj):
 
 ##### 성능을 위하여 리팩토링
 def auto_save_simple(self, excel_list):
-    global loop_flag
-    
-
     try:
         for row_i in range(0, len(excel_list)) :
             # for문 대신 컨트롤할 변수
@@ -177,6 +174,10 @@ def auto_save_simple(self, excel_list):
             
             #성공 확인됨. Flag값 수정하기#
             status_change_true(self, rows)
+            check_cnt += 1
+        
+        if check_cnt == excel_list : return True
+        else : return False
                 
     except Exception as e: applogger.debug('auto save statement ERROR MSG : ', str(e))
 
