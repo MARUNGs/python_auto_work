@@ -174,10 +174,6 @@ def auto_save_simple(self, excel_list):
             
             #성공 확인됨. Flag값 수정하기#
             status_change_true(self, rows)
-            check_cnt += 1
-        
-        if check_cnt == excel_list : return True
-        else : return False
                 
     except Exception as e: applogger.debug('auto save statement ERROR MSG : ', str(e))
 
