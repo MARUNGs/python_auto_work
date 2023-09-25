@@ -1,5 +1,5 @@
 # 이미지 좌표 저장(속도개선)
-def xy_info_map():
+def xy_info_map() -> object :
     return {
         'init_point': (448,139), # 상대좌표(0, 0)
         'init_resolution': (1920,1080), # 기본 해상도 정보

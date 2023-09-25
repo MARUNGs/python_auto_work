@@ -5,6 +5,9 @@
 #  [ex 1] 변수 및 함수 이름: my_variable, calculate_sum()
 #  [ex 2] 클래스 이름: MyClass, MyException
 
+#2# 파이썬 어노테이션(힌트)를 사용하였음. (mypy)
+#  [ex] file_path --->> file_path: str
+
 
 
 
@@ -33,29 +36,29 @@ import module.xls_to_xlsx as xls_to_xlsx # 엑셀 확장자 변경
 
 ########### 전역처리 ########################################################################################
 # 파일경로
-main_ui = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[0]
+main_ui: uic = uic.loadUiType(os.path.dirname(__file__) + os.sep + 'upload_form.ui')[0]
 
 # 공통이미지경로
-img_dir_path = os.path.dirname(__file__) + os.sep + 'img' + os.sep
+img_dir_path: os = os.path.dirname(__file__) + os.sep + 'img' + os.sep
 
 # 로그 설정
-global_logger = logging.getLogger()  # 전역 로그 (DEBUG 전용)
-applogger = logging.getLogger("app") # app 로그 (ERROR 전용)
+global_logger: logging = logging.getLogger()  # 전역 로그 (DEBUG 전용)
+applogger: logging = logging.getLogger("app") # app 로그 (ERROR 전용)
 
 global_logger.setLevel(logging.ERROR) # DEBUG
 applogger.setLevel(logging.DEBUG)     # ERROR
 
-formatter = logging.Formatter(u'%(asctime)s [%(levelname)8s] %(message)s')
+formatter: logging = logging.Formatter(u'%(asctime)s [%(levelname)8s] %(message)s')
 
 # 로그 핸들러 
-stream_hander = logging.StreamHandler()
+stream_hander: logging = logging.StreamHandler()
 stream_hander.setFormatter(formatter)
 
 global_logger.addHandler(stream_hander) # DEBUG
 applogger.addHandler(stream_hander)     # ERROR
 
 # 파일 핸들러
-file_handler = logging.FileHandler('app.log')
+file_handler: logging = logging.FileHandler('app.log')
 file_handler.setFormatter(formatter)
 
 global_logger.addHandler(file_handler) # DEBUG
@@ -64,11 +67,11 @@ applogger.addHandler(file_handler)     # ERROR
 
 
 # 기본 딜레이 설정
-gui.PAUSE = 0.5
+gui.PAUSE: float = 0.5
 
 ########### class function ##############################################################################
-class window__base__setting(QMainWindow, main_ui) :
-    def __init__(self) :
+class window__base__setting(QMainWindow, main_ui):
+    def __init__(self) -> None :
         super().__init__()
 
         self.img_xy_info = xy_info.xy_info_map()
@@ -84,15 +87,15 @@ class window__base__setting(QMainWindow, main_ui) :
         
 
     # ui 세팅
-    def set_ui(self): self.setupUi(self)
+    def set_ui(self) -> None : self.setupUi(self)
 
     #1 파일 업로드
-    def find_fn(self):
+    def find_fn(self) -> None :
         try:
-            file_path = QFileDialog.getOpenFileName(self)
-            file_nm = os.path.basename(file_path[0])
+            file_path: QFileDialog = QFileDialog.getOpenFileName(self)
+            file_nm: os = os.path.basename(file_path[0])
 
-            change_file_path = self.file_path
+            change_file_path: str = self.file_path
 
             if ('.xlsx' in file_nm) or ('.xls' in file_nm):
                 if 'xls' == file_nm.split('.')[1]: 
@@ -106,35 +109,32 @@ class window__base__setting(QMainWindow, main_ui) :
 
 
     # 전표등록 자동업로드 시작
-    def start_fn(self):
+    def start_fn(self) -> None :
         if gui.confirm('전표정보 자동업로드 업무를 실행하시겠습니까?') == 'OK':
             starting(self)
 
             # 확인사항 조건이 맞으면 자동업로드 시작
-            if check_data.select_and_return_result(self):
-                start_auto(self)
-            else:
-                return False
+            if check_data.select_and_return_result(self) : start_auto(self)
         else: 
             gui.alert('전표정보 자동업로드 실행을 취소합니다.')
             self.stop_fn
 
 
     #3 자동업로드 중지
-    def stop_fn(self):
+    def stop_fn(self) -> None :
         gui.alert('자동화 업무를 중단합니다.')
         ending(self)
         sys.exit()
 
 
     #4 사업명 이미지 업로드
-    def find_project_img_fn(self):
+    def find_project_img_fn(self) -> None :
         try:
-            file_path = QFileDialog.getOpenFileName(self)
+            file_path: str = QFileDialog.getOpenFileName(self)
 
             ## 업로드하는 이미지명에 '인건비' 포함여부 확인하여 file_img_path 설정하기
-            if   '인건비' in file_path[0]:     change_file_path = self.file_payroll_project_img_path
-            elif '인건비' not in file_path[0]: change_file_path = self.file_project_img_path
+            if   '인건비' in file_path[0]:     change_file_path: str = self.file_payroll_project_img_path
+            elif '인건비' not in file_path[0]: change_file_path: str = self.file_project_img_path
 
             change_file_path.setText(file_path[0]) if ('.png' in file_path[0]) else gui.alert('png 확장자 이미지만 허용합니다.')
         except Exception as e:
@@ -143,10 +143,10 @@ class window__base__setting(QMainWindow, main_ui) :
 
 
     # 회계연도 이미지 업로드
-    def find_year_img_fn(self):
+    def find_year_img_fn(self) -> None :
         try:
-            file_path = QFileDialog.getOpenFileName(self)
-            change_file_path = self.file_payroll_year_img_path
+            file_path: str = QFileDialog.getOpenFileName(self)
+            change_file_path: str = self.file_payroll_year_img_path
             change_file_path.setText(file_path[0]) if ('.png' in file_path[0]) else gui.alert('png 확장자 이미지만 허용합니다.')
         except Exception as e:
             gui.alert('회계연도 이미지 파일업로드 과정에서 오류가 발생했습니다. \n관리자 확인이 필요합니다.')
@@ -154,7 +154,7 @@ class window__base__setting(QMainWindow, main_ui) :
 
 
     # 엑셀 생성 + 엑셀 다운로드
-    def download(self):
+    def download(self) -> None :
         excel_tb  = self.excel_tb
         status_tb = self.status_tb
         excel_list = self.excel_list #실제로 담겨져있는 엑셀데이터#
@@ -164,40 +164,38 @@ class window__base__setting(QMainWindow, main_ui) :
             if gui.confirm('작업한 결과를 저장하시겠습니까?') == 'OK':
                 try:
                     #Workbook 생성#
-                    wb           = openpyxl.Workbook()
+                    wb: openpyxl = openpyxl.Workbook()
                     #저장경로 추출하기 위한 요소 조회#
-                    file_path    = self.file_path.toPlainText()
-                    file_rsplit  = file_path.rsplit('/')
-                    length       = len(file_rsplit)
+                    file_path: str = self.file_path.toPlainText()
+                    file_rsplit: str = file_path.rsplit('/')
+                    length: int = len(file_rsplit)
                         # 파일명 추출
-                    file_nm      = file_rsplit[length-1]
+                    file_nm: str = file_rsplit[length-1]
                     file_rsplit.pop()
                         # 저장경로 생성
-                    save_path    = '/'.join(file_rsplit) + '/'
+                    save_path: str = '/'.join(file_rsplit) + '/'
                         # 저장파일명 생성
-                    save_file_nm = '[결과]' + file_nm
+                    save_file_nm: str = '[결과]' + file_nm
 
 
                     #엑셀내용 생성 시작#
                         # 현재 워크시트 선택
-                    ws = wb.active
+                    ws: openpyxl = wb.active
 
                         # 첫행은 무조건 타이틀 삽입
                     ws.append(excel_list[0])
 
                         # append()를 이용하여 list 자체를 하나의 row로 채운다
                     for idx in range(1, len(excel_list)):
-                        print('엑셀 데이터를 각 행에 대입하자 append')
                         # 행에 데이터 자체를 붙임
                         ws.append(excel_list[idx])
                         # 셀 범위 설정
-                        cell_range = f'A{idx + 1}:{openpyxl.utils.get_column_letter(ws.max_column)}{idx + 1}'
+                        cell_range: str = f'A{idx + 1}:{openpyxl.utils.get_column_letter(ws.max_column)}{idx + 1}'
                         # 채우기 색상 설정
-                        fill       = openpyxl.styles.PatternFill(start_color='FFFF00', end_color='FFFF00', fill_type="solid")
+                        fill: openpyxl = openpyxl.styles.PatternFill(start_color='FFFF00', end_color='FFFF00', fill_type="solid")
                         # 등록하는 전표 상태값이 'Success'이면 넘어가고, 'Fail' 이면 배경색 칠하기
                         # status_tb와 excel_tb의 list size() 값이 다르므로 idx-1 처리
                         if status_tb.item(idx - 1, 0).text() == 'Fail':
-                            print('배경색 칠하기 노란색으로~')
                             for row in ws[cell_range]:
                                 for cell in row: 
                                     cell.fill = fill
@@ -210,13 +208,13 @@ class window__base__setting(QMainWindow, main_ui) :
 
 ########## function ###################################################################################
 # 자동화 실행 >> 전표정보
-def start_auto(self):
+def start_auto(self) -> None :
     # Action
-    excel_obj = make_excel_data_table.make_excel_data(self)
+    excel_obj: object = make_excel_data_table.make_excel_data(self)
     make_excel_data_table.make_table(self, excel_obj)
 
     # Active
-    w4c_window = gui.getWindowsWithTitle('사회복지시설정보시스템(1W)')[0]
+    w4c_window: gui = gui.getWindowsWithTitle('사회복지시설정보시스템(1W)')[0]
     if w4c_window.isActive == False: w4c_window.activate()
 
     auto_save.auto_save(self, excel_obj)
@@ -224,12 +222,12 @@ def start_auto(self):
 
 
 #6# '실행중'으로 상태변경
-def starting(self) :
+def starting(self) -> None :
     self.status_text.setText('실행중')
     self.status_text.setStyleSheet('color: red')
 
 #7# '종료'으로 상태변경
-def ending(self) :
+def ending(self) -> None :
     self.status_text.setText('종료')
     self.status_text.setStyleSheet('Color: black')
 
@@ -245,5 +243,3 @@ if 'upload.py' in __file__ :
     window = window__base__setting()
     window.show()
     app.exec_()
-else :
-    gui.alert('프로그램 시작 과정에서 문제 발생')

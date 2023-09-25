@@ -1,27 +1,22 @@
 #자동화 실행 전에 w4c_cd와 로그인 정보가 존재하는지 확인하는 모듈#
 
-import os
-import psycopg2 as pg
-import win32com.client as win32
 import re
 import pyautogui as gui
 import logging
-import sys
-import base64
 import requests
 
 
 
 app_logger = logging.getLogger('app')
 
-def select_and_return_result(self) :
-    file_path = self.file_path.toPlainText()
-    w4c_cd = self.w4c_cd.toPlainText()
-    year = self.file_payroll_year_img_path.toPlainText().replace(' ', '') 
-    project_num = self.project_num.text().replace(' ', '')
-    id_txt = self.id.toPlainText()
+def select_and_return_result(self) -> bool :
+    file_path: str = self.file_path.toPlainText()
+    w4c_cd: str = self.w4c_cd.toPlainText()
+    year: str = self.file_payroll_year_img_path.toPlainText().replace(' ', '') 
+    project_num: str = self.project_num.text().replace(' ', '')
+    id_txt: str = self.id.toPlainText()
 
-    p = re.compile('[0-9]{1,2}')
+    p: re = re.compile('[0-9]{1,2}')
 
     if p.match(project_num) is None :
         gui.alert('사업명 순서는 숫자만 입력해야 합니다. (2글자 제한)')
@@ -35,15 +30,15 @@ def select_and_return_result(self) :
         project_num                != ''
     ) :
         
-        p2 = re.compile('[a-zA-z0-9]')
+        p2: re.Pattern = re.compile('[a-zA-z0-9]')
 
         if (
             len(w4c_cd) == 11            and 
             p2.match(w4c_cd) is not None
         ) :
             
-            url = 'http://hearthands.btog.co.kr/macro/checkUserAndW4cCode.vsj'
-            body = {
+            url: str = 'http://hearthands.btog.co.kr/macro/checkUserAndW4cCode.vsj'
+            body: dict = {
                 'id': id_txt.replace(' ', ''),
                 'w4cCd': w4c_cd.replace(' ', '')
             }
