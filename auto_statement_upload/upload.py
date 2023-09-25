@@ -22,6 +22,8 @@ from PyQt5.QAxContainer import *
 from PyQt5.QtGui import *
 import logging                     # 로그
 import openpyxl                    # 엑셀
+import threading
+import time
 
 
 ##### Module import 
@@ -67,7 +69,7 @@ applogger.addHandler(file_handler)     # ERROR
 
 
 # 기본 딜레이 설정
-gui.PAUSE: float = 0.5
+gui.PAUSE: float = 0.3
 
 ########### class function ##############################################################################
 class window__base__setting(QMainWindow, main_ui):
@@ -123,7 +125,9 @@ class window__base__setting(QMainWindow, main_ui):
     #3 자동업로드 중지
     def stop_fn(self) -> None :
         gui.alert('자동화 업무를 중단합니다.')
+        time.sleep(0.3)
         ending(self)
+        time.sleep(0.3)
         sys.exit()
 
 
@@ -164,7 +168,7 @@ class window__base__setting(QMainWindow, main_ui):
             if gui.confirm('작업한 결과를 저장하시겠습니까?') == 'OK':
                 try:
                     #Workbook 생성#
-                    wb: openpyxl = openpyxl.Workbook()
+                    wb: openpyxl.Workbook = openpyxl.Workbook()
                     #저장경로 추출하기 위한 요소 조회#
                     file_path: str = self.file_path.toPlainText()
                     file_rsplit: str = file_path.rsplit('/')
@@ -234,6 +238,52 @@ def ending(self) -> None :
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+# 기능별 수행하는 쓰레드 클래스를 별도로 부여해줘야 할 듯.
+#1# '저장이 진행중입니다' 이미지를 찾고 대기시간 10초 반영할 것
+class savingThreadImgFind(threading.Thread) :
+    def __init__(self) :
+        super().__init__()
+
+    def run(self) :
+        print('--------------- 1번째 쓰레드 시작 (' + threading.currentThread().getName() + ') -------------------')
+        print('--------------- 1번째 쓰레드 종료 (' + threading.currentThread().getName() + ') -------------------')
+        
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ########## Start Program(PyQt5 Designer) ###################################################################################
 '''
     프로그램 시작
@@ -242,4 +292,13 @@ if 'upload.py' in __file__ :
     app = QApplication(sys.argv)
     window = window__base__setting()
     window.show()
+
+    # 쓰레드 개수만큼 실행
+    t1 = savingThreadImgFind()
+    t1.daemon = True
+    t1.start()
+
     app.exec_()
+
+
+print('메인쓰레드 END')
