@@ -1,3 +1,6 @@
+#### 사용안함 ####
+
+
 # 급여대장 자동업로드 작업
 import os
 import pyautogui as gui                          # 운영체제 제어

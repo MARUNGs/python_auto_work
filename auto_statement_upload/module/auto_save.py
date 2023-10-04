@@ -7,7 +7,6 @@ import time
 import logging                                   # 로그
 
 from . import find_and_click
-from . import auto_save_payroll
 
 
 # 공통 경로
@@ -52,7 +51,7 @@ def auto_save(self, excel_obj):
             time.sleep(1)
 
             ### 인건비(지출) 처리
-            auto_save_payroll.auto_save_payroll(self, personnel_expense_list)
+            auto_save_payroll(self, personnel_expense_list)
         
         # Success 갯수 체크
         status_tb     = self.status_tb
@@ -70,112 +69,225 @@ def auto_save(self, excel_obj):
 
 ##### 성능을 위하여 리팩토링
 def auto_save_simple(self, excel_list):
-    try:
-        for row_i in range(0, len(excel_list)) :
-            # for문 대신 컨트롤할 변수
-            rows = excel_list[row_i]
+    for row_i in range(0, len(excel_list)) :
+        global exit_signal
+        exit_signal = row_i
 
-            for _ in range(0, 2): gui.hotkey('alt', 'f3') # 조회
-            for _ in range(0, 2): gui.hotkey('alt', 'f2') # 신규
-            
-            #결의일자#
-            gui.hotkey('ctrl', 'a')
-            gui.press('backspace')
-            pyperclip.copy(rows[3])
-            gui.hotkey('ctrl', 'v')
 
-            for _ in range(0, 2): gui.press('tab')
-            
-            #결의구분#
-            if rows[0] == '수입':
-                gui.press('down')
-            else: 
-                gui.press('down')
-                gui.press('down')
+        # for문 대신 컨트롤할 변수
+        rows = excel_list[row_i]
 
-            gui.press('tab')
+        for _ in range(0, 2): gui.hotkey('alt', 'f3') # 조회
+        for _ in range(0, 2): gui.hotkey('alt', 'f2') # 신규
+        
+        #결의일자#
+        gui.hotkey('ctrl', 'a')
+        gui.press('backspace')
+        pyperclip.copy(rows[3])
+        gui.hotkey('ctrl', 'v')
 
-            #사업 ---> 이거 하려면 화면단부터 수정해야 함#
-            project_num = int(self.project_num.text())
-            if project_num != None: 
-                for _ in range(0, project_num): gui.press('down')
+        for _ in range(0, 2): gui.press('tab')
+        
+        #결의구분#
+        if rows[0] == '수입':
+            gui.press('down')
+        else: 
+            gui.press('down')
+            gui.press('down')
 
-            gui.press('tab')
+        gui.press('tab')
 
-            #금액
-            # - 반납구분이 '반납'인 경우 '-' 붙여서 금액 입력할 것.
-            gui.hotkey('ctrl', 'a')
-            gui.press('backspace')
-            
-            # '수입'일 때
-            if rows[0] == '수입':
-                ## '반납'인 경우, 마이너스 금액으로 작성
-                if rows[1] == '반납': pyperclip.copy('-' + rows[7])
-                ## '정상'인 경우, 금액 그대로 작성
-                else: pyperclip.copy(rows[6])
-            # '지출'일 때
-            else:
-                ## '반납'인 경우, 마이너스 금액으로 작성
-                if rows[1] == '반납': pyperclip.copy('-' + rows[6])
-                ## '정상'인 경우, 금액 그대로 작성
-                else: pyperclip.copy(rows[7])
-            gui.hotkey('ctrl', 'v')
-            
-            #계정코드#
+        #사업 ---> 이거 하려면 화면단부터 수정해야 함#
+        project_num = int(self.project_num.text())
+        if project_num != None: 
+            for _ in range(0, project_num): gui.press('down')
+
+        gui.press('tab')
+
+        #금액
+        # - 반납구분이 '반납'인 경우 '-' 붙여서 금액 입력할 것.
+        gui.hotkey('ctrl', 'a')
+        gui.press('backspace')
+        
+        # '수입'일 때
+        if rows[0] == '수입':
+            ## '반납'인 경우, 마이너스 금액으로 작성
+            if rows[1] == '반납': pyperclip.copy('-' + rows[7])
+            ## '정상'인 경우, 금액 그대로 작성
+            else: pyperclip.copy(rows[6])
+        # '지출'일 때
+        else:
+            ## '반납'인 경우, 마이너스 금액으로 작성
+            if rows[1] == '반납': pyperclip.copy('-' + rows[6])
+            ## '정상'인 경우, 금액 그대로 작성
+            else: pyperclip.copy(rows[7])
+        gui.hotkey('ctrl', 'v')
+        
+        #계정코드#
+        for _ in range(0, 3): gui.press('tab')
+        gui.press('enter') # 팝업창 오픈
+        for _ in range(0, 4): gui.press('tab')
+
+        gui.sleep(1.0)
+
+        #계정코드명 수정: W4C 프로그램에서는 '공공요금 및 제세공과금'에 대한 과목명이 다르게 관리되므로 별도로 변경함
+        if rows[4] == '공공요금 및 제세공과금':
+            pyperclip.copy('공공요금 및 각종 세금공과금')
+        else:
+            pyperclip.copy(rows[4])
+
+        gui.hotkey('ctrl', 'v') # 계정코드 입력
+        for _ in range(0, 2): gui.press('enter')
+
+        #대상자#
+        if rows[4] == '본인부담금수입':
+            for _ in range(0, 3): gui.press('tab')
+            for _ in range(0, 2): gui.press('enter') # 팝업창 오픈, 선택까지
+
+        gui.sleep(1.0)
+
+        #상대계정(지출결의서)#
+        if rows[9] != '':
             for _ in range(0, 3): gui.press('tab')
             gui.press('enter') # 팝업창 오픈
-            for _ in range(0, 4): gui.press('tab')
 
             gui.sleep(1.0)
 
-            #계정코드명 수정: W4C 프로그램에서는 '공공요금 및 제세공과금'에 대한 과목명이 다르게 관리되므로 별도로 변경함
-            if rows[4] == '공공요금 및 제세공과금':
-                pyperclip.copy('공공요금 및 각종 세금공과금')
-            else:
-                pyperclip.copy(rows[4])
+            for _ in range(0, 3): gui.press('tab')
+            pyperclip.copy(rows[9])
+            gui.hotkey('ctrl', 'v')
+            for _ in range(0, 2): 
+                gui.press('enter') # 무조건 첫번째 상대계정 선택
+                time.sleep(1)
 
-            gui.hotkey('ctrl', 'v') # 계정코드 입력
-            for _ in range(0, 2): gui.press('enter')
+        #적요#
+        if len(rows[5]) > 0:
+            for _ in range(0, 6): gui.press('tab')
+            pyperclip.copy(rows[5])
+            gui.hotkey('ctrl', 'v')
+            gui.press('tab')
 
-            #대상자#
-            if rows[4] == '본인부담금수입':
-                for _ in range(0, 3): gui.press('tab')
-                for _ in range(0, 2): gui.press('enter') # 팝업창 오픈, 선택까지
+        gui.sleep(0.5)
 
-            gui.sleep(1.0)
-
-            #상대계정(지출결의서)#
-            if rows[9] != '':
-                for _ in range(0, 3): gui.press('tab')
-                gui.press('enter') # 팝업창 오픈
-
-                gui.sleep(1.0)
-
-                for _ in range(0, 3): gui.press('tab')
-                pyperclip.copy(rows[9])
-                gui.hotkey('ctrl', 'v')
-                for _ in range(0, 2): gui.press('enter') # 무조건 첫번째 상대계정 선택
-
-            #적요#
-            if len(rows[5]) > 0:
-                for _ in range(0, 6): gui.press('tab')
-                pyperclip.copy(rows[5])
-                gui.hotkey('ctrl', 'v')
-                gui.press('tab')
-
-            gui.sleep(0.5)
-
-            #1건 저장 프로세스#
-            gui.hotkey('alt', 'f8') # 저장
+        #1건 저장 프로세스#
+        gui.hotkey('alt', 'f8') # 저장
+        gui.sleep(0.2)
+        for _ in range(0, 2):
+            gui.press('enter')
             gui.sleep(0.2)
-            for _ in range(0, 2):
-                gui.press('enter')
-                gui.sleep(0.2)
-            
-            #성공 확인됨. Flag값 수정하기#
-            status_change_true(self, rows)
-                
-    except Exception as e: applogger.debug('auto save statement ERROR MSG : ', str(e))
+        
+        #성공 확인됨. Flag값 수정하기#
+        status_change_true(self, rows)
+    else : return False
+
+
+
+
+
+def auto_save_payroll(self, excel_list):
+    # 사업을 딱 1번만 설정함. 어차피 같은 사업처리할 것이기 때문.
+    find_and_click.img_click('급여대장_사업명.png')
+    gui.press('tab')
+
+    if find_and_click.find_img_flag('급여대장_사업명_선택하세요2.png'):
+        project_num = int(self.project_num.text())
+        for _ in range(0, project_num): 
+            gui.press('down')
+            gui.press('enter') # 안내창 닫기
+    
+    gui.sleep(0.5)
+
+    #데이터 수 만큼 움직이기#
+    for row_i in range(0, len(excel_list)):
+        rows = excel_list[row_i]
+
+        gui.hotkey('alt', 'f3') # 조회
+
+        #행추가#
+        find_and_click.img_click('급여대장_사업명.png')
+        gui.keyDown('shift')
+        for _ in range(0, 4): gui.press('tab')
+        gui.keyUp('shift')
+        gui.press('enter')
+
+        gui.sleep(0.7) # 팝업창 오픈
+
+        #대상자 선택버튼 클릭#
+        gui.press('tab')
+        gui.press('enter')
+
+        #전체 선택박스 체크#
+        find_and_click.img_click('전체선택체크박스.png')
+
+        #회계연도 선택#
+        find_and_click.img_click('급여대장_사업명.png')
+        for _ in range(0, 2): gui.press('tab')
+        gui.press('enter')
+        find_and_click.customization_payroll_year_img_click(self)
+        find_and_click.img_click('회계연도_선택.png')
+
+        time.sleep(1.0) #팝업창 오픈
+        
+        #결의일자#
+        for _ in range(0, 6): gui.press('tab')
+        gui.hotkey('ctrl', 'a')
+        gui.press('backspace')
+        pyperclip.copy(rows[3])
+        gui.hotkey('ctrl', 'v')
+
+        #행추가#
+        for _ in range(0, 10): gui.press('tab')
+        gui.press('enter')
+
+        #계정명 : 직접 데이터를 입력하면 안내창이 뜨므로, 아이콘을 눌러서 처리해야 한다.#
+        find_and_click.img_bottom_right_in_click('급여대장_계정과목_타이틀.png')
+        for _ in range(0, 4): gui.press('tab')
+        pyperclip.copy(rows[4])
+        gui.hotkey('ctrl', 'v')
+        for _ in range(0, 2): gui.press('enter') # 확인, 창닫기
+
+        #금액#
+        for _ in range(0, 3): gui.press('tab')
+        pyperclip.copy(rows[7]) # 지출금액만 취급하므로 idx 7번만 사용함.
+        gui.hotkey('ctrl', 'v')
+
+        gui.press('tab')
+
+        #적요#
+        if len(rows[5]) > 0:
+            pyperclip.copy(rows[5])
+            gui.hotkey('ctrl', 'v')
+
+        gui.press('tab')
+
+        #상대계정#
+        pyperclip.copy(rows[9]) # 지출금액만 취급하므로 idx 7번만 사용함.
+        gui.hotkey('ctrl', 'v')
+        gui.press('tab')
+
+        gui.sleep(0.5)
+        if rows[9] == '장기요양급여수입': gui.press('enter')
+        gui.sleep(1.0)
+
+
+        #1건 마무리 프로세스#
+        find_and_click.img_click('급여대장_저장.png')
+        for _ in range(0, 2):
+            gui.press('enter') # 팝업창 확인
+            gui.sleep(0.2)
+        # 급여대장 지출결의서 닫기
+        for _ in range(0, 5): gui.press('tab')
+        gui.press('enter')
+
+        #성공 확인됨. Flag값 수정하기#
+        status_change_true(self, rows)
+
+
+
+
+
+
+
 
 
 
