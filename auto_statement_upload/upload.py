@@ -17,19 +17,20 @@ import os                          # 운영체제 정보
 import pyautogui as gui            # 운영체제 제어
 import sys                         # 시스템 정보
 from PyQt5.QtWidgets import *      # PyQt5 GUI
+from PyQt5.QtCore import *
 from PyQt5 import uic              # .ui 파일 호출
 from PyQt5.QAxContainer import *
 from PyQt5.QtGui import *
 import logging                     # 로그
 import openpyxl                    # 엑셀
-import threading
 import time
-
+from PyQt5.QtCore import *
+import keyboard
+import signal
 
 ##### Module import 
 from module import auto_save             # 결의서/전표정보 자동업로드 및 저장기능 수행
 from module import make_excel_data_table # 엑셀 데이터 생성기능 수행
-from module import xy_info               # xy좌표 정보
 from module import check_data            # input에 작성한 데이터 체크
 import module.xls_to_xlsx as xls_to_xlsx # 엑셀 확장자 변경
 
@@ -56,27 +57,52 @@ formatter: logging = logging.Formatter(u'%(asctime)s [%(levelname)8s] %(message)
 stream_hander: logging = logging.StreamHandler()
 stream_hander.setFormatter(formatter)
 
-global_logger.addHandler(stream_hander) # DEBUG
 applogger.addHandler(stream_hander)     # ERROR
 
 # 파일 핸들러
 file_handler: logging = logging.FileHandler('app.log')
 file_handler.setFormatter(formatter)
 
-global_logger.addHandler(file_handler) # DEBUG
 applogger.addHandler(file_handler)     # ERROR
 
 
 
 # 기본 딜레이 설정
-gui.PAUSE: float = 0.3
+gui.PAUSE = 0.5
+
+check_flag = False
+
+########### Thread ######################################################################################
+class thread_stop_fn(QThread) :
+    def __init__(self, parent) :
+        # 메인에서 받은 self 인자를 parent로 설정함
+        super().__init__(parent)
+        self.parent = parent
+
+    def run(self) :
+        # main_window = self.parent
+
+        while True :
+            try :
+                event = keyboard.read_event()
+
+                if (
+                    event.event_type == keyboard.KEY_DOWN and 
+                    event.name       == '0'               and
+                    keyboard.is_pressed('ctrl')
+                ) :
+                    gui.alert('자동화 업무를 중단합니다.')
+                    main_pid = os.getpid()
+                    os.kill(main_pid, signal.SIGTERM) # 시스템 강제종료
+            except KeyboardInterrupt :
+                applogger.debug('***** 강제종료 오류발생')
+                break
+         
 
 ########### class function ##############################################################################
 class window__base__setting(QMainWindow, main_ui):
-    def __init__(self) -> None :
+    def __init__(self) :
         super().__init__()
-
-        self.img_xy_info = xy_info.xy_info_map()
 
         # 버튼 기능 연결
         self.set_ui()
@@ -85,8 +111,12 @@ class window__base__setting(QMainWindow, main_ui):
         self.start_btn.clicked.connect(self.start_fn)                               # 시작
         self.download_btn.clicked.connect(self.download)                            # 엑셀 다운로드
         self.excel_list = None # make excel data 수행할 때 삽입할 객체
-
         
+        # 스레드 설정
+        self.thread_stop_fn = thread_stop_fn(self)
+        self.thread_stop_fn.start()
+
+
 
     # ui 세팅
     def set_ui(self) -> None : self.setupUi(self)
@@ -111,7 +141,7 @@ class window__base__setting(QMainWindow, main_ui):
 
 
     # 전표등록 자동업로드 시작
-    def start_fn(self) -> None :
+    def start_fn(self) :
         if gui.confirm('전표정보 자동업로드 업무를 실행하시겠습니까?') == 'OK':
             starting(self)
 
@@ -123,7 +153,7 @@ class window__base__setting(QMainWindow, main_ui):
 
 
     #3 자동업로드 중지
-    def stop_fn(self) -> None :
+    def stop_fn(self) :
         gui.alert('자동화 업무를 중단합니다.')
         time.sleep(0.3)
         ending(self)
@@ -236,69 +266,15 @@ def ending(self) -> None :
     self.status_text.setStyleSheet('Color: black')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 기능별 수행하는 쓰레드 클래스를 별도로 부여해줘야 할 듯.
-#1# '저장이 진행중입니다' 이미지를 찾고 대기시간 10초 반영할 것
-class savingThreadImgFind(threading.Thread) :
-    def __init__(self) :
-        super().__init__()
-
-    def run(self) :
-        print('--------------- 1번째 쓰레드 시작 (' + threading.currentThread().getName() + ') -------------------')
-        print('--------------- 1번째 쓰레드 종료 (' + threading.currentThread().getName() + ') -------------------')
-        
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-########## Start Program(PyQt5 Designer) ###################################################################################
-'''
-    프로그램 시작
-'''
-if 'upload.py' in __file__ :
+# 메인함수
+def main() :
     app = QApplication(sys.argv)
     window = window__base__setting()
     window.show()
-
-    # 쓰레드 개수만큼 실행
-    t1 = savingThreadImgFind()
-    t1.daemon = True
-    t1.start()
-
+    # QApplication 창을 오픈하는 것이므로 마지막 실행
     app.exec_()
 
 
-print('메인쓰레드 END')
+########## Start Program(PyQt5 Designer) ###################################################################################
+if __name__ == '__main__' :
+    main()
