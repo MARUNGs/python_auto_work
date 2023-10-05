@@ -33,10 +33,12 @@ def img_click(img_nm):
         if location_img is not None:
             center = gui.center(location_img)
             gui.click(center)
+            return True
         else: 
             gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
             applogger.debug('img_click ERROR')
-            sys.exit()
+            # sys.exit()
+            return False
     except Exception as e:
         applogger.debug('img_click ERROR : ', str(e))
 
@@ -44,7 +46,6 @@ def img_click(img_nm):
 # 이미지 찾음유무 flag 확인
 def find_img_flag(img_nm):
     img = gray_scale_img(img_nm)
-    # img = gui.locateOnScreen(img_dir_path + img_nm)
     return True if img is not None else False
 
 
@@ -55,11 +56,12 @@ def img_db_click(img_nm):
     if img is not None: 
         center = gui.center(img)
         gui.doubleClick(center, interval=0.5)
+        return True
     else: 
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         applogger.debug('img_db_click ERROR')
-        sys.exit()
-
+        # sys.exit()
+        return False
 
 # 이미지의 오른쪽 150px 이동하여 클릭
 def img_right_150_click(img_nm):
@@ -69,10 +71,12 @@ def img_right_150_click(img_nm):
         moveX = (img.left + img.width) + 150
         moveY = img.top + img.height // 2
         gui.click(moveX, moveY)
+        return True
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         applogger.debug('img_right_150_click ERROR')
-        sys.exit()
+        # sys.exit()
+        return False
 
 
 # 커스텀된 사업명을 찾아서 클릭
@@ -85,10 +89,12 @@ def customization_payroll_project_img_click(self):
     if img is not None:
         center = gui.center(img)
         gui.click(center)
+        return True
     else: 
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         applogger.debug('customization_payroll_project_img_click ERROR')
-        sys.exit()
+        # sys.exit()
+        return False
 
 
 # 커스텀된 회계연도를 찾아서 왼쪽 클릭
@@ -102,10 +108,12 @@ def customization_payroll_year_img_click(self):
         moveX = img.left - 10
         moveY = img.top + img.height // 2
         gui.click(moveX, moveY)
+        return True
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         applogger.debug('customization_payroll_year_img_click ERROR')
-        sys.exit()
+        # sys.exit()
+        return False
     
 
 # 이미지 찾아서 이미지의 오른쪽 위치 클릭 기능
@@ -116,10 +124,12 @@ def img_right_click(img_nm):
         moveX = (img.left + img.width) + 10
         moveY = img.top + img.height // 2
         gui.click(moveX, moveY)
+        return True
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         applogger.debug('img_right_click ERROR')
-        sys.exit()
+        # sys.exit()
+        return False
 
 
 # 이미지의 바텀에서 살짝 오른쪽 클릭
@@ -130,10 +140,12 @@ def img_bottom_right_in_click(img_nm):
         moveX = img.left + img.width - 10
         moveY = img.top + img.height + 10
         gui.click(moveX, moveY)
+        return True
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         applogger.debug('img_bottom_right_in_click ERROR')
-        sys.exit()
+        # sys.exit()
+        return False
 
 
 ###########################################################################
@@ -151,10 +163,12 @@ def customization_project_img_click(self):
     if img is not None:
         center = gui.center(img)
         gui.click(center)
+        return True
     else:
         gui.alert(f'찾는 이미지: {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         applogger.debug('customization_project_img_click ERROR')
-        sys.exit()
+        # sys.exit()
+        return False
 
 
 # 이미지를 찾아서 이미지의 오른쪽 안 끝을 클릭하는 기능
@@ -165,10 +179,12 @@ def img_right_in_click(img_nm):
         moveX = img.left + img.width - 20
         moveY = img.top + img.height // 2
         gui.click(moveX, moveY)
+        return True
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         applogger.debug('img_right_in_click ERROR')
-        sys.exit()
+        # sys.exit()
+        return False
 
 
 # 이미지 찾아서 이미지의 왼쪽 위치 클릭하는 기능
@@ -179,32 +195,12 @@ def img_left_click(img_nm):
         moveX = img.left - 30
         moveY = img.top + img.height // 2
         gui.click(moveX, moveY)
+        return True
     else:
         gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
         applogger.debug('img_left_click ERROR')
-        sys.exit()
-
-
-# 계정과목코드가 '장기요양급여수입'인 경우 반영을 픽스하기 위한 기능
-# def pick_account_반영(data, type, self):
-#     xy_info = self.img_xy_info
-    
-#     if type == 'account_subject':
-#         xy_info_click(xy_info['popup_account_cd']) # 팝업_계정코드목록
-#         gui.hotkey('ctrl', 'a')
-#         gui.press('backspace')
-#         pyperclip.copy(data)
-#         gui.hotkey('ctrl', 'v')
-#         gui.press('enter')
-#         gui.press('enter')
-#     elif type == 'opponent_subject':
-#         xy_info_click(*xy_info['popup_opponent_account_subject_cd']) # 상대계정 코드명 입력
-#         gui.hotkey('ctrl', 'a')
-#         gui.press('backspace')
-#         pyperclip.copy(data)
-#         gui.hotkey('ctrl', 'v')
-#         gui.press('enter')
-#         gui.press('enter')
+        # sys.exit()
+        return False
 
 def pick_account_반영(data, type):
     img_left_click('조회.png') # 포커스 초기화 클릭
@@ -238,8 +234,10 @@ def screen_center_click():
 
     # 클릭 실행
     gui.click(click_x, click_y)
+    return True
 
 
 def xy_info_click(xy_info):
     gui.moveTo(*xy_info) # key값의 xy좌표로 이동
     gui.click()          # 이동한 좌표에서 클릭
+    return True
