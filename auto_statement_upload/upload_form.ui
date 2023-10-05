@@ -649,6 +649,46 @@ QPushButton:hover {
         <string/>
        </property>
       </widget>
+      <widget class="QPushButton" name="stop_btn">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>280</y>
+         <width>296</width>
+         <height>60</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>맑은 고딕</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>실행버튼을 누르면 자동화가 실행되며 더이상 마우스, 키보드 작업이 어렵습니다.</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color: #f0f0f0;
+	border: 1px solid #9e9fa3;
+}
+
+QPushButton:hover {
+	background-color: rgb(222,222,222)
+}</string>
+       </property>
+       <property name="text">
+        <string>종료(ctrl + 0)</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+0</string>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+      </widget>
      </widget>
      <zorder>frame_3</zorder>
      <zorder>label_16</zorder>
