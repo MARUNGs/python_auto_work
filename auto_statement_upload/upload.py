@@ -68,10 +68,7 @@ applogger.addHandler(file_handler)     # ERROR
 
 
 # 기본 딜레이 설정
-gui.PAUSE = 0.5
-
-check_flag = False
-
+gui.PAUSE = 0.3
 ########### Thread ######################################################################################
 class thread_stop_fn(QThread) :
     def __init__(self, parent) :
