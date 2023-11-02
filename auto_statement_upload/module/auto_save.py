@@ -27,21 +27,54 @@ def auto_save(self, excel_obj):
 
         ### 화면 이동 : 데이터가 존재하는지 먼저 확인하고 일반전표 데이터가 있으면 간편입력으로 화면이동
         if len(income_list)  > 0 or len(expense_list) > 0:
-            if not find_and_click.img_click('회계.png') :
-                success_count(self)
-                return False
+            # 이미지 찾기1 : 회계타이틀 이미지
+            def find_title01(cnt) :
+                if cnt == 0 and not find_and_click.find_img_flag('회계.png') :
+                    applogger.debug('-- fail 회계 타이틀 미확인 -- ')
+                    time.sleep(1)
+                    find_title01(0)
+                else : 
+                    find_and_click.img_click('회계.png')
+                    return
+            find_title01(0)
+
+            # if not find_and_click.img_click('회계.png') :
+            #     success_count(self)
+            #     return False
             
             time.sleep(0.5)
 
-            if not find_and_click.img_click('결의및전표관리.png') :
-                success_count(self)
-                return False
+            # 이미지 찾기2 : 중분류 타이틀 이미지
+            def find_title02(cnt) :
+                if cnt == 0 and not find_and_click.find_img_flag('결의및전표관리.png') :
+                    applogger.debug("-- fail 결의 및 전표관리 타이틀 미확인 --")
+                    time.sleep(1)
+                    find_title02(0)
+                else : 
+                    find_and_click.img_click('결의및전표관리.png')
+                    return
+            find_title02(0)
+
+            # if not find_and_click.img_click('결의및전표관리.png') :
+            #     success_count(self)
+            #     return False
             
             time.sleep(0.5)
+
+            # 이미지 찾기3 : 소분류 타이틀 이미지
+            def find_title03(cnt) :
+                if cnt == 0 and not find_and_click.find_img_flag('결의서전표간편입력.png') :
+                    applogger.debug("-- fail 결의서 전표 간편입력 메뉴 미확인 --")
+                    time.sleep(1)
+                    find_title03(0)
+                else : 
+                    find_and_click.img_click('결의서전표간편입력.png')
+                    return
+            find_title03(0)
             
-            if not find_and_click.img_click('결의서전표간편입력.png') :
-                success_count(self)
-                return False
+            # if not find_and_click.img_click('결의서전표간편입력.png') :
+            #     success_count(self)
+            #     return False
             
             gui.press('enter') # 결의서전표간편입력 메뉴 진입 엔터
             
@@ -67,15 +100,33 @@ def auto_save(self, excel_obj):
                     row_index += 1
 
         if len(personnel_expense_list) > 0 :
-            if not find_and_click.img_click('간편입력.png') :
-                success_count(self)
-                return False
+            def find_title04(cnt) :
+                if cnt == 0 and not find_and_click.find_img_flag('간편입력.png') :
+                    applogger.debug("-- fail 간편입력 메뉴 미확인 --")
+                    time.sleep(1)
+                    find_title04(0)
+                else : 
+                    find_and_click.img_click('간편입력.png')
+                    return
+            find_title04(0)
+            # if not find_and_click.img_click('간편입력.png') :
+            #     success_count(self)
+            #     return False
             
             time.sleep(0.5)
 
-            if not find_and_click.img_click('급여대장등록.png') :
-                success_count(self)
-                return False
+            def find_title05(cnt) :
+                if cnt == 0 and not find_and_click.find_img_flag('급여대장등록.png') :
+                    applogger.debug("-- fail 급여대장등록 메뉴 미확인 --")
+                    time.sleep(1)
+                    find_title05(0)
+                else : 
+                    find_and_click.img_click('급여대장등록.png')
+                    return
+            find_title05(0)
+            # if not find_and_click.img_click('급여대장등록.png') :
+            #     success_count(self)
+            #     return False
             
             gui.press('enter')
 

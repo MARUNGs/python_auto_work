@@ -97,6 +97,10 @@ class thread_stop_fn(QThread) :
                 os.kill(main_pid, signal.SIGTERM) # 시스템 강제종료
 
                 # 이것도 죽여보자
+                if state.process == None : 
+                    gui.alert('먼저 W4C 프로그램을 실행하세요.')
+                    return False
+                
                 proccess_pid = state.process['pid']
                 os.kill(proccess_pid, signal.SIGTERM)
                 
@@ -108,6 +112,10 @@ class thread_wait_response_fn(QThread) :
     
     def run(self) :
         # 소스 보관중 언제 또 쓰일지 모름
+        if state.process == None : 
+            gui.alert('먼저 W4C 프로그램을 실행하세요.')
+            return False
+
         process = psutil.Process(state.process['pid'])
 
         while True :
@@ -313,6 +321,7 @@ class window__base__setting(QMainWindow, main_ui):
 # 자동화 실행 >> 전표정보
 def start_auto(self) -> None :
     # Action
+    applogger.debug('----- 매크로 START -----')
     # excel_obj: object = make_excel_data_table.make_excel_data(self)
     # make_excel_data_table.make_table(self, excel_obj)
     excel_obj = state.excel_obj
@@ -330,6 +339,7 @@ def start_auto(self) -> None :
 
     auto_save.auto_save(self, excel_obj)
     ending(self)
+    applogger.debug('----- 매크로 END -----')
 
 
 #6# '실행중'으로 상태변경
