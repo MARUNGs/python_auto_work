@@ -51,7 +51,8 @@ def make_excel_data(self) -> dict :
             elif data_list[0] == '지출' and data_list[12] != '인건비': excel_obj['expense_list'].append(data_list)
             elif data_list[0] == '지출' and data_list[12] == '인건비': excel_obj['personnel_expense_list'].append(data_list)
 
-            excel_list.insert(i, data_list) #다운로드 기능 수행 시 이용할 변수#
+            # 엑셀 자체의 데이터를 insert하면 안 되므로 이 작업은 따로 for문 돌아서 수행
+            # excel_list.insert(i, data_list) #다운로드 기능 수행 시 이용할 변수#
 
         #나중에 다운로드하기 위해 미리 대입해둠#
         self.excel_list: list = excel_list

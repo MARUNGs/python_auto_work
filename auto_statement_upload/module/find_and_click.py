@@ -5,10 +5,11 @@
 ##### Library import 
 import pyautogui as gui             # 운영체제 제어
 import os
-import sys                          # 시스템 정보
+# import sys                          # 시스템 정보
 import logging
 import pyperclip
 from PIL import Image
+import time
 
 
 # 공통 경로
@@ -24,6 +25,12 @@ def gray_scale_img(img_nm):
     confidence = 0.999
     return gui.locateOnScreen(gray_image, grayscale=True, confidence=confidence)
 
+# 이미지 gray_scale 변환 (유사도 낮춤)
+def gray_scale_down_img(img_nm):
+    gray_image = Image.open(os.path.join(img_dir_path, img_nm)).convert("L")
+    confidence = 0.65
+    return gui.locateOnScreen(gray_image, grayscale=True, confidence=confidence)
+
 
 # 이미지 찾아서 클릭
 def img_click(img_nm):
@@ -35,8 +42,10 @@ def img_click(img_nm):
             gui.click(center)
             return True
         else: 
-            gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-            applogger.debug('img_click ERROR')
+            # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+            time.sleep(3)
+            gui.press('enter')
+            applogger.debug('img_click function ERROR : ' + img_nm)
             # sys.exit()
             return False
     except Exception as e:
@@ -46,6 +55,11 @@ def img_click(img_nm):
 # 이미지 찾음유무 flag 확인
 def find_img_flag(img_nm):
     img = gray_scale_img(img_nm)
+    return True if img is not None else False
+
+# 이미지 찾음유무 flag 확인(유사도 낮음)
+def find_down_img_flag(img_nm):
+    img = gray_scale_down_img(img_nm)
     return True if img is not None else False
 
 
@@ -58,8 +72,10 @@ def img_db_click(img_nm):
         gui.doubleClick(center, interval=0.5)
         return True
     else: 
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        applogger.debug('img_db_click ERROR')
+        # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('img_db_click function ERROR : ' + img_nm)
         # sys.exit()
         return False
 
@@ -73,8 +89,10 @@ def img_right_150_click(img_nm):
         gui.click(moveX, moveY)
         return True
     else:
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        applogger.debug('img_right_150_click ERROR')
+        # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('img_right_150_click function ERROR : ' + img_nm)
         # sys.exit()
         return False
 
@@ -91,8 +109,10 @@ def customization_payroll_project_img_click(self):
         gui.click(center)
         return True
     else: 
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        applogger.debug('customization_payroll_project_img_click ERROR')
+        # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('customization_payroll_project_img_click function ERROR : ' + img_nm)
         # sys.exit()
         return False
 
@@ -110,8 +130,10 @@ def customization_payroll_year_img_click(self):
         gui.click(moveX, moveY)
         return True
     else:
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        applogger.debug('customization_payroll_year_img_click ERROR')
+        # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('customization_payroll_year_img_click function ERROR : ' + img_nm)
         # sys.exit()
         return False
     
@@ -126,8 +148,27 @@ def img_right_click(img_nm):
         gui.click(moveX, moveY)
         return True
     else:
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        applogger.debug('img_right_click ERROR')
+        # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('img_right_click function ERROR : '+ img_nm)
+        # sys.exit()
+        return False
+    
+# 이미지 찾아서 이미지의 오른쪽 위치 더블클릭 기능
+def img_right_db_click(img_nm):
+    img = gray_scale_img(img_nm)
+
+    if img is not None:
+        moveX = (img.left + img.width) + 10
+        moveY = img.top + img.height // 2
+        gui.doubleClick(moveX, moveY)
+        return True
+    else:
+        # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('img_right_db_click function ERROR : '+ img_nm)
         # sys.exit()
         return False
 
@@ -142,8 +183,10 @@ def img_bottom_right_in_click(img_nm):
         gui.click(moveX, moveY)
         return True
     else:
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        applogger.debug('img_bottom_right_in_click ERROR')
+        # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('img_bottom_right_in_click function ERROR : '+ img_nm)
         # sys.exit()
         return False
 
@@ -165,8 +208,10 @@ def customization_project_img_click(self):
         gui.click(center)
         return True
     else:
-        gui.alert(f'찾는 이미지: {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        applogger.debug('customization_project_img_click ERROR')
+        # gui.alert(f'찾는 이미지: {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('customization_project_img_click function ERROR : '+ img_nm)
         # sys.exit()
         return False
 
@@ -181,8 +226,28 @@ def img_right_in_click(img_nm):
         gui.click(moveX, moveY)
         return True
     else:
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        applogger.debug('img_right_in_click ERROR')
+        # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('img_right_in_click function ERROR : '+ img_nm)
+        # sys.exit()
+        return False
+    
+
+# 이미지를 찾아서 이미지의 오른쪽 안 끝을 더블클릭하는 기능
+def img_right_in_db_click(img_nm):
+    img = gray_scale_img(img_nm)
+
+    if img is not None:
+        moveX = img.left + img.width - 20
+        moveY = img.top + img.height // 2
+        gui.doubleClick(moveX, moveY)
+        return True
+    else:
+        # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('img_right_in_db_click function ERROR : '+ img_nm)
         # sys.exit()
         return False
 
@@ -197,8 +262,10 @@ def img_left_click(img_nm):
         gui.click(moveX, moveY)
         return True
     else:
-        gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
-        applogger.debug('img_left_click ERROR')
+        # gui.alert(f'찾는 이미지 : {img_nm}\n찾고자 하는 이미지가 존재하지 않습니다. \n관리자 확인이 필요합니다.')
+        time.sleep(3)
+        gui.press('enter')
+        applogger.debug('img_left_click function ERROR : '+ img_nm)
         # sys.exit()
         return False
 
